@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V3.2 Engine | Mailvah Enterprise</title>
+    <title>V3.2 Engine & V4.5 Cluster | Mailvah Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -44,21 +44,26 @@
     </nav>
 
     <main class="pt-20 flex-1">
-        <section class="pt-24 pb-16 px-6 text-center relative overflow-hidden">
+        
+        <section class="pt-24 pb-16 px-6 text-center relative overflow-hidden border-b border-slate-800/50">
             <div class="max-w-4xl mx-auto relative z-10">
                 <div class="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-5 py-2 rounded-full mb-8">
-                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Mailvah Architecture</span>
+                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Mailvah V4.5 Cluster</span>
                 </div>
                 <h1 class="text-4xl md:text-7xl font-black text-white leading-tight mb-6 tracking-tighter">
-                    The anatomy of a <br><span class="text-gradient">Heuristic Ping.</span>
+                    We are not an API wrapper. <br><span class="text-gradient">We own the metal.</span>
                 </h1>
                 <p class="text-slate-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
-                    Watch exactly how the V3.2 Engine maps enterprise Catch-All firewalls in real-time, extracting absolute cryptographic certainty without ever sending an email payload.
+                    Most verifiers simply rent AWS IPs and wrap a basic UI around a standard ping. Mailvah is built on proprietary, dedicated hardware in Dallas, TX. We execute complex Heuristic Handshakes at ~200ms to guarantee near-zero bounce rates.
                 </p>
             </div>
         </section>
 
-        <section class="py-12 px-4 md:px-6">
+        <section class="py-20 px-4 md:px-6">
+            <div class="max-w-5xl mx-auto text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-black text-white mb-4">The Anatomy of a Heuristic Ping</h2>
+                <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto">Watch exactly how our Engine maps enterprise Catch-All firewalls using impossible alphanumeric sequences.</p>
+            </div>
             <div class="max-w-5xl mx-auto glass-panel p-6 md:p-12 rounded-[2rem] border border-slate-700/50 shadow-2xl relative overflow-hidden h-[400px] flex items-center justify-center">
                 
                 <div class="absolute left-4 md:left-12 text-center z-10">
@@ -78,34 +83,138 @@
                 <div id="ping-3" class="ping-dot bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)] left-[15%] ping-burst"></div>
                 <div id="ping-4" class="ping-dot bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] left-[15%]"></div>
 
-                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-950 border border-slate-800 px-6 py-3 rounded-xl font-mono text-[10px] md:text-xs text-sky-400 w-64 md:w-80 h-16 overflow-hidden flex items-center">
-                    <span id="console-text">> Waiting for engine...</span>
+                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-950 border border-slate-800 px-6 py-3 rounded-xl font-mono text-[10px] md:text-xs text-sky-400 w-72 md:w-[450px] h-16 overflow-hidden flex items-center justify-center">
+                    <span id="console-text" class="text-center">> Waiting for engine...</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-slate-900/30 px-6 border-y border-slate-800/50">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="glass-panel p-8 md:p-12 rounded-[2.5rem] border-t-4 border-t-emerald-500 shadow-2xl">
+                    <h3 class="text-white font-black text-xl mb-6 border-b border-slate-800 pb-4">The 3-Burst Alphanumeric Ping</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Standard APIs fail when they hit an enterprise Catch-All server because the server is programmed to reply "Valid" to every request, even fake ones.</p>
+                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl font-mono text-[10px] text-emerald-400 mb-6">
+                        > SENDING: x7q9_fatal_err@domain.com<br>
+                        > SENDING: z9w2_null_sys@domain.com<br>
+                        > SENDING: p4m8_void_req@domain.com
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">The V3.2 Engine fires a sequence of highly complex, mathematically impossible alphanumeric strings at the server. By analyzing the micro-delays and exact responses to these impossible addresses, our Mailvah Workers decode the firewall's internal ruleset, allowing us to verify the actual target with absolute precision.</p>
+                </div>
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Unmasking Catch-Alls.</h2>
+                    <p class="text-slate-400 text-base leading-relaxed mb-8">Legacy tools tell you a Catch-All domain is "Risky" and advise you not to send to it. In enterprise B2B sales, over 40% of Fortune 500 companies use Catch-All domains. You cannot afford to throw away 40% of your total addressable market just because your verifier is weak.</p>
+                    <ul class="space-y-4 text-sm text-white font-medium">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 text-lg mr-3"></i> Penetrates Proofpoint & Mimecast</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 text-lg mr-3"></i> Bypasses Microsoft 365 Greylisting</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 text-lg mr-3"></i> Zero impact on your sending domain</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <section class="py-24 px-6">
             <div class="max-w-6xl mx-auto text-center">
-                <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Global Bare-Metal Routing</h2>
-                <p class="text-slate-400 text-sm md:text-lg mb-16 max-w-2xl mx-auto">We don't rely on shared AWS IP pools. Mailvah assigns dedicated server lanes across 5 continents to bypass regional blocks and throttle limits.</p>
+                <h2 class="text-xs md:text-sm font-black text-purple-500 uppercase tracking-[0.3em] mb-4">Beyond Automation</h2>
+                <h3 class="text-3xl md:text-5xl font-black text-white leading-tight mb-16 tracking-tighter">Agentic Outbound Infrastructure.</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-slate-900/50 p-8 rounded-3xl border border-slate-800 text-left hover:-translate-y-2 transition-transform">
+                        <div class="w-14 h-14 bg-blue-600/20 text-blue-500 rounded-xl flex items-center justify-center text-2xl mb-6"><i class="fa-solid fa-bolt"></i></div>
+                        <h4 class="text-xl font-black text-white mb-3">~200ms Mailvah Workers</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Our infrastructure isn't sequential; it's heavily parallelized. Mailvah Workers execute asynchronous Port 25 handshakes globally, achieving verification speeds of ~200 milliseconds per valid lead.</p>
+                    </div>
+                    
+                    <div class="bg-slate-900/50 p-8 rounded-3xl border border-slate-800 text-left hover:-translate-y-2 transition-transform shadow-[0_0_30px_rgba(16,185,129,0.05)] border-t-emerald-500/50">
+                        <div class="w-14 h-14 bg-emerald-600/20 text-emerald-500 rounded-xl flex items-center justify-center text-2xl mb-6"><i class="fa-solid fa-robot"></i></div>
+                        <h4 class="text-xl font-black text-white mb-3">Agentic Workflows</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Mailvah doesn't just wait for API calls. It acts as an autonomous agent. If a lead bounces in your CRM, Mailvah detects it, triggers the Waterfall Rescue protocol, extracts a new lead, and updates Salesforce without human input.</p>
+                    </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-blue-500/30 text-center"><i class="fa-solid fa-location-dot text-blue-500 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Dallas, USA</h4><p class="text-[9px] text-slate-500 uppercase mt-1">Core Hub</p></div>
-                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-location-dot text-slate-600 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Luxembourg</h4><p class="text-[9px] text-emerald-500 uppercase mt-1">Active</p></div>
-                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-location-dot text-slate-600 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Singapore</h4><p class="text-[9px] text-emerald-500 uppercase mt-1">Active</p></div>
-                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-location-dot text-slate-600 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">São Paulo</h4><p class="text-[9px] text-emerald-500 uppercase mt-1">Active</p></div>
-                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-emerald-500/30 text-center"><i class="fa-solid fa-location-dot text-emerald-500 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Lagos, NG</h4><p class="text-[9px] text-sky-500 uppercase mt-1">Engineering HQ</p></div>
+                    <div class="bg-slate-900/50 p-8 rounded-3xl border border-slate-800 text-left hover:-translate-y-2 transition-transform">
+                        <div class="w-14 h-14 bg-purple-600/20 text-purple-500 rounded-xl flex items-center justify-center text-2xl mb-6"><i class="fa-solid fa-microchip"></i></div>
+                        <h4 class="text-xl font-black text-white mb-3">Near-Zero Bounce Rate</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Because our V4.5 cluster verifies the exact inbox existence at the point of execution, Mailvah clients consistently maintain hard bounce rates below 0.5%, securing their Google Postmaster reputation.</p>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <section class="py-24 bg-[#050914] px-6 border-t border-slate-800/50">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Global Bare-Metal Routing</h2>
+                <p class="text-slate-400 text-sm md:text-lg mb-16 max-w-2xl mx-auto">We don't rely on shared AWS IP pools. Mailvah assigns dedicated server lanes across 5 continents to bypass regional blocks and API throttle limits.</p>
+
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-blue-500/30 text-center shadow-[0_0_20px_rgba(37,99,235,0.1)]"><i class="fa-solid fa-server text-blue-500 text-3xl mb-4"></i><h4 class="text-white font-bold text-sm">Dallas, USA</h4><p class="text-[10px] text-blue-400 uppercase mt-1 font-black">Dedicated Core</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-network-wired text-slate-600 text-3xl mb-4"></i><h4 class="text-white font-bold text-sm">Luxembourg</h4><p class="text-[10px] text-emerald-500 uppercase mt-1 font-black">Edge Node Active</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-network-wired text-slate-600 text-3xl mb-4"></i><h4 class="text-white font-bold text-sm">Singapore</h4><p class="text-[10px] text-emerald-500 uppercase mt-1 font-black">Edge Node Active</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-network-wired text-slate-600 text-3xl mb-4"></i><h4 class="text-white font-bold text-sm">São Paulo</h4><p class="text-[10px] text-emerald-500 uppercase mt-1 font-black">Edge Node Active</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-emerald-500/30 text-center"><i class="fa-solid fa-code-branch text-emerald-500 text-3xl mb-4"></i><h4 class="text-white font-bold text-sm">Lagos, NG</h4><p class="text-[10px] text-sky-500 uppercase mt-1 font-black">Engineering HQ</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 md:py-32 text-center px-4 md:px-6 relative overflow-hidden border-t border-slate-800/50">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-64 bg-blue-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+            <div class="max-w-3xl mx-auto relative z-10">
+                <i class="fa-solid fa-power-off text-5xl md:text-6xl text-sky-400 mb-6 md:mb-8 drop-shadow-[0_0_20px_rgba(56,189,248,0.6)]"></i>
+                <h2 class="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 tracking-tighter">Deploy the V4.5 Cluster.</h2>
+                <p class="text-slate-400 text-sm md:text-xl mb-8 md:mb-12">Connect your infrastructure to the most advanced B2B outbound engine on the planet.</p>
+                <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-6">
+                    <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-4 px-8 md:px-10 rounded-xl md:rounded-2xl shadow-xl shadow-blue-500/25 text-xs md:text-sm tracking-widest uppercase transition-all transform hover:scale-105">START FOR FREE</a>
+                    <a href="api.html" class="glass-panel text-white font-black py-4 px-8 md:px-10 rounded-xl md:rounded-2xl hover:bg-slate-800 transition-colors text-xs md:text-sm tracking-widest uppercase border border-slate-700">VIEW API DOCS</a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 md:pt-20 pb-8 md:pb-10 px-6 mt-auto relative z-20">
         <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Infrastructure</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="engine.html" class="text-sky-400 transition-colors">V3.2 Engine</a></li>
+                        <li><a href="pricing.html" class="hover:text-sky-400 transition-colors">Pricing Tiers</a></li>
+                        <li><a href="api.html" class="hover:text-sky-400 transition-colors">Developer API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Compare</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="vs-apollo.html" class="hover:text-sky-400 transition-colors">vs Apollo.io</a></li>
+                        <li><a href="vs-hunter.html" class="hover:text-sky-400 transition-colors">vs Hunter.io</a></li>
+                        <li><a href="vs-zoominfo.html" class="hover:text-sky-400 transition-colors">vs ZoomInfo</a></li>
+                        <li><a href="vs-snov.html" class="hover:text-sky-400 transition-colors">vs Snov.io</a></li>
+                        <li><a href="vs-skrapp.html" class="hover:text-sky-400 transition-colors">vs Skrapp</a></li>
+                        <li><a href="vs-neverbounce.html" class="hover:text-sky-400 transition-colors">vs NeverBounce</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Company</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Affordable by Design</a></li>
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Legal Hub</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="privacy.html" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="faq.html" class="hover:text-sky-400 transition-colors">FAQ & Knowledge</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="border-t border-slate-800/60 pt-8 md:pt-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
                 <div class="flex items-center gap-3 md:gap-4 text-center md:text-left">
                     <div class="hidden md:block bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
                     <p class="text-[8px] md:text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+                </div>
+                <div class="flex gap-4 md:gap-8 text-[8px] md:text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
                 </div>
             </div>
         </div>
@@ -130,8 +239,7 @@
 
                 // Step 1: Standard Ping fails
                 consoleText.innerHTML = "> Standard Ping initiated...";
-                p1.style.opacity = '1';
-                p1.style.left = '75%';
+                p1.style.opacity = '1'; p1.style.left = '75%';
                 await wait(500);
                 target.classList.replace('border-slate-600', 'border-red-500');
                 target.classList.replace('text-slate-500', 'text-red-500');
@@ -142,17 +250,17 @@
                 // Step 2: Heuristic 3-Burst
                 target.classList.replace('border-red-500', 'border-slate-600');
                 target.classList.replace('text-red-500', 'text-slate-500');
-                consoleText.innerHTML = "> Deploying V3.2 Heuristic Burst...";
+                consoleText.innerHTML = "> Deploying 3-Burst Alphanumeric Ping (x7q9_fatal@...)";
                 
                 p2.style.opacity = '1'; p2.style.left = '75%'; await wait(150);
                 p3.style.opacity = '1'; p3.style.left = '75%'; await wait(300);
                 
-                consoleText.innerHTML = "<span class='text-amber-400'>> Firewall ruleset mapped.</span>";
+                consoleText.innerHTML = "<span class='text-amber-400'>> Firewall ruleset decoded (~215ms).</span>";
                 p2.style.opacity = '0'; p3.style.opacity = '0';
                 await wait(1000);
 
                 // Step 3: Success
-                consoleText.innerHTML = "> Executing final verification...";
+                consoleText.innerHTML = "> Executing final bare-metal verification...";
                 p4.style.opacity = '1'; p4.style.left = '75%';
                 await wait(500);
                 target.classList.replace('border-slate-600', 'border-emerald-500');
