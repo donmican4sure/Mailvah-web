@@ -15,29 +15,20 @@
         .text-gradient { background: linear-gradient(to right, #38bdf8, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hidden { display: none !important; }
         
-        /* Draggable Slider */
         input[type=range] { -webkit-appearance: none; background: transparent; width: 100%; }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #1e293b; border-radius: 10px; border: 1px solid #334155; }
         input[type=range]::-webkit-slider-thumb { height: 24px; width: 24px; border-radius: 50%; background: #38bdf8; cursor: pointer; -webkit-appearance: none; margin-top: -9px; box-shadow: 0 0 20px rgba(56,189,248,0.6); border: 3px solid #050914; transition: transform 0.1s; }
-        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
 
         /* CINEMATIC TOUR STYLES */
-        #mock-app-container { position: relative; perspective: 1000px; }
-        #ghost-mouse { 
-            position: absolute; z-index: 100; top: 0; left: 0;
-            color: white; font-size: 24px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: none; transform-origin: top left;
-        }
         .mock-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
         .mock-view.active { opacity: 1; pointer-events: auto; }
         .mock-sidebar-btn { transition: all 0.3s; border-left: 3px solid transparent; }
         .mock-sidebar-btn.active { background: linear-gradient(90deg, rgba(56, 189, 248, 0.1) 0%, transparent 100%); border-left: 3px solid #38bdf8; color: #38bdf8; }
         
-        .ripple { position: absolute; border-radius: 50%; border: 2px solid #38bdf8; animation: rippleAnim 0.6s linear forwards; pointer-events: none; transform: translate(-50%, -50%); }
-        @keyframes rippleAnim { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 50px; height: 50px; opacity: 0; } }
         .blinking-cursor::after { content: '|'; animation: blink 1s step-end infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        .btn-press { transform: scale(0.95); opacity: 0.8; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
@@ -48,6 +39,7 @@
                 <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
                 <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1 tracking-widest">PRO</span></span>
             </a>
+            
             <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="index.html" class="hover:text-white text-sky-400 transition-colors px-2">Infrastructure</a>
                 <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
@@ -55,9 +47,10 @@
                 <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
                 <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
             </div>
+
             <div class="flex items-center gap-4">
                 <a href="https://app.mailvah.com" class="hidden md:block text-slate-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">Log In</a>
-                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 px-6 rounded-xl shadow-lg text-xs tracking-widest uppercase transition-all">DEPLOY ENGINE</a>
+                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 text-xs tracking-widest uppercase transition-all">DEPLOY ENGINE</a>
             </div>
         </div>
     </nav>
@@ -78,86 +71,90 @@
                 </p>
 
                 <div class="glass-panel p-2 rounded-[2rem] relative shadow-[0_0_80px_rgba(56,189,248,0.1)] w-full max-w-5xl mx-auto border border-slate-700">
-                    <div id="mock-app-container" class="bg-[#050914] rounded-[1.5rem] overflow-hidden text-left relative h-[450px] md:h-[550px] border border-slate-800 shadow-inner flex">
+                    <div class="bg-[#0b1120] rounded-[1.5rem] overflow-hidden text-left relative h-[450px] md:h-[550px] border border-slate-800 shadow-inner flex">
                         
-                        <i id="ghost-mouse" class="fa-solid fa-arrow-pointer"></i>
-
-                        <div class="w-16 md:w-56 bg-[#0f172a] border-r border-slate-800 flex flex-col pt-6 z-20">
-                            <div class="px-4 md:px-6 mb-8 flex items-center gap-2">
-                                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-white">M</div>
-                                <span class="hidden md:block font-black text-white text-lg">MAILVAH<span class="text-sky-400 text-[8px] align-top ml-1">PRO</span></span>
-                            </div>
-                            <div class="space-y-1">
-                                <div id="btn-single" class="mock-sidebar-btn active flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-crosshairs text-sky-400 text-lg"></i><span class="hidden md:block">V3.2 Engine</span></div>
-                                <div id="btn-bulk" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-layer-group text-lg"></i><span class="hidden md:block">Bulk Wash</span></div>
-                                <div id="btn-monitor" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-gauge-high text-amber-400 text-lg"></i><span class="hidden md:block">Monitor</span></div>
-                                <div id="btn-finder" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-database text-blue-500 text-lg"></i><span class="hidden md:block">Extraction</span></div>
-                            </div>
+                        <div class="absolute top-0 w-full bg-slate-900/90 px-6 py-3 border-b border-slate-800 flex justify-between items-center z-30">
+                            <div class="flex gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-emerald-500"></div></div>
+                            <div class="bg-slate-950 border border-slate-800 rounded-md px-10 md:px-32 py-1 text-[10px] text-slate-500 font-mono flex items-center"><i class="fa-solid fa-lock mr-2 text-emerald-500"></i>app.mailvah.com/command-center</div>
+                            <div class="w-10"></div>
                         </div>
-
-                        <div class="flex-1 relative bg-[#050914] z-10 overflow-hidden">
+                        
+                        <div class="flex h-full w-full pt-12">
+                            <div class="w-16 md:w-56 bg-[#0f172a] border-r border-slate-800 flex flex-col pt-6 z-20">
+                                <div class="px-4 md:px-6 mb-8 flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-white">M</div>
+                                    <span class="hidden md:block font-black text-white text-lg">MAILVAH<span class="text-sky-400 text-[8px] align-top ml-1">PRO</span></span>
+                                </div>
+                                <div class="space-y-1">
+                                    <div id="btn-single" class="mock-sidebar-btn active flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-crosshairs text-sky-400 text-lg"></i><span class="hidden md:block">V3.2 Engine</span></div>
+                                    <div id="btn-bulk" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-layer-group text-lg"></i><span class="hidden md:block">Bulk Wash</span></div>
+                                    <div id="btn-monitor" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-gauge-high text-amber-400 text-lg"></i><span class="hidden md:block">Monitor</span></div>
+                                </div>
+                            </div>
                             
-                            <div id="view-single" class="mock-view active p-8 flex flex-col items-center justify-center">
-                                <div class="w-full max-w-lg glass-panel p-8 rounded-2xl border border-slate-700">
-                                    <h3 class="text-xl font-black text-white mb-6">Target Payload</h3>
-                                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl mb-6">
-                                        <span id="mock-single-input" class="text-sky-400 font-mono text-sm blinking-cursor"></span>
-                                    </div>
-                                    <div id="mock-single-btn" class="bg-blue-600 text-white font-black py-4 rounded-xl text-center text-xs tracking-widest uppercase">ENGAGE ENGINE</div>
-                                    
-                                    <div id="mock-single-result" class="mt-6 bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl flex items-center gap-4 opacity-0 transition-opacity duration-300">
-                                        <i class="fa-solid fa-shield-check text-emerald-400 text-3xl"></i>
-                                        <div>
-                                            <div class="text-emerald-400 font-black text-sm tracking-widest">DELIVERABLE</div>
-                                            <div class="text-slate-400 text-[10px] font-mono mt-1">> Catch-All bypassed. Validated via Port 25.</div>
+                            <div class="flex-1 relative bg-[#050914] z-10 overflow-hidden">
+                                
+                                <div id="view-single" class="mock-view active p-6 md:p-8 flex flex-col items-center justify-center">
+                                    <div class="w-full max-w-lg glass-panel p-6 md:p-8 rounded-2xl border border-slate-700">
+                                        <h3 class="text-xl font-black text-white mb-6">Target Payload</h3>
+                                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl mb-6 min-h-[56px] flex items-center">
+                                            <span id="mock-single-input" class="text-sky-400 font-mono text-sm blinking-cursor"></span>
+                                        </div>
+                                        <div id="mock-single-btn" class="bg-blue-600 text-white font-black py-4 rounded-xl text-center text-xs tracking-widest uppercase transition-all duration-200">ENGAGE ENGINE</div>
+                                        
+                                        <div id="mock-single-result" class="mt-6 bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl flex items-center gap-4 opacity-0 transition-opacity duration-300">
+                                            <i class="fa-solid fa-shield-check text-emerald-400 text-3xl"></i>
+                                            <div>
+                                                <div class="text-emerald-400 font-black text-sm tracking-widest">DELIVERABLE</div>
+                                                <div class="text-slate-400 text-[10px] font-mono mt-1">> Catch-All bypassed. Port 25 Secured.</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div id="view-bulk" class="mock-view p-8">
-                                <h2 class="text-3xl font-black text-white mb-6">Bulk Wash Pipeline</h2>
-                                <div id="mock-bulk-drop" class="glass-panel p-12 text-center rounded-2xl border-2 border-dashed border-slate-600 flex flex-col items-center justify-center h-48 transition-colors">
-                                    <i class="fa-solid fa-file-csv text-5xl text-sky-500 mb-4"></i>
-                                    <h3 id="mock-bulk-text" class="text-white font-bold">Drag enterprise_leads.csv here</h3>
-                                </div>
-                                <div id="mock-bulk-progress" class="mt-8 opacity-0 transition-opacity duration-500">
-                                    <div class="flex justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest"><span>Washing 10,000 Rows...</span><span id="mock-bulk-pct" class="text-sky-400">0%</span></div>
-                                    <div class="h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
-                                        <div id="mock-bulk-bar" class="h-full bg-gradient-to-r from-sky-400 to-blue-600 w-0 transition-all duration-200"></div>
+                                <div id="view-bulk" class="mock-view p-6 md:p-8">
+                                    <h2 class="text-2xl md:text-3xl font-black text-white mb-6">Bulk Wash Pipeline</h2>
+                                    <div id="mock-bulk-drop" class="glass-panel p-8 md:p-12 text-center rounded-2xl border-2 border-dashed border-slate-600 flex flex-col items-center justify-center h-40 md:h-48 transition-all duration-300">
+                                        <i id="mock-bulk-icon" class="fa-solid fa-file-csv text-4xl md:text-5xl text-sky-500 mb-4 transition-all"></i>
+                                        <h3 id="mock-bulk-text" class="text-white font-bold text-sm md:text-base">Awaiting enterprise_leads.csv...</h3>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-4 mt-6">
-                                        <div class="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-xl text-center"><p class="text-[10px] text-emerald-500 font-black uppercase mb-1">Safe</p><p id="mock-bulk-safe" class="text-2xl font-black text-emerald-400">0</p></div>
-                                        <div class="bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-center"><p class="text-[10px] text-red-500 font-black uppercase mb-1">Dead</p><p id="mock-bulk-dead" class="text-2xl font-black text-red-400">0</p></div>
+                                    <div id="mock-bulk-progress" class="mt-8 opacity-0 transition-opacity duration-500">
+                                        <div class="flex justify-between text-[10px] md:text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest"><span>Washing 10,000 Rows...</span><span id="mock-bulk-pct" class="text-sky-400">0%</span></div>
+                                        <div class="h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                                            <div id="mock-bulk-bar" class="h-full bg-gradient-to-r from-sky-400 to-blue-600 w-0 transition-all duration-200"></div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-4 mt-6">
+                                            <div class="bg-emerald-500/10 border border-emerald-500/20 p-3 md:p-4 rounded-xl text-center"><p class="text-[10px] text-emerald-500 font-black uppercase mb-1">Safe</p><p id="mock-bulk-safe" class="text-xl md:text-2xl font-black text-emerald-400">0</p></div>
+                                            <div class="bg-red-500/10 border border-red-500/20 p-3 md:p-4 rounded-xl text-center"><p class="text-[10px] text-red-500 font-black uppercase mb-1">Dead</p><p id="mock-bulk-dead" class="text-xl md:text-2xl font-black text-red-400">0</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="view-monitor" class="mock-view p-6 md:p-8">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <h2 class="text-xl md:text-2xl font-black text-white">Infrastructure Monitor</h2>
+                                        <div id="mock-monitor-btn" class="bg-blue-600 text-white font-bold text-[10px] px-4 py-2 rounded-lg transition-all duration-200">ADD DOMAIN</div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div class="glass-panel p-4 rounded-xl border-t-4 border-t-emerald-500"><div class="text-[10px] text-emerald-500 font-black uppercase mb-1">DMARC Security</div><div class="text-lg md:text-xl font-black text-white">SECURE</div></div>
+                                        <div class="glass-panel p-4 rounded-xl border-t-4 border-t-red-500"><div class="text-[10px] text-red-500 font-black uppercase mb-1">Blacklist Status</div><div class="text-lg md:text-xl font-black text-white">CLEAN</div></div>
+                                    </div>
+                                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                                        <table class="w-full text-left text-[10px] md:text-xs"><thead class="bg-slate-950 text-slate-500 uppercase font-black"><th class="p-3">Domain</th><th class="p-3">Status</th></thead>
+                                        <tbody id="mock-monitor-table" class="text-slate-300">
+                                            <tr><td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400">Secured</td></tr>
+                                        </tbody></table>
                                     </div>
                                 </div>
                             </div>
-
-                            <div id="view-monitor" class="mock-view p-8">
-                                <div class="flex justify-between items-center mb-8">
-                                    <h2 class="text-2xl font-black text-white">Infrastructure Monitor</h2>
-                                    <div id="mock-monitor-btn" class="bg-blue-600 text-white font-bold text-[10px] px-4 py-2 rounded-lg">ADD DOMAIN</div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4 mb-6">
-                                    <div class="glass-panel p-4 rounded-xl border-t-4 border-t-emerald-500"><div class="text-[10px] text-emerald-500 font-black uppercase mb-1">DMARC Security</div><div class="text-xl font-black text-white">SECURE</div></div>
-                                    <div class="glass-panel p-4 rounded-xl border-t-4 border-t-red-500"><div class="text-[10px] text-red-500 font-black uppercase mb-1">Blacklist Status</div><div class="text-xl font-black text-white">CLEAN</div></div>
-                                </div>
-                                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-                                    <table class="w-full text-left text-xs"><thead class="bg-slate-950 text-slate-500 uppercase font-black"><th class="p-3">Domain</th><th class="p-3">Status</th></thead>
-                                    <tbody id="mock-monitor-table" class="text-slate-300">
-                                        <tr><td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400">Secured</td></tr>
-                                    </tbody></table>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
-                <p class="text-slate-500 text-xs mt-6 font-bold uppercase tracking-widest"><i class="fa-solid fa-desktop mr-2"></i> Live Interface Simulation</p>
+                <p class="text-slate-500 text-xs mt-6 font-bold uppercase tracking-widest"><i class="fa-solid fa-circle-play mr-2"></i> Autonomous Interface Simulation</p>
             </div>
         </section>
 
-        <section class="py-24 bg-slate-900/20 px-6">
+        <section class="py-24 bg-slate-900/20 px-6 border-t border-slate-800/50">
             <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
                     <h2 class="text-sm font-black text-emerald-500 uppercase tracking-[0.3em] mb-4">Pipeline Economics</h2>
@@ -166,11 +163,17 @@
                     
                     <div class="space-y-12 pr-0 lg:pr-12">
                         <div>
-                            <div class="flex justify-between items-center mb-6"><span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Monthly Emails Sent</span><span class="text-white text-2xl font-black" id="val-emails">5,000</span></div>
+                            <div class="flex justify-between items-center mb-6">
+                                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Monthly Emails Sent</span>
+                                <span class="text-white text-2xl font-black" id="val-emails">5,000</span>
+                            </div>
                             <input type="range" min="1000" max="100000" step="1000" value="5000" id="slide-emails" oninput="calculateROI()">
                         </div>
                         <div>
-                            <div class="flex justify-between items-center mb-6"><span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Current Bounce Rate</span><span class="text-red-500 text-2xl font-black" id="val-bounce">8%</span></div>
+                            <div class="flex justify-between items-center mb-6">
+                                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Current Bounce Rate</span>
+                                <span class="text-red-500 text-2xl font-black" id="val-bounce">8%</span>
+                            </div>
                             <input type="range" min="1" max="25" step="1" value="8" id="slide-bounce" oninput="calculateROI()">
                         </div>
                     </div>
@@ -237,41 +240,22 @@
     </footer>
 
     <script>
-        // ROI Logic
         function calculateROI() {
             const e = document.getElementById('slide-emails').value;
             const b = document.getElementById('slide-bounce').value;
             document.getElementById('val-emails').innerText = parseInt(e).toLocaleString();
             document.getElementById('val-bounce').innerText = b + '%';
             const wasted = Math.round(e * (b/100));
-            document.getElementById('leads-wasted').innerText = wasted.toLocaleString();
             document.getElementById('roi-saved').innerText = '+$' + Math.round(wasted * 0.60).toLocaleString();
         }
         calculateROI();
 
-        // THE GHOST MOUSE TIMELINE SEQUENCE
-        const mouse = document.getElementById('ghost-mouse');
-        const container = document.getElementById('mock-app-container');
-
+        // THE IN-PLACE AUTONOMOUS ANIMATION LOOP
         async function animateTour() {
-            function getCoords(elementId, offsetX = 0, offsetY = 0) {
-                const el = document.getElementById(elementId);
-                const cRect = container.getBoundingClientRect();
-                const eRect = el.getBoundingClientRect();
-                return { x: (eRect.left - cRect.left) + (eRect.width/2) + offsetX, y: (eRect.top - cRect.top) + (eRect.height/2) + offsetY };
-            }
-
-            function setMouse(coords) { mouse.style.transform = `translate(${coords.x}px, ${coords.y}px)`; }
             function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
             
-            function createRipple(coords) {
-                const r = document.createElement('div'); r.className = 'ripple';
-                r.style.left = coords.x + 'px'; r.style.top = coords.y + 'px';
-                container.appendChild(r); setTimeout(() => r.remove(), 600);
-            }
-
             function switchSidebar(id) {
-                ['single', 'bulk', 'monitor', 'finder'].forEach(p => {
+                ['single', 'bulk', 'monitor'].forEach(p => {
                     document.getElementById('btn-'+p)?.classList.remove('active');
                     document.getElementById('view-'+p)?.classList.remove('active');
                 });
@@ -279,37 +263,37 @@
                 document.getElementById('view-'+id)?.classList.add('active');
             }
 
-            // Loop Start Position
-            setMouse({x: 500, y: 400});
-            await wait(1000);
-
             // Phase 1: Single Target
-            let pos = getCoords('btn-single'); setMouse(pos); await wait(800); createRipple(pos); switchSidebar('single'); await wait(1000);
+            switchSidebar('single'); await wait(1000);
             
-            pos = getCoords('mock-single-input'); setMouse(pos); await wait(800); createRipple(pos);
             const input = document.getElementById('mock-single-input');
             input.classList.remove('blinking-cursor');
             const text = "ceo@apollo.io";
-            for(let i=0; i<=text.length; i++) { input.innerText = text.substring(0, i); await wait(80); }
+            for(let i=0; i<=text.length; i++) { input.innerText = text.substring(0, i); await wait(100); }
             input.classList.add('blinking-cursor');
-            await wait(500);
+            await wait(600);
 
-            pos = getCoords('mock-single-btn'); setMouse(pos); await wait(800); createRipple(pos);
-            document.getElementById('mock-single-btn').innerText = "SCANNING...";
+            const btn = document.getElementById('mock-single-btn');
+            btn.classList.add('btn-press', 'bg-blue-800'); await wait(150); btn.classList.remove('btn-press', 'bg-blue-800');
+            btn.innerText = "SCANNING...";
             await wait(1500);
-            document.getElementById('mock-single-btn').innerText = "ENGAGE ENGINE";
+            
+            btn.innerText = "ENGAGE ENGINE";
             document.getElementById('mock-single-result').style.opacity = '1';
-            await wait(2500);
+            await wait(3000);
 
             // Phase 2: Bulk Engine
-            pos = getCoords('btn-bulk'); setMouse(pos); await wait(800); createRipple(pos); switchSidebar('bulk'); await wait(1000);
+            switchSidebar('bulk'); await wait(1000);
             
-            pos = getCoords('mock-bulk-drop'); setMouse(pos); await wait(800); createRipple(pos);
-            document.getElementById('mock-bulk-drop').classList.add('border-sky-500', 'bg-sky-500/10');
+            const drop = document.getElementById('mock-bulk-drop');
+            drop.classList.add('border-sky-500', 'bg-sky-500/10');
+            document.getElementById('mock-bulk-icon').classList.add('animate-bounce');
+            await wait(800);
+            
+            document.getElementById('mock-bulk-icon').classList.remove('animate-bounce');
             document.getElementById('mock-bulk-text').innerText = "Washing V3.2 Protocol...";
             document.getElementById('mock-bulk-progress').style.opacity = '1';
             
-            // Progress Bar Anim
             const bar = document.getElementById('mock-bulk-bar');
             const safe = document.getElementById('mock-bulk-safe');
             const dead = document.getElementById('mock-bulk-dead');
@@ -317,37 +301,39 @@
             
             for(let i=0; i<=100; i+=2) {
                 bar.style.width = i + '%'; pct.innerText = i + '%';
-                safe.innerText = Math.floor(i * 92); // 92% safe
-                dead.innerText = Math.floor(i * 8);  // 8% dead
+                safe.innerText = Math.floor(i * 92); // 92% safe ratio
+                dead.innerText = Math.floor(i * 8);  // 8% dead ratio
                 await wait(50);
             }
-            await wait(2000);
+            document.getElementById('mock-bulk-text').innerHTML = "<span class='text-emerald-400'>Database Verified.</span>";
+            await wait(3000);
 
             // Phase 3: Domain Monitor
-            pos = getCoords('btn-monitor'); setMouse(pos); await wait(800); createRipple(pos); switchSidebar('monitor'); await wait(1000);
+            switchSidebar('monitor'); await wait(1000);
             
-            pos = getCoords('mock-monitor-btn'); setMouse(pos); await wait(800); createRipple(pos);
+            const addBtn = document.getElementById('mock-monitor-btn');
+            addBtn.classList.add('btn-press', 'bg-blue-800'); await wait(150); addBtn.classList.remove('btn-press', 'bg-blue-800');
+            
             const table = document.getElementById('mock-monitor-table');
             table.insertAdjacentHTML('beforeend', '<tr class="bg-emerald-500/10"><td class="p-3 font-bold text-white">acne-corp.com</td><td class="p-3 text-emerald-400">Verifying...</td></tr>');
-            await wait(1000);
+            await wait(1500);
             table.lastElementChild.innerHTML = '<td class="p-3 font-bold text-white">acne-corp.com</td><td class="p-3 text-emerald-400 font-bold">Secured</td>';
-            await wait(2500);
+            await wait(3000);
 
-            // Reset UI for loop
+            // Reset UI for Loop
             document.getElementById('mock-single-input').innerText = "";
             document.getElementById('mock-single-result').style.opacity = '0';
-            document.getElementById('mock-bulk-drop').classList.remove('border-sky-500', 'bg-sky-500/10');
-            document.getElementById('mock-bulk-text').innerText = "Drag enterprise_leads.csv here";
+            drop.classList.remove('border-sky-500', 'bg-sky-500/10');
+            document.getElementById('mock-bulk-text').innerText = "Awaiting enterprise_leads.csv...";
             document.getElementById('mock-bulk-progress').style.opacity = '0';
             bar.style.width = '0%'; safe.innerText = '0'; dead.innerText = '0';
             if(table.children.length > 1) table.lastElementChild.remove();
-            switchSidebar('single');
 
-            // Loop
+            // Loop infinitely
             animateTour();
         }
         
-        // Start tour after load
+        // Start Autonomous Animation after 1 second
         setTimeout(animateTour, 1000);
     </script>
 </body>
