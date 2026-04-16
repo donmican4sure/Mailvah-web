@@ -1,1 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economics | Mailvah Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #111827, #050914); }
+        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        
+        /* Draggable Slider */
+        input[type=range] { -webkit-appearance: none; background: transparent; width: 100%; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #1e293b; border-radius: 10px; border: 1px solid #334155; }
+        input[type=range]::-webkit-slider-thumb { height: 28px; width: 28px; border-radius: 50%; background: #38bdf8; cursor: pointer; -webkit-appearance: none; margin-top: -11px; box-shadow: 0 0 20px rgba(56,189,248,0.6); border: 3px solid #050914; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
 
+        /* Tooltips */
+        .tooltip { position: relative; cursor: help; }
+        .tooltip .tooltip-text { visibility: hidden; width: 240px; background-color: #0f172a; color: #cbd5e1; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 50; bottom: 135%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; border: 1px solid #334155; font-size: 11px; line-height: 1.5; box-shadow: 0 15px 30px rgba(0,0,0,0.6); }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
+                <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1 tracking-widest">PRO</span></span>
+            </a>
+            
+            <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="index.html" class="hover:text-white transition-colors px-2">Infrastructure</a>
+                <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
+                <a href="pricing.html" class="text-sky-400 transition-colors px-2">Economics</a>
+                <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
+                <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://app.mailvah.com" class="hidden md:block text-slate-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">Log In</a>
+                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 text-xs tracking-widest uppercase transition-all transform hover:scale-105">DEPLOY ENGINE</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 flex-1">
+        <section class="pt-20 pb-32 px-6 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] bg-blend-soft-light">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-sm font-black text-sky-500 uppercase tracking-[0.3em] mb-4">Infrastructure Economics</h2>
+                <h1 class="text-4xl md:text-7xl font-black text-white tracking-tighter mb-6">Scale your computing power.</h1>
+                <p class="text-slate-400 text-lg mb-20 max-w-2xl mx-auto font-medium">Provision the exact bare-metal resources required for your volume. Unused Integrity (I) and Discovery (D) credits roll over infinitely.</p>
+
+                <div class="glass-panel p-8 md:p-20 rounded-[4rem] relative border border-slate-700/60 shadow-2xl">
+                    
+                    <div class="max-w-4xl mx-auto mb-20">
+                        <input type="range" id="pricingSlider" min="0" max="5" value="2" step="1" oninput="updatePricingUI()">
+                        <div class="flex justify-between text-[10px] md:text-xs text-slate-500 font-black uppercase tracking-[0.2em] mt-8 px-2">
+                            <span class="w-1/6 text-left">Sandbox</span><span class="w-1/6 text-center">Starter</span><span id="label-growth" class="w-1/6 text-center text-sky-400">Growth</span><span class="w-1/6 text-center">Pro</span><span class="w-1/6 text-center">Scale</span><span class="w-1/6 text-right">Apex</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 text-left items-start">
+                        <div class="lg:col-span-5">
+                            <div id="tierBadge" class="inline-block bg-slate-800/80 border border-slate-700 px-4 py-1.5 rounded-full text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">MOST POPULAR</div>
+                            <h3 id="tierName" class="text-5xl font-black text-white mb-2 tracking-tight">Growth Tier</h3>
+                            <div class="mb-10 flex items-baseline gap-2">
+                                <span id="tierPrice" class="text-8xl font-black text-sky-400 tracking-tighter transition-colors duration-500">$79</span>
+                                <span class="text-slate-500 text-2xl font-bold uppercase tracking-widest">/mo</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-10">
+                                <div class="bg-slate-900/60 p-6 rounded-3xl border border-slate-800 shadow-inner">
+                                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2 flex items-center gap-1.5"><i class="fa-solid fa-shield-check text-emerald-500"></i> Integrity Vault</p>
+                                    <p id="tierWash" class="text-3xl font-black text-white tracking-tighter">5,000</p>
+                                    <p class="text-[9px] text-slate-600 font-bold uppercase mt-1">Wash Credits</p>
+                                </div>
+                                <div class="bg-slate-900/60 p-6 rounded-3xl border border-slate-800 shadow-inner">
+                                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2 flex items-center gap-1.5"><i class="fa-solid fa-database text-blue-500"></i> Discovery Vault</p>
+                                    <p id="tierHunt" class="text-3xl font-black text-white tracking-tighter">1,250</p>
+                                    <p class="text-[9px] text-slate-600 font-bold uppercase mt-1">Hunt Credits</p>
+                                </div>
+                            </div>
+                            <a href="https://app.mailvah.com" class="block text-center w-full bg-white hover:bg-slate-200 text-slate-950 font-black py-5 rounded-[1.5rem] transition-all tracking-[0.2em] text-xs uppercase shadow-2xl shadow-white/10">DEPLOY INFRASTRUCTURE</a>
+                        </div>
+
+                        <div class="lg:col-span-7 bg-slate-900/40 p-8 md:p-14 rounded-[3rem] border border-slate-800 shadow-inner">
+                            <h4 class="text-xs font-black text-slate-500 mb-10 uppercase tracking-[0.4em] flex items-center gap-4">
+                                <div class="h-px bg-slate-800 flex-1"></div> Included Engine Features <div class="h-px bg-slate-800 flex-1"></div>
+                            </h4>
+                            <ul id="tierFeatures" class="space-y-8 text-sm text-slate-200 font-medium">
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-20 pb-10 px-6 mt-auto">
+        <div class="max-w-7xl mx-auto">
+            <div class="border-t border-slate-800/60 pt-10 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-4">
+                    <div class="bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                    <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+                </div>
+                <div class="flex gap-8 text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-500"></i> SOC 2 Type II</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const enterpriseTiers = [
+            { name: "Sandbox", price: "$0", wash: "115", hunt: "0", color: "text-slate-400", features: [
+                { f: "V3.2 Deep-Scan Engine", desc: "Heuristic 3-burst anomaly pings for single targets." },
+                { f: "Threat Analysis", desc: "Scan cold email copy for over 50 spam triggers." }
+            ]},
+            { name: "Starter", price: "$29", wash: "1,500", hunt: "365", color: "text-emerald-400", features: [
+                { f: "Bulk Engine Access", desc: "Upload and wash CSVs through the bare-metal infrastructure." },
+                { f: "Email Support", desc: "Standard 24h technical support SLA." }
+            ]},
+            { name: "Growth", price: "$79", wash: "5,000", hunt: "1,250", color: "text-sky-400", features: [
+                { f: "Domain Monitor", desc: "Real-time tracking of DMARC and Spamhaus Blacklist health." },
+                { f: "Waterfall Rescue", desc: "Automatically hunt valid alternative emails for dead leads in your CSV." }
+            ]},
+            { name: "Pro", price: "$149", wash: "15,000", hunt: "3,750", color: "text-purple-400", features: [
+                { f: "Developer API Hub", desc: "Generate secret cryptographic keys to verify leads directly in your own app." },
+                { f: "CRM Purge Sync", desc: "Native HubSpot/Salesforce integration to clean contacts automatically." },
+                { f: "Inbox Placement", desc: "Test campaigns against our 20 hidden accounts for Primary/Spam placement." }
+            ]},
+            { name: "Scale", price: "$399", wash: "100,000", hunt: "15,000", color: "text-amber-400", features: [
+                { f: "Dedicated Node Routing", desc: "Isolated verification server lane. No shared bandwidth, zero latency drops." },
+                { f: "Priority Slack Channel", desc: "Direct, instant access to the Mailvah engineering team in Lagos." }
+            ]},
+            { name: "Apex", price: "$799", wash: "200,000", hunt: "30,000", color: "text-red-400", features: [
+                { f: "Bare-Metal IP Assignment", desc: "Dedicated IP address exclusively for your API verification traffic to bypass firewalls." },
+                { f: "Custom API Rate Limits", desc: "Remove standard API throttling for unlimited enterprise verification throughput." }
+            ]}
+        ];
+
+        function updatePricingUI() {
+            const slider = document.getElementById('pricingSlider');
+            if(!slider) return;
+            const val = slider.value;
+            const data = enterpriseTiers[val];
+            
+            document.getElementById('tierName').innerText = data.name + " Tier";
+            document.getElementById('tierPrice').innerText = data.price;
+            document.getElementById('tierPrice').className = "text-8xl font-black tracking-tighter transition-colors duration-300 " + data.color;
+            document.getElementById('tierWash').innerText = data.wash;
+            document.getElementById('tierHunt').innerText = data.hunt;
+            
+            const badge = document.getElementById('tierBadge');
+            if(val == 2) { badge.classList.remove('hidden'); badge.innerText = "MOST POPULAR"; }
+            else if(val == 4) { badge.classList.remove('hidden'); badge.innerText = "ENTERPRISE SCALE"; }
+            else if(val == 5) { badge.classList.remove('hidden'); badge.innerText = "MAXIMUM POWER"; }
+            else { badge.classList.add('hidden'); }
+
+            let listHtml = "";
+            data.features.forEach(feat => {
+                listHtml += `
+                    <li class="flex items-center justify-between group border-b border-slate-800/50 pb-4 last:border-0 last:pb-0">
+                        <span class="flex items-center font-bold text-white"><i class="fa-solid fa-check ${data.color} mr-4 text-lg drop-shadow-[0_0_5px_currentColor]"></i> ${feat.f}</span>
+                        <div class="tooltip"><i class="fa-solid fa-circle-question text-slate-500 hover:text-white transition-colors text-lg"></i><div class="tooltip-text">${feat.desc}</div></div>
+                    </li>`;
+            });
+            document.getElementById('tierFeatures').innerHTML = listHtml;
+        }
+        updatePricingUI();
+    </script>
+</body>
+</html>
