@@ -54,10 +54,11 @@
                     <p class="text-slate-400 text-sm md:text-lg mb-10 leading-relaxed">
                         Integrate the V4.5 Cluster directly into your own SaaS, CRM, or internal applications. Mailvah provides unthrottled, agentic infrastructure built for massive scale.
                     </p>
+                    
                     <div class="flex flex-wrap gap-4">
-                        <button class="bg-slate-900 border border-sky-500 text-sky-400 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-colors">cURL</button>
-                        <button class="bg-slate-950/50 border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white transition-colors cursor-not-allowed">Node.js (SDK)</button>
-                        <button class="bg-slate-950/50 border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white transition-colors cursor-not-allowed">Python (SDK)</button>
+                        <button id="btn-curl" onclick="switchLanguage('curl')" class="bg-slate-900 border border-sky-500 text-sky-400 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-colors shadow-[0_0_15px_rgba(56,189,248,0.2)]">cURL</button>
+                        <button id="btn-node" onclick="switchLanguage('node')" class="bg-slate-950/50 border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white hover:border-slate-600 transition-colors">Node.js</button>
+                        <button id="btn-python" onclick="switchLanguage('python')" class="bg-slate-950/50 border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white hover:border-slate-600 transition-colors">Python</button>
                     </div>
                 </div>
 
@@ -67,7 +68,7 @@
                         <span class="text-[10px] text-slate-500 font-mono ml-4">root@mailvah-dallas:~</span>
                     </div>
                     <div class="p-6 font-mono text-xs md:text-sm h-[380px] flex flex-col">
-                        <div class="text-slate-300 mb-4">$ <span id="term-type" class="text-emerald-400 blinking-cursor"></span></div>
+                        <div class="text-slate-300 mb-4 whitespace-pre-wrap"><span id="term-prefix" class="text-slate-500">$ </span><span id="term-type" class="text-emerald-400 blinking-cursor"></span></div>
                         
                         <div id="term-response" class="opacity-0 transition-opacity duration-300 flex-1">
                             <span class="text-slate-500">// Response from V4.5 Bare-Metal Cluster (185ms)</span><br>
@@ -83,6 +84,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -164,7 +166,7 @@
                     </ul>
                 </div>
                 <div class="glass-panel p-8 rounded-[2rem] border border-slate-700 shadow-2xl">
-                    <h3 class="text-white font-black text-lg mb-6 border-b border-slate-800 pb-4">Webhook Signature Verification (Node.js)</h3>
+                    <h3 class="text-white font-black text-lg mb-6 border-b border-slate-800 pb-4">Webhook Signature Verification</h3>
                     <div class="font-mono text-[10px] text-slate-300 leading-loose overflow-x-auto">
 <span class="text-purple-400">const</span> crypto = require(<span class="text-sky-300">'crypto'</span>);<br><br>
 <span class="text-purple-400">function</span> <span class="text-blue-400">verifyWebhook</span>(req, secret) {<br>
@@ -208,4 +210,122 @@
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
                 <div>
-                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Infrastructure</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="engine.html" class="hover:text-sky-400 transition-colors">V3.2 Engine</a></li>
+                        <li><a href="pricing.html" class="hover:text-sky-400 transition-colors">Pricing Tiers</a></li>
+                        <li><a href="api.html" class="text-sky-400 transition-colors">Developer API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Compare</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="vs-apollo.html" class="hover:text-sky-400 transition-colors">vs Apollo.io</a></li>
+                        <li><a href="vs-hunter.html" class="hover:text-sky-400 transition-colors">vs Hunter.io</a></li>
+                        <li><a href="vs-zoominfo.html" class="hover:text-sky-400 transition-colors">vs ZoomInfo</a></li>
+                        <li><a href="vs-snov.html" class="hover:text-sky-400 transition-colors">vs Snov.io</a></li>
+                        <li><a href="vs-skrapp.html" class="hover:text-sky-400 transition-colors">vs Skrapp</a></li>
+                        <li><a href="vs-neverbounce.html" class="hover:text-sky-400 transition-colors">vs NeverBounce</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Company</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Affordable by Design</a></li>
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Legal Hub</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="privacy.html" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="faq.html" class="hover:text-sky-400 transition-colors">FAQ & Knowledge</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/60 pt-8 md:pt-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+                <div class="flex items-center gap-3 md:gap-4 text-center md:text-left">
+                    <div class="hidden md:block bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                    <p class="text-[8px] md:text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+                </div>
+                <div class="flex gap-4 md:gap-8 text-[8px] md:text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const snippets = {
+            curl: "curl -X POST https://api.mailvah.com/v1/verify \\\n  -H 'Authorization: Bearer sk_live_...' \\\n  -d '{\"email\": \"ceo@apollo.io\"}'",
+            node: "import { Mailvah } from '@mailvah/node';\n\nconst mailvah = new Mailvah('sk_live_...');\nconst result = await mailvah.verify('ceo@apollo.io');",
+            python: "from mailvah import Mailvah\n\nclient = Mailvah('sk_live_...')\nresult = client.verify('ceo@apollo.io')"
+        };
+
+        let activeLang = 'curl';
+        let animCycleId = 0; // Used to interrupt the animation
+
+        function switchLanguage(lang) {
+            activeLang = lang;
+            animCycleId++; 
+            
+            // Update button styling
+            ['curl', 'node', 'python'].forEach(l => {
+                const btn = document.getElementById('btn-' + l);
+                if(l === lang) {
+                    btn.className = "bg-slate-900 border border-sky-500 text-sky-400 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-colors shadow-[0_0_15px_rgba(56,189,248,0.2)]";
+                } else {
+                    btn.className = "bg-slate-950/50 border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white hover:border-slate-600 transition-colors";
+                }
+            });
+
+            // Handle the prompt prefix
+            const prefix = document.getElementById('term-prefix');
+            if(lang === 'python') prefix.innerText = ">>> ";
+            else if(lang === 'node') prefix.innerText = "> ";
+            else prefix.innerText = "$ ";
+
+            runTerminal(animCycleId);
+        }
+
+        async function runTerminal(cycleId) {
+            const wait = (ms) => new Promise(r => setTimeout(r, ms));
+            const typeArea = document.getElementById('term-type');
+            const responseArea = document.getElementById('term-response');
+            
+            responseArea.style.opacity = '0';
+            typeArea.innerText = "";
+            typeArea.classList.add('blinking-cursor');
+            
+            await wait(400);
+            if(animCycleId !== cycleId) return; // Exit if user clicked another button
+
+            const cmd = snippets[activeLang];
+            typeArea.classList.remove('blinking-cursor');
+            
+            // Typewriter effect
+            for(let i=0; i<cmd.length; i++) {
+                if(animCycleId !== cycleId) return; // Interrupt mid-typing
+                typeArea.innerText += cmd.charAt(i);
+                await wait(25);
+            }
+            
+            if(animCycleId !== cycleId) return;
+            await wait(400);
+            responseArea.style.opacity = '1';
+            
+            // Wait 5 seconds before looping, checking for interrupts constantly
+            for(let w=0; w<50; w++) {
+                if(animCycleId !== cycleId) return;
+                await wait(100);
+            }
+            
+            if(animCycleId === cycleId) runTerminal(cycleId);
+        }
+        
+        // Start the initial animation loop
+        setTimeout(() => runTerminal(animCycleId), 500);
+    </script>
+</body>
+</html>
