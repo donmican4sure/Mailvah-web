@@ -18,39 +18,38 @@
 <body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
 
     <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
-        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-3">
-                <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
-                <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1 tracking-widest">PRO</span></span>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                <div class="bg-blue-600 p-1.5 md:p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-lg md:text-xl"></i></div>
+                <span class="text-xl md:text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-[10px] md:text-sm align-top ml-1 tracking-widest">PRO</span></span>
             </a>
             
             <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="index.html" class="hover:text-white transition-colors px-2">Infrastructure</a>
                 <a href="compare.html" class="text-sky-400 transition-colors px-2">The Giants</a>
-                <a href="pricing.html" class="hover:text-white transition-colors px-2">Economics</a>
+                <a href="pricing.html" class="hover:text-white transition-colors px-2">Pricing</a>
                 <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
                 <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
                 <a href="https://app.mailvah.com" class="hidden md:block text-slate-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">Log In</a>
-                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 text-xs tracking-widest uppercase transition-all transform hover:scale-105">DEPLOY ENGINE</a>
+                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2 md:py-2.5 px-4 md:px-6 rounded-xl shadow-lg shadow-blue-500/25 text-[10px] md:text-xs tracking-widest uppercase transition-all whitespace-nowrap">START FOR FREE</a>
             </div>
         </div>
     </nav>
 
-    <main class="pt-20">
-        
+    <main class="pt-20 flex-1">
         <section class="pt-24 pb-16 px-6 text-center relative overflow-hidden">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
             <div class="max-w-4xl mx-auto relative z-10">
                 <div class="inline-flex items-center gap-3 bg-pink-500/10 border border-pink-500/20 px-5 py-2 rounded-full mb-8">
                     <span class="text-[10px] font-black text-pink-400 uppercase tracking-[0.2em]">Mailvah vs. Skrapp.io</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-6 tracking-tighter">
+                <h1 class="text-4xl md:text-7xl font-black text-white leading-tight mb-6 tracking-tighter">
                     Browser extensions are <br><span class="text-gradient">fragile toys.</span>
                 </h1>
-                <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+                <p class="text-slate-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
                     Skrapp relies on your local browser and IP address to slowly scrape social networks. It is a manual tool for SDRs. Mailvah is an automated, server-side outbound pipeline powered by our V4.5 Cluster. Extract, verify, and secure leads without clicking a single profile.
                 </p>
             </div>
@@ -60,31 +59,31 @@
             <div class="max-w-6xl mx-auto">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div>
-                        <h2 class="text-3xl font-black text-white mb-6">Client-Side vs. Server-Side</h2>
-                        <p class="text-slate-400 leading-relaxed mb-6">When you use a browser extension like Skrapp, you are doing the heavy lifting. You load the page, the extension reads the HTML, and it tries to guess the email. It is slow, prone to getting your LinkedIn account restricted, and relies entirely on your local internet connection.</p>
-                        <p class="text-slate-400 leading-relaxed mb-8">Mailvah's <span class="text-white font-bold">Extraction Network</span> operates entirely server-side. You feed the Command Center your target parameters (Job Title, Location, Industry), and our global nodes hunt the data, routing it seamlessly through our V3.2 verification engine before it ever reaches you.</p>
+                        <h2 class="text-2xl md:text-3xl font-black text-white mb-6">Client-Side vs. Server-Side</h2>
+                        <p class="text-slate-400 text-sm md:text-base leading-relaxed mb-6">When you use a browser extension like Skrapp, you are doing the heavy lifting. You load the page, the extension reads the HTML, and it tries to guess the email. It is slow, prone to getting your LinkedIn account restricted, and relies entirely on your local internet connection.</p>
+                        <p class="text-slate-400 text-sm md:text-base leading-relaxed mb-8">Mailvah's <span class="text-white font-bold">Extraction Network</span> operates entirely server-side. You feed the Command Center your target parameters, and our global nodes hunt the data, routing it seamlessly through our V3.2 verification engine before it ever reaches you.</p>
                         
                         <div class="bg-[#0b1120] border border-slate-700/50 p-6 rounded-2xl shadow-inner">
-                            <h4 class="text-xs font-black text-sky-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> Distributed Extraction Nodes</h4>
-                            <p class="text-sm text-slate-300 leading-relaxed">To prevent IP bans and throttling, Mailvah executes extraction and verification requests across a distributed network of bare-metal servers. From our primary hub in Dallas to edge nodes expanding across Luxembourg, Asia, South America, and Africa, your data is processed at maximum velocity.</p>
+                            <h4 class="text-[10px] md:text-xs font-black text-sky-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> Distributed Nodes</h4>
+                            <p class="text-xs md:text-sm text-slate-300 leading-relaxed">To prevent IP bans and throttling, Mailvah executes extraction and verification requests across a distributed network of bare-metal servers spanning Dallas, Luxembourg, Asia, South America, and Africa.</p>
                         </div>
                     </div>
                     <div class="relative">
-                        <div class="glass-panel p-8 md:p-12 rounded-[2.5rem] border-t-4 border-t-pink-500 shadow-2xl">
-                            <h3 class="text-white font-black text-xl mb-8 border-b border-slate-800 pb-4">The Workflow</h3>
+                        <div class="glass-panel p-8 md:p-12 rounded-[2rem] md:rounded-[2.5rem] border-t-4 border-t-pink-500 shadow-2xl">
+                            <h3 class="text-white font-black text-lg md:text-xl mb-8 border-b border-slate-800 pb-4">The Workflow</h3>
                             <div class="space-y-8">
                                 <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 font-black flex-shrink-0">SK</div>
+                                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-full bg-slate-800 flex items-center justify-center text-slate-500 font-black flex-shrink-0">SK</div>
                                     <div>
                                         <h4 class="text-white font-bold mb-1">Skrapp.io</h4>
-                                        <p class="text-xs text-slate-400">Open browser. Navigate to search. Click extension. Wait for scrape. Export to CSV. Upload to a 3rd party verifier. Repeat manually.</p>
+                                        <p class="text-[10px] md:text-xs text-slate-400">Open browser. Click extension. Wait for scrape. Export to CSV. Upload to a 3rd party verifier. Repeat manually.</p>
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 font-black shadow-[0_0_15px_rgba(16,185,129,0.3)] flex-shrink-0">M</div>
+                                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 font-black shadow-[0_0_15px_rgba(16,185,129,0.3)] flex-shrink-0">M</div>
                                     <div>
                                         <h4 class="text-white font-bold mb-1">Mailvah</h4>
-                                        <p class="text-xs text-emerald-400 font-mono">> Enter Target Matrix (e.g., "VP Sales, London")<br>> V4.5 Cluster extracts 1,000+ assets...<br>> Auto-verified via Port 25...<br>> Encrypted to Vault instantly.</p>
+                                        <p class="text-[10px] md:text-xs text-emerald-400 font-mono">> Enter Target Matrix...<br>> V4.5 Cluster extracts assets...<br>> Auto-verified via Port 25.</p>
                                     </div>
                                 </div>
                             </div>
@@ -94,62 +93,59 @@
             </div>
         </section>
 
-        <section class="py-24 px-6">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="text-3xl font-black text-white text-center mb-16">Deep Technical Comparison</h2>
-                <div class="overflow-x-auto custom-scrollbar glass-panel rounded-[2rem] border border-slate-700/50">
-                    <table class="w-full text-left min-w-[700px]">
-                        <thead class="bg-slate-900 border-b border-slate-800">
-                            <tr>
-                                <th class="p-6 text-xs font-black text-slate-500 uppercase tracking-widest">Capabilities</th>
-                                <th class="p-6 text-sm font-black text-sky-400 bg-sky-500/5 border-x border-sky-500/20">Mailvah</th>
-                                <th class="p-6 text-sm font-black text-slate-400">Skrapp.io</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-sm font-medium text-slate-300 divide-y divide-slate-800/50">
-                            <tr>
-                                <td class="p-6">Architecture</td>
-                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20 text-emerald-400">Server-Side (Bare-Metal Cluster)</td>
-                                <td class="p-6 text-slate-500">Client-Side (Browser Extension)</td>
-                            </tr>
-                            <tr>
-                                <td class="p-6">Verification Engine</td>
-                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20 text-emerald-400">V3.2 Heuristic (Integrated)</td>
-                                <td class="p-6 text-red-500">Basic Pattern Guessing</td>
-                            </tr>
-                            <tr>
-                                <td class="p-6">Automation</td>
-                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20 text-white">Full autonomous pipeline extraction</td>
-                                <td class="p-6 text-slate-500">Requires manual human clicking</td>
-                            </tr>
-                            <tr>
-                                <td class="p-6">Domain Blacklist Monitor</td>
-                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20"><i class="fa-solid fa-check text-emerald-400"></i> Active surveillance included</td>
-                                <td class="p-6"><i class="fa-solid fa-xmark text-red-500"></i> Not Available</td>
-                            </tr>
-                            <tr>
-                                <td class="p-6">Threat Analyzer & Inbox Placement</td>
-                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20"><i class="fa-solid fa-check text-emerald-400"></i> Tests copy against 50+ triggers & seeds</td>
-                                <td class="p-6"><i class="fa-solid fa-xmark text-red-500"></i> Only provides contact data</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-24 text-center px-6">
+        <section class="py-24 md:py-32 text-center px-4 md:px-6">
             <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Upgrade your infrastructure.</h2>
-            <p class="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">Stop manually clicking through profiles. Enter your parameters and let the Mailvah V4.5 cluster hunt, extract, and verify your entire outbound database.</p>
-            <a href="https://app.mailvah.com" class="inline-block bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-4 px-12 rounded-2xl shadow-xl shadow-blue-500/25 text-sm tracking-widest uppercase transition-all transform hover:scale-105">CREATE FREE NODE</a>
+            <p class="text-slate-400 text-sm md:text-lg mb-10 max-w-2xl mx-auto">Stop manually clicking through profiles. Enter your parameters and let the Mailvah V4.5 cluster hunt, extract, and verify your entire outbound database.</p>
+            <a href="https://app.mailvah.com" class="inline-block bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-4 px-8 md:px-12 rounded-xl md:rounded-2xl shadow-xl shadow-blue-500/25 text-xs md:text-sm tracking-widest uppercase transition-all transform hover:scale-105">START FOR FREE</a>
         </section>
     </main>
 
-    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-10 pb-10 px-6 mt-auto">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-4">
-                <div class="bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
-                <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. Engineered in Lagos.</p>
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 md:pt-20 pb-8 md:pb-10 px-6 mt-auto relative z-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Infrastructure</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="index.html" class="hover:text-sky-400 transition-colors">V3.2 Engine</a></li>
+                        <li><a href="pricing.html" class="hover:text-sky-400 transition-colors">Pricing Tiers</a></li>
+                        <li><a href="https://app.mailvah.com" class="hover:text-sky-400 transition-colors">Developer API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Compare</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="vs-apollo.html" class="hover:text-sky-400 transition-colors">vs Apollo.io</a></li>
+                        <li><a href="vs-hunter.html" class="hover:text-sky-400 transition-colors">vs Hunter.io</a></li>
+                        <li><a href="vs-zoominfo.html" class="hover:text-sky-400 transition-colors">vs ZoomInfo</a></li>
+                        <li><a href="vs-snov.html" class="hover:text-sky-400 transition-colors">vs Snov.io</a></li>
+                        <li><a href="vs-skrapp.html" class="text-sky-400 transition-colors">vs Skrapp</a></li>
+                        <li><a href="vs-neverbounce.html" class="hover:text-sky-400 transition-colors">vs NeverBounce</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Company</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Affordable by Design</a></li>
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Legal Hub</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="privacy.html" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="faq.html" class="hover:text-sky-400 transition-colors">FAQ & Knowledge</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/60 pt-8 md:pt-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+                <div class="flex items-center gap-3 md:gap-4 text-center md:text-left">
+                    <div class="hidden md:block bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                    <p class="text-[8px] md:text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+                </div>
+                <div class="flex gap-4 md:gap-8 text-[8px] md:text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
+                </div>
             </div>
         </div>
     </footer>
