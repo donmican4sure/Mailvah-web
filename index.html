@@ -89,7 +89,7 @@
                                 <div class="space-y-1">
                                     <div id="btn-single" class="mock-sidebar-btn active flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-crosshairs text-sky-400 text-lg"></i><span class="hidden md:block">V3.2 Engine</span></div>
                                     <div id="btn-bulk" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-layer-group text-lg"></i><span class="hidden md:block">Bulk Wash</span></div>
-                                    <div id="btn-monitor" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-gauge-high text-amber-400 text-lg"></i><span class="hidden md:block">Monitor</span></div>
+                                    <div id="btn-monitor" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-shield-halved text-amber-400 text-lg"></i><span class="hidden md:block">Monitor</span></div>
                                 </div>
                             </div>
                             
@@ -186,10 +186,16 @@
                         <p class="text-slate-400 text-sm leading-relaxed">Constant, automated domain surveillance against global Spamhaus and Barracuda blacklists. If your domain health drops, we alert you instantly.</p>
                     </div>
 
-                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2 lg:col-span-2">
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
                         <div class="bg-sky-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-sky-400 text-2xl mb-6 border border-sky-500/20"><i class="fa-solid fa-code"></i></div>
-                        <h4 class="text-2xl font-black text-white mb-3">Enterprise Developer API</h4>
-                        <p class="text-slate-400 text-sm leading-relaxed max-w-xl">Generate cryptographic secret keys to verify leads directly within your own software infrastructure. Dedicated bare-metal IPs available for maximum unthrottled throughput.</p>
+                        <h4 class="text-2xl font-black text-white mb-3">Enterprise API</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Generate cryptographic secret keys to verify leads directly within your own software infrastructure. Built for massive enterprise volume.</p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
+                        <div class="bg-pink-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-pink-400 text-2xl mb-6 border border-pink-500/20"><i class="fa-solid fa-inbox"></i></div>
+                        <h4 class="text-2xl font-black text-white mb-3">Inbox Placement</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Test your cold emails against our internal network of 20 seed accounts. Know if you land in Primary, Promotions, or Spam before you launch.</p>
                     </div>
                 </div>
             </div>
@@ -328,9 +334,6 @@
             document.getElementById('val-bounce').innerText = b + '%';
             const wasted = Math.round(e * (b/100));
             document.getElementById('roi-saved').innerText = '+$' + Math.round(wasted * 0.60).toLocaleString();
-            
-            const leadsWasted = document.getElementById('leads-wasted');
-            if(leadsWasted) leadsWasted.innerText = wasted.toLocaleString();
         }
         calculateROI();
 
