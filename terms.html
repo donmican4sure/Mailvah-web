@@ -16,73 +16,113 @@
 <body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
 
     <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
-        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-3">
-                <div class="bg-blue-600 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xl"></i></div>
-                <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1">PRO</span></span>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                <div class="bg-blue-600 p-1.5 md:p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-lg md:text-xl"></i></div>
+                <span class="text-xl md:text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-[10px] md:text-sm align-top ml-1 tracking-widest">PRO</span></span>
             </a>
+            
             <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="index.html" class="hover:text-white transition-colors px-2">Infrastructure</a>
                 <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
-                <a href="pricing.html" class="hover:text-white transition-colors px-2">Economics</a>
+                <a href="pricing.html" class="hover:text-white transition-colors px-2">Pricing</a>
                 <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
                 <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
             </div>
-            <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 text-white font-black py-2.5 px-6 rounded-xl shadow-lg text-xs tracking-widest uppercase">DEPLOY ENGINE</a>
+
+            <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
+                <a href="https://app.mailvah.com" class="hidden md:block text-slate-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">Log In</a>
+                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2 md:py-2.5 px-4 md:px-6 rounded-xl shadow-lg shadow-blue-500/25 text-[10px] md:text-xs tracking-widest uppercase transition-all whitespace-nowrap">START FOR FREE</a>
+            </div>
         </div>
     </nav>
 
     <main class="pt-32 pb-24 px-6 flex-1">
         <div class="max-w-4xl mx-auto">
-            <div class="mb-16">
-                <h2 class="text-sm font-black text-sky-500 uppercase tracking-[0.3em] mb-4">Legal Hub</h2>
-                <h1 class="text-4xl md:text-6xl font-black text-white tracking-tighter mb-6">Terms of Service</h1>
-                <p class="text-slate-400 text-sm">Last Updated: April 2026 • Donmican Technology Ltd.</p>
+            <div class="mb-12 md:mb-16">
+                <h2 class="text-xs md:text-sm font-black text-sky-500 uppercase tracking-[0.3em] mb-4">Legal Hub</h2>
+                <h1 class="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4 md:mb-6">Terms of Service</h1>
+                <p class="text-slate-400 text-xs md:text-sm">Last Updated: April 2026 • Donmican Technology Ltd.</p>
             </div>
 
-            <div class="glass-panel p-8 md:p-16 rounded-[3rem] border border-slate-700/50 space-y-12">
-                
+            <div class="glass-panel p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-slate-700/50 space-y-10 md:space-y-12">
                 <section>
-                    <h3 class="text-2xl font-black text-white mb-4">1. Acceptance of Terms</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">By accessing or deploying nodes on Mailvah (operated by Donmican Technology Ltd), you agree to be bound by these Terms of Service. Mailvah provides enterprise-grade outbound infrastructure, including API verification, lead extraction, and domain monitoring.</p>
+                    <h3 class="text-xl md:text-2xl font-black text-white mb-4">1. Acceptance of Terms</h3>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed">By accessing or deploying nodes on Mailvah (operated by Donmican Technology Ltd), you agree to be bound by these Terms of Service. Mailvah provides enterprise-grade outbound infrastructure, including API verification, lead extraction, and domain monitoring.</p>
                 </section>
-
                 <section>
-                    <h3 class="text-2xl font-black text-white mb-4">2. Acceptable Use Policy</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Mailvah is engineered exclusively for ethical B2B outbound communications. You agree that you will not use our network or API infrastructure to:</p>
-                    <ul class="list-disc list-inside text-slate-400 text-sm leading-relaxed space-y-2 ml-4">
+                    <h3 class="text-xl md:text-2xl font-black text-white mb-4">2. Acceptable Use Policy</h3>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed mb-4">Mailvah is engineered exclusively for ethical B2B outbound communications. You agree that you will not use our network or API infrastructure to:</p>
+                    <ul class="list-disc list-inside text-slate-400 text-xs md:text-sm leading-relaxed space-y-2 ml-4">
                         <li>Facilitate phishing, malware distribution, or illegal activities.</li>
                         <li>Violate CAN-SPAM, GDPR, or local communication laws.</li>
                         <li>Intentionally overload, spam, or attempt to reverse-engineer our node architecture.</li>
                     </ul>
-                    <p class="text-slate-400 text-sm leading-relaxed mt-4">We reserve the right to immediately terminate or suspend accounts found in violation of this Acceptable Use Policy without refund.</p>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed mt-4">We reserve the right to immediately terminate or suspend accounts found in violation of this Acceptable Use Policy without refund.</p>
                 </section>
-
                 <section>
-                    <h3 class="text-2xl font-black text-white mb-4">3. Credit Economics & Rollover</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Mailvah utilizes two primary computing resources: Integrity Credits (Wash) and Discovery Credits (Hunt). Unlike legacy platforms, any unused credits at the end of a billing cycle will roll over indefinitely, provided you maintain an active, paid subscription.</p>
-                    <p class="text-slate-400 text-sm leading-relaxed">If you cancel your subscription and downgrade to the Sandbox (Free) tier, any accumulated credits will be forfeited at the end of your current billing period.</p>
+                    <h3 class="text-xl md:text-2xl font-black text-white mb-4">3. Credit Economics & Rollover</h3>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed mb-4">Mailvah utilizes two primary computing resources: Integrity Credits (Wash) and Discovery Credits (Hunt). Unlike legacy platforms, any unused credits at the end of a billing cycle will roll over indefinitely, provided you maintain an active, paid subscription.</p>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed">If you cancel your subscription and downgrade to the Sandbox (Free) tier, any accumulated credits will be forfeited at the end of your current billing period.</p>
                 </section>
-
                 <section>
-                    <h3 class="text-2xl font-black text-white mb-4">4. The 30-Day Money-Back Guarantee</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">We stand entirely behind the accuracy of our V3.2 Heuristic Engine. If our infrastructure fails to reduce your hard bounce rate below 1% (when exclusively emailing targets marked as "Safe" by our system), you may contact our support team within 30 days of your initial paid subscription for a full, unconditional refund.</p>
+                    <h3 class="text-xl md:text-2xl font-black text-white mb-4">4. The 30-Day Money-Back Guarantee</h3>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed">We stand entirely behind the accuracy of our V3.2 Heuristic Engine. If our infrastructure fails to reduce your hard bounce rate below 1% (when exclusively emailing targets marked as "Safe" by our system), you may contact our support team within 30 days of your initial paid subscription for a full, unconditional refund.</p>
                 </section>
-
                 <section>
-                    <h3 class="text-2xl font-black text-white mb-4">5. Limitation of Liability</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Mailvah provides data verification and extraction "as is." While we guarantee 99.9% uptime on Enterprise tiers and strive for maximum accuracy, Donmican Technology Ltd shall not be held liable for indirect, incidental, or consequential damages resulting from the use of our platform, including temporary domain blacklisting or third-party CRM failures.</p>
+                    <h3 class="text-xl md:text-2xl font-black text-white mb-4">5. Limitation of Liability</h3>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed">Mailvah provides data verification and extraction "as is." While we guarantee 99.9% uptime on Enterprise tiers and strive for maximum accuracy, Donmican Technology Ltd shall not be held liable for indirect, incidental, or consequential damages resulting from the use of our platform, including temporary domain blacklisting or third-party CRM failures.</p>
                 </section>
-
             </div>
         </div>
     </main>
 
-    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-10 pb-10 px-6 mt-auto">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2026 Mailvah, a product of Donmican Technology Ltd. Engineered in Lagos.</p>
-            <div class="flex gap-8 text-[10px] text-slate-500 font-black uppercase tracking-widest">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 md:pt-20 pb-8 md:pb-10 px-6 mt-auto relative z-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Infrastructure</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="index.html" class="hover:text-sky-400 transition-colors">V3.2 Engine</a></li>
+                        <li><a href="pricing.html" class="hover:text-sky-400 transition-colors">Pricing Tiers</a></li>
+                        <li><a href="https://app.mailvah.com" class="hover:text-sky-400 transition-colors">Developer API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Compare</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="vs-apollo.html" class="hover:text-sky-400 transition-colors">vs Apollo.io</a></li>
+                        <li><a href="vs-hunter.html" class="hover:text-sky-400 transition-colors">vs Hunter.io</a></li>
+                        <li><a href="vs-zoominfo.html" class="hover:text-sky-400 transition-colors">vs ZoomInfo</a></li>
+                        <li><a href="vs-snov.html" class="hover:text-sky-400 transition-colors">vs Snov.io</a></li>
+                        <li><a href="vs-skrapp.html" class="hover:text-sky-400 transition-colors">vs Skrapp</a></li>
+                        <li><a href="vs-neverbounce.html" class="hover:text-sky-400 transition-colors">vs NeverBounce</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Company</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Affordable by Design</a></li>
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Legal Hub</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="privacy.html" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="faq.html" class="hover:text-sky-400 transition-colors">FAQ & Knowledge</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/60 pt-8 md:pt-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+                <div class="flex items-center gap-3 md:gap-4 text-center md:text-left">
+                    <div class="hidden md:block bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                    <p class="text-[8px] md:text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+                </div>
+                <div class="flex gap-4 md:gap-8 text-[8px] md:text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
+                </div>
             </div>
         </div>
     </footer>
