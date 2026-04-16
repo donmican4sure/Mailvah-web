@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V3.2 Engine | Mailvah Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #111827, #050914); }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .text-gradient { background: linear-gradient(to right, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Ping Animation CSS */
+        .ping-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; opacity: 0; top: 50%; transform: translateY(-50%); transition: all 0.5s ease; }
+        .ping-burst { width: 8px; height: 8px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                <div class="bg-blue-600 p-1.5 md:p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-lg md:text-xl"></i></div>
+                <span class="text-xl md:text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-[10px] md:text-sm align-top ml-1 tracking-widest">PRO</span></span>
+            </a>
+            
+            <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="engine.html" class="text-sky-400 transition-colors px-2">Infrastructure</a>
+                <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
+                <a href="pricing.html" class="hover:text-white transition-colors px-2">Pricing</a>
+                <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
+                <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
+            </div>
+
+            <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
+                <a href="https://app.mailvah.com" class="hidden md:block text-slate-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">Log In</a>
+                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2 md:py-2.5 px-4 md:px-6 rounded-xl shadow-lg shadow-blue-500/25 text-[10px] md:text-xs tracking-widest uppercase transition-all whitespace-nowrap">START FOR FREE</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 flex-1">
+        <section class="pt-24 pb-16 px-6 text-center relative overflow-hidden">
+            <div class="max-w-4xl mx-auto relative z-10">
+                <div class="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-5 py-2 rounded-full mb-8">
+                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Mailvah Architecture</span>
+                </div>
+                <h1 class="text-4xl md:text-7xl font-black text-white leading-tight mb-6 tracking-tighter">
+                    The anatomy of a <br><span class="text-gradient">Heuristic Ping.</span>
+                </h1>
+                <p class="text-slate-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
+                    Watch exactly how the V3.2 Engine maps enterprise Catch-All firewalls in real-time, extracting absolute cryptographic certainty without ever sending an email payload.
+                </p>
+            </div>
+        </section>
+
+        <section class="py-12 px-4 md:px-6">
+            <div class="max-w-5xl mx-auto glass-panel p-6 md:p-12 rounded-[2rem] border border-slate-700/50 shadow-2xl relative overflow-hidden h-[400px] flex items-center justify-center">
+                
+                <div class="absolute left-4 md:left-12 text-center z-10">
+                    <div class="w-16 h-16 md:w-24 md:h-24 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl md:text-4xl shadow-[0_0_30px_rgba(37,99,235,0.4)] mx-auto mb-4 border border-blue-400"><i class="fa-solid fa-server"></i></div>
+                    <p class="text-[10px] md:text-xs font-black text-blue-400 uppercase tracking-widest">Mailvah Node<br>(Dallas, TX)</p>
+                </div>
+
+                <div class="absolute right-4 md:right-12 text-center z-10">
+                    <div id="target-server" class="w-16 h-16 md:w-24 md:h-24 bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 text-2xl md:text-4xl border-2 border-slate-600 mx-auto mb-4 transition-colors duration-300"><i class="fa-solid fa-shield-halved"></i></div>
+                    <p class="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">Target Server<br>(Catch-All)</p>
+                </div>
+
+                <div class="absolute w-full h-0.5 bg-slate-800 top-1/2 transform -translate-y-1/2 z-0"></div>
+
+                <div id="ping-1" class="ping-dot bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)] left-[15%]"></div>
+                <div id="ping-2" class="ping-dot bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)] left-[15%] ping-burst"></div>
+                <div id="ping-3" class="ping-dot bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)] left-[15%] ping-burst"></div>
+                <div id="ping-4" class="ping-dot bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] left-[15%]"></div>
+
+                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-950 border border-slate-800 px-6 py-3 rounded-xl font-mono text-[10px] md:text-xs text-sky-400 w-64 md:w-80 h-16 overflow-hidden flex items-center">
+                    <span id="console-text">> Waiting for engine...</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Global Bare-Metal Routing</h2>
+                <p class="text-slate-400 text-sm md:text-lg mb-16 max-w-2xl mx-auto">We don't rely on shared AWS IP pools. Mailvah assigns dedicated server lanes across 5 continents to bypass regional blocks and throttle limits.</p>
+
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-blue-500/30 text-center"><i class="fa-solid fa-location-dot text-blue-500 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Dallas, USA</h4><p class="text-[9px] text-slate-500 uppercase mt-1">Core Hub</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-location-dot text-slate-600 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Luxembourg</h4><p class="text-[9px] text-emerald-500 uppercase mt-1">Active</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-location-dot text-slate-600 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Singapore</h4><p class="text-[9px] text-emerald-500 uppercase mt-1">Active</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-center"><i class="fa-solid fa-location-dot text-slate-600 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">São Paulo</h4><p class="text-[9px] text-emerald-500 uppercase mt-1">Active</p></div>
+                    <div class="bg-slate-900/50 p-6 rounded-2xl border border-emerald-500/30 text-center"><i class="fa-solid fa-location-dot text-emerald-500 text-2xl mb-3"></i><h4 class="text-white font-bold text-xs">Lagos, NG</h4><p class="text-[9px] text-sky-500 uppercase mt-1">Engineering HQ</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 md:pt-20 pb-8 md:pb-10 px-6 mt-auto relative z-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="border-t border-slate-800/60 pt-8 md:pt-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+                <div class="flex items-center gap-3 md:gap-4 text-center md:text-left">
+                    <div class="hidden md:block bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                    <p class="text-[8px] md:text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        async function runEngineAnim() {
+            const wait = (ms) => new Promise(r => setTimeout(r, ms));
+            const consoleText = document.getElementById('console-text');
+            const target = document.getElementById('target-server');
+            const p1 = document.getElementById('ping-1');
+            const p2 = document.getElementById('ping-2');
+            const p3 = document.getElementById('ping-3');
+            const p4 = document.getElementById('ping-4');
+
+            while(true) {
+                // Reset
+                p1.style.opacity = p2.style.opacity = p3.style.opacity = p4.style.opacity = '0';
+                p1.style.left = p2.style.left = p3.style.left = p4.style.left = '15%';
+                target.className = "w-16 h-16 md:w-24 md:h-24 bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 text-2xl md:text-4xl border-2 border-slate-600 mx-auto mb-4 transition-colors duration-300";
+                await wait(1000);
+
+                // Step 1: Standard Ping fails
+                consoleText.innerHTML = "> Standard Ping initiated...";
+                p1.style.opacity = '1';
+                p1.style.left = '75%';
+                await wait(500);
+                target.classList.replace('border-slate-600', 'border-red-500');
+                target.classList.replace('text-slate-500', 'text-red-500');
+                consoleText.innerHTML = "<span class='text-red-500'>> Blocked by Catch-All Firewall.</span>";
+                p1.style.left = '15%'; p1.style.opacity = '0';
+                await wait(1500);
+
+                // Step 2: Heuristic 3-Burst
+                target.classList.replace('border-red-500', 'border-slate-600');
+                target.classList.replace('text-red-500', 'text-slate-500');
+                consoleText.innerHTML = "> Deploying V3.2 Heuristic Burst...";
+                
+                p2.style.opacity = '1'; p2.style.left = '75%'; await wait(150);
+                p3.style.opacity = '1'; p3.style.left = '75%'; await wait(300);
+                
+                consoleText.innerHTML = "<span class='text-amber-400'>> Firewall ruleset mapped.</span>";
+                p2.style.opacity = '0'; p3.style.opacity = '0';
+                await wait(1000);
+
+                // Step 3: Success
+                consoleText.innerHTML = "> Executing final verification...";
+                p4.style.opacity = '1'; p4.style.left = '75%';
+                await wait(500);
+                target.classList.replace('border-slate-600', 'border-emerald-500');
+                target.classList.replace('text-slate-500', 'text-emerald-500');
+                consoleText.innerHTML = "<span class='text-emerald-400'>> Port 25 Secured. Target is Valid.</span>";
+                await wait(3000);
+            }
+        }
+        setTimeout(runEngineAnim, 500);
+    </script>
+</body>
+</html>
