@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Economics | Mailvah Enterprise</title>
+    <title>Pricing & Economics | Mailvah Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -27,72 +27,75 @@
 <body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
 
     <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
-        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-3">
-                <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
-                <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1 tracking-widest">PRO</span></span>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                <div class="bg-blue-600 p-1.5 md:p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-lg md:text-xl"></i></div>
+                <span class="text-xl md:text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-[10px] md:text-sm align-top ml-1">PRO</span></span>
             </a>
-            
             <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="index.html" class="hover:text-white transition-colors px-2">Infrastructure</a>
                 <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
-                <a href="pricing.html" class="text-sky-400 transition-colors px-2">Economics</a>
+                <a href="pricing.html" class="text-sky-400 transition-colors px-2">Pricing</a>
                 <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
                 <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
             </div>
-
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
                 <a href="https://app.mailvah.com" class="hidden md:block text-slate-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">Log In</a>
-                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 text-xs tracking-widest uppercase transition-all transform hover:scale-105">DEPLOY ENGINE</a>
+                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2 md:py-2.5 px-4 md:px-6 rounded-xl shadow-lg text-[10px] md:text-xs tracking-widest uppercase transition-all whitespace-nowrap">START FOR FREE</a>
             </div>
         </div>
     </nav>
 
     <main class="pt-20 flex-1">
-        <section class="pt-20 pb-32 px-6 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] bg-blend-soft-light">
+        <section class="pt-20 pb-32 px-4 md:px-6 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] bg-blend-soft-light">
             <div class="max-w-6xl mx-auto text-center">
-                <h2 class="text-sm font-black text-sky-500 uppercase tracking-[0.3em] mb-4">Infrastructure Economics</h2>
+                <h2 class="text-xs md:text-sm font-black text-sky-500 uppercase tracking-[0.3em] mb-4">Infrastructure Economics</h2>
                 <h1 class="text-4xl md:text-7xl font-black text-white tracking-tighter mb-6">Scale your computing power.</h1>
-                <p class="text-slate-400 text-lg mb-20 max-w-2xl mx-auto font-medium">Provision the exact bare-metal resources required for your volume. Unused Integrity (I) and Discovery (D) credits roll over infinitely.</p>
+                <p class="text-slate-400 text-sm md:text-lg mb-12 md:mb-20 max-w-2xl mx-auto font-medium">Provision the exact bare-metal resources required for your volume. Unused Integrity (I) and Discovery (D) credits roll over infinitely.</p>
 
-                <div class="glass-panel p-8 md:p-20 rounded-[4rem] relative border border-slate-700/60 shadow-2xl">
+                <div class="glass-panel p-6 md:p-20 rounded-[2rem] md:rounded-[4rem] relative border border-slate-700/60 shadow-2xl">
                     
-                    <div class="max-w-4xl mx-auto mb-20">
+                    <div class="max-w-4xl mx-auto mb-16 md:mb-20">
                         <input type="range" id="pricingSlider" min="0" max="5" value="2" step="1" oninput="updatePricingUI()">
-                        <div class="flex justify-between text-[10px] md:text-xs text-slate-500 font-black uppercase tracking-[0.2em] mt-8 px-2">
-                            <span class="w-1/6 text-left">Sandbox</span><span class="w-1/6 text-center">Starter</span><span id="label-growth" class="w-1/6 text-center text-sky-400">Growth</span><span class="w-1/6 text-center">Pro</span><span class="w-1/6 text-center">Scale</span><span class="w-1/6 text-right">Apex</span>
+                        <div class="flex justify-between text-[8px] sm:text-[10px] md:text-xs text-slate-500 font-black uppercase tracking-widest mt-6 md:mt-8 px-1 md:px-2">
+                            <span class="w-1/6 text-left">Sandbox</span>
+                            <span class="w-1/6 text-center">Starter</span>
+                            <span id="label-growth" class="w-1/6 text-center text-sky-400">Growth</span>
+                            <span class="w-1/6 text-center">Pro</span>
+                            <span class="w-1/6 text-center">Scale</span>
+                            <span class="w-1/6 text-right">Apex</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 text-left items-start">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 text-left items-start">
                         <div class="lg:col-span-5">
                             <div id="tierBadge" class="inline-block bg-slate-800/80 border border-slate-700 px-4 py-1.5 rounded-full text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">MOST POPULAR</div>
-                            <h3 id="tierName" class="text-5xl font-black text-white mb-2 tracking-tight">Growth Tier</h3>
-                            <div class="mb-10 flex items-baseline gap-2">
-                                <span id="tierPrice" class="text-8xl font-black text-sky-400 tracking-tighter transition-colors duration-500">$79</span>
-                                <span class="text-slate-500 text-2xl font-bold uppercase tracking-widest">/mo</span>
+                            <h3 id="tierName" class="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight">Growth Tier</h3>
+                            <div class="mb-8 md:mb-10 flex items-baseline gap-2">
+                                <span id="tierPrice" class="text-6xl md:text-8xl font-black text-sky-400 tracking-tighter transition-colors duration-500">$79</span>
+                                <span class="text-slate-500 text-lg md:text-2xl font-bold uppercase tracking-widest">/mo</span>
                             </div>
                             
-                            <div class="grid grid-cols-2 gap-4 mb-10">
-                                <div class="bg-slate-900/60 p-6 rounded-3xl border border-slate-800 shadow-inner">
-                                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2 flex items-center gap-1.5"><i class="fa-solid fa-shield-check text-emerald-500"></i> Integrity Vault</p>
-                                    <p id="tierWash" class="text-3xl font-black text-white tracking-tighter">5,000</p>
-                                    <p class="text-[9px] text-slate-600 font-bold uppercase mt-1">Wash Credits</p>
+                            <div class="grid grid-cols-2 gap-3 md:gap-4 mb-8 md:mb-10">
+                                <div class="bg-slate-900/60 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-slate-800 shadow-inner">
+                                    <p class="text-[8px] md:text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2 flex items-center gap-1.5"><i class="fa-solid fa-shield-check text-emerald-500"></i> Integrity</p>
+                                    <p id="tierWash" class="text-2xl md:text-3xl font-black text-white tracking-tighter">5,000</p>
+                                    <p class="text-[8px] md:text-[9px] text-slate-600 font-bold uppercase mt-1">Wash Credits</p>
                                 </div>
-                                <div class="bg-slate-900/60 p-6 rounded-3xl border border-slate-800 shadow-inner">
-                                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2 flex items-center gap-1.5"><i class="fa-solid fa-database text-blue-500"></i> Discovery Vault</p>
-                                    <p id="tierHunt" class="text-3xl font-black text-white tracking-tighter">1,250</p>
-                                    <p class="text-[9px] text-slate-600 font-bold uppercase mt-1">Hunt Credits</p>
+                                <div class="bg-slate-900/60 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-slate-800 shadow-inner">
+                                    <p class="text-[8px] md:text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2 flex items-center gap-1.5"><i class="fa-solid fa-database text-blue-500"></i> Discovery</p>
+                                    <p id="tierHunt" class="text-2xl md:text-3xl font-black text-white tracking-tighter">1,250</p>
+                                    <p class="text-[8px] md:text-[9px] text-slate-600 font-bold uppercase mt-1">Hunt Credits</p>
                                 </div>
                             </div>
-                            <a href="https://app.mailvah.com" class="block text-center w-full bg-white hover:bg-slate-200 text-slate-950 font-black py-5 rounded-[1.5rem] transition-all tracking-[0.2em] text-xs uppercase shadow-2xl shadow-white/10">DEPLOY INFRASTRUCTURE</a>
+                            <a href="https://app.mailvah.com" class="block text-center w-full bg-white hover:bg-slate-200 text-slate-950 font-black py-4 md:py-5 rounded-xl md:rounded-[1.5rem] transition-all tracking-widest md:tracking-[0.2em] text-[10px] md:text-xs uppercase shadow-xl shadow-white/10">START FOR FREE</a>
                         </div>
 
-                        <div class="lg:col-span-7 bg-slate-900/40 p-8 md:p-14 rounded-[3rem] border border-slate-800 shadow-inner">
-                            <h4 class="text-xs font-black text-slate-500 mb-10 uppercase tracking-[0.4em] flex items-center gap-4">
+                        <div class="lg:col-span-7 bg-slate-900/40 p-6 md:p-14 rounded-2xl md:rounded-[3rem] border border-slate-800 shadow-inner">
+                            <h4 class="text-[10px] md:text-xs font-black text-slate-500 mb-8 md:mb-10 uppercase tracking-widest md:tracking-[0.4em] flex items-center gap-4">
                                 <div class="h-px bg-slate-800 flex-1"></div> Included Engine Features <div class="h-px bg-slate-800 flex-1"></div>
                             </h4>
-                            <ul id="tierFeatures" class="space-y-8 text-sm text-slate-200 font-medium">
+                            <ul id="tierFeatures" class="space-y-6 md:space-y-8 text-xs md:text-sm text-slate-200 font-medium">
                                 </ul>
                         </div>
                     </div>
@@ -101,15 +104,50 @@
         </section>
     </main>
 
-    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-20 pb-10 px-6 mt-auto">
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 md:pt-20 pb-8 md:pb-10 px-6 mt-auto relative z-20">
         <div class="max-w-7xl mx-auto">
-            <div class="border-t border-slate-800/60 pt-10 flex flex-col md:flex-row justify-between items-center gap-8">
-                <div class="flex items-center gap-4">
-                    <div class="bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
-                    <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Infrastructure</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="index.html" class="hover:text-sky-400 transition-colors">V3.2 Engine</a></li>
+                        <li><a href="pricing.html" class="hover:text-sky-400 transition-colors">Pricing Tiers</a></li>
+                        <li><a href="https://app.mailvah.com" class="hover:text-sky-400 transition-colors">Developer API</a></li>
+                    </ul>
                 </div>
-                <div class="flex gap-8 text-[10px] text-slate-500 font-black uppercase tracking-widest">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-500"></i> SOC 2 Type II</span>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Compare</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="vs-apollo.html" class="hover:text-sky-400 transition-colors">vs Apollo.io</a></li>
+                        <li><a href="vs-hunter.html" class="hover:text-sky-400 transition-colors">vs Hunter.io</a></li>
+                        <li><a href="vs-zoominfo.html" class="hover:text-sky-400 transition-colors">vs ZoomInfo</a></li>
+                        <li><a href="vs-snov.html" class="hover:text-sky-400 transition-colors">vs Snov.io</a></li>
+                        <li><a href="vs-skrapp.html" class="hover:text-sky-400 transition-colors">vs Skrapp</a></li>
+                        <li><a href="vs-neverbounce.html" class="hover:text-sky-400 transition-colors">vs NeverBounce</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Company</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Affordable by Design</a></li>
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs uppercase tracking-[0.3em]">Legal Hub</h4>
+                    <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-500 font-bold uppercase tracking-widest md:text-[10px]">
+                        <li><a href="privacy.html" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="faq.html" class="hover:text-sky-400 transition-colors">FAQ & Knowledge</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/60 pt-8 md:pt-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+                <div class="flex items-center gap-3 md:gap-4 text-center md:text-left">
+                    <div class="hidden md:block bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                    <p class="text-[8px] md:text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. <br class="hidden md:block"> Engineered in Lagos.</p>
+                </div>
+                <div class="flex gap-4 md:gap-8 text-[8px] md:text-[10px] text-slate-500 font-black uppercase tracking-widest">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
                 </div>
             </div>
@@ -153,7 +191,7 @@
             
             document.getElementById('tierName').innerText = data.name + " Tier";
             document.getElementById('tierPrice').innerText = data.price;
-            document.getElementById('tierPrice').className = "text-8xl font-black tracking-tighter transition-colors duration-300 " + data.color;
+            document.getElementById('tierPrice').className = "text-6xl md:text-8xl font-black tracking-tighter transition-colors duration-300 " + data.color;
             document.getElementById('tierWash').innerText = data.wash;
             document.getElementById('tierHunt').innerText = data.hunt;
             
@@ -166,9 +204,9 @@
             let listHtml = "";
             data.features.forEach(feat => {
                 listHtml += `
-                    <li class="flex items-center justify-between group border-b border-slate-800/50 pb-4 last:border-0 last:pb-0">
-                        <span class="flex items-center font-bold text-white"><i class="fa-solid fa-check ${data.color} mr-4 text-lg drop-shadow-[0_0_5px_currentColor]"></i> ${feat.f}</span>
-                        <div class="tooltip"><i class="fa-solid fa-circle-question text-slate-500 hover:text-white transition-colors text-lg"></i><div class="tooltip-text">${feat.desc}</div></div>
+                    <li class="flex items-center justify-between group border-b border-slate-800/50 pb-3 md:pb-4 last:border-0 last:pb-0">
+                        <span class="flex items-center font-bold text-white"><i class="fa-solid fa-check ${data.color} mr-3 md:mr-4 text-sm md:text-lg drop-shadow-[0_0_5px_currentColor]"></i> ${feat.f}</span>
+                        <div class="tooltip"><i class="fa-solid fa-circle-question text-slate-500 hover:text-white transition-colors text-sm md:text-lg"></i><div class="tooltip-text">${feat.desc}</div></div>
                     </li>`;
             });
             document.getElementById('tierFeatures').innerHTML = listHtml;
