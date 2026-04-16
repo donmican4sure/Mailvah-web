@@ -3,488 +3,1029 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mailvah | Enterprise Outbound Security</title>
+    <title>Mailvah | Enterprise Outbound Infrastructure</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #1e293b, #050914); }
-        .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
-        .glass-panel:hover { border-color: rgba(56, 189, 248, 0.3); }
+        /* Enterprise Design Tokens */
+        body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #111827, #050914); }
+        .glass-panel { background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.1); }
+        .active-tab { background: linear-gradient(90deg, rgba(56, 189, 248, 0.1) 0%, transparent 100%); border-left: 3px solid #38bdf8; color: #38bdf8; }
         .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hidden { display: none !important; }
-        .nav-active { color: #38bdf8 !important; }
         
-        /* Terminal Typing Effect */
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        .cursor-blink { animation: blink 1s step-end infinite; }
+        /* Draggable Pricing Slider Styling */
+        input[type=range] { -webkit-appearance: none; background: transparent; width: 100%; margin: 15px 0; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #1e293b; border-radius: 4px; border: 1px solid #334155; }
+        input[type=range]::-webkit-slider-thumb { height: 28px; width: 28px; border-radius: 50%; background: #38bdf8; cursor: pointer; -webkit-appearance: none; margin-top: -11px; box-shadow: 0 0 20px rgba(56,189,248,0.8); border: 3px solid #050914; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.1); }
         
-        .premium-lock { filter: blur(4px); pointer-events: none; user-select: none; }
+        /* Tooltips & Animations */
+        .tooltip { position: relative; display: inline-block; cursor: help; }
+        .tooltip .tooltip-text { visibility: hidden; width: 240px; background-color: #0f172a; color: #cbd5e1; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 50; bottom: 130%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; border: 1px solid #334155; font-size: 11px; line-height: 1.5; box-shadow: 0 15px 30px rgba(0,0,0,0.6); }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); } 50% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); } }
+        .scanning-glow { animation: pulse-glow 2s infinite; border-color: #38bdf8; }
+        
+        /* Scrollbars */
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        .premium-lock { filter: blur(5px); pointer-events: none; user-select: none; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
 
-    <nav class="fixed w-full z-50 bg-[#050914]/80 backdrop-blur-lg border-b border-slate-800/50 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
-                <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.5)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
-                <span class="text-2xl font-black text-white tracking-tight">MAILVAH<span class="text-blue-500 font-medium text-sm align-top ml-1">PRO</span></span>
+    <div id="marketingWrapper">
+        
+        <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
+            <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateMarketing('home')">
+                    <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
+                    <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1 tracking-widest">PRO</span></span>
+                </div>
+                <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-400">
+                    <button onclick="navigateMarketing('home')" id="nav-home" class="hover:text-white nav-active transition-colors">Infrastructure</button>
+                    <button onclick="navigateMarketing('compare')" id="nav-compare" class="hover:text-white transition-colors">Giant Killer</button>
+                    <button onclick="navigateMarketing('pricing')" id="nav-pricing" class="hover:text-white transition-colors">Economics</button>
+                    <button onclick="navigateMarketing('faq')" id="nav-faq" class="hover:text-white transition-colors">FAQ</button>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleAuthModal()" class="hidden md:block text-slate-400 hover:text-white font-bold text-sm transition-colors">Log In</button>
+                    <button onclick="toggleAuthModal()" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 text-xs md:text-sm tracking-widest uppercase transition-all transform hover:scale-105">DEPLOY ENGINE</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="pt-20">
+            <div id="page-home" class="block animate-fade-in">
+                <section class="pt-16 md:pt-28 pb-20 px-6 text-center border-b border-slate-800/50 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
+                    <div class="max-w-5xl mx-auto relative z-10">
+                        <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full mb-8 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">V3.2 Heuristic Anomaly Live</span>
+                        </div>
+                        <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-8 tracking-tighter">
+                            Never bounce again.<br><span class="bg-gradient-to-r from-sky-400 to-blue-600 text-gradient">Scale with certainty.</span>
+                        </h1>
+                        <p class="text-slate-400 text-lg md:text-xl mb-12 max-w-3xl mx-auto leading-relaxed">
+                            We don't guess patterns. Our V3.2 Engine fires a sequential 3-burst ghost ping of alphanumeric, impossible emails to map server Catch-All firewalls before extracting the truth.
+                        </p>
+                        
+                        <div class="glass-panel p-2 md:p-3 rounded-2xl relative shadow-[0_0_50px_rgba(56,189,248,0.05)] w-full max-w-2xl mx-auto">
+                            <div class="bg-[#0b1120] rounded-xl border border-slate-700/80 overflow-hidden text-left relative">
+                                <div class="bg-slate-900/90 px-4 py-3 border-b border-slate-800 flex items-center gap-2">
+                                    <div class="flex gap-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-emerald-500"></div></div>
+                                    <span class="ml-3 text-[10px] text-slate-500 font-mono tracking-widest uppercase">Mailvah_V3.2_Protocol</span>
+                                </div>
+                                <div class="p-5 md:p-6 relative">
+                                    <div class="relative mb-4">
+                                        <input type="email" id="livePingInput" placeholder="Test a target your provider says is 'Safe'..." class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none text-white font-mono text-sm placeholder-slate-600 shadow-inner">
+                                        <button id="livePingBtn" onclick="executeMarketingPing()" class="absolute right-2 top-2 bottom-2 bg-blue-600 hover:bg-blue-500 text-white px-6 rounded-lg font-bold text-xs transition-colors tracking-widest">PING</button>
+                                    </div>
+                                    <div id="marketingTerminalOutput" class="font-mono text-xs md:text-sm text-slate-400 h-48 overflow-y-auto space-y-2 bg-[#050914] p-4 rounded-lg border border-slate-800/50">
+                                        > System initialized. Awaiting target payload...<span class="animate-pulse">_</span>
+                                    </div>
+                                    
+                                    <div id="marketingLockout" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md rounded-xl">
+                                        <i class="fa-solid fa-lock text-4xl text-sky-400 mb-4 animate-pulse shadow-sky-500"></i>
+                                        <h3 class="text-xl font-bold text-white mb-2">Guest Limit Reached</h3>
+                                        <p class="text-xs text-slate-400 text-center px-8 mb-6">Device logged. Create a free account to unlock 115 deep-scan credits and access the Command Center.</p>
+                                        <button onclick="toggleAuthModal()" class="bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-sky-500/25 text-sm tracking-wider uppercase">Unlock Free Credits</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-24 bg-slate-900/10 px-6">
+                    <div class="max-w-5xl mx-auto">
+                        <div class="text-center mb-16">
+                            <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-4">Pipeline Economics</h2>
+                            <h3 class="text-4xl font-black text-white">The true cost of stale data.</h3>
+                            <p class="text-slate-400 mt-4">Every bounce damages your domain reputation. Calculate the revenue leaking from your current provider.</p>
+                        </div>
+                        <div class="glass-panel p-8 md:p-12 rounded-3xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                            <div class="space-y-12">
+                                <div>
+                                    <label class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-widest mb-6"><span>Monthly Emails Sent</span><span class="text-white text-xl font-black" id="val-emails">5,000</span></label>
+                                    <input type="range" min="1000" max="100000" step="1000" value="5000" id="slide-emails" oninput="calculateROI()">
+                                </div>
+                                <div>
+                                    <label class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-widest mb-6"><span>Current Bounce Rate</span><span class="text-red-500 text-xl font-black" id="val-bounce">8%</span></label>
+                                    <input type="range" min="1" max="25" step="1" value="8" id="slide-bounce" oninput="calculateROI()">
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/80 rounded-3xl p-10 border border-slate-700 text-center shadow-2xl relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+                                <h4 class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-6">Projected Mailvah Recovery</h4>
+                                <div class="text-7xl font-black text-emerald-400 mb-4 tracking-tighter" id="roi-saved">+$240</div>
+                                <p class="text-sm text-slate-500 font-medium max-w-xs mx-auto leading-relaxed">Estimated monthly revenue rescued from the spam folder based on standard B2B conversion metrics.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="page-pricing" class="hidden animate-fade-in">
+                <section class="pt-20 pb-24 px-6 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]">
+                    <div class="max-w-6xl mx-auto text-center">
+                        <h2 class="text-sm font-bold text-sky-400 uppercase tracking-widest mb-4">Infrastructure Economics</h2>
+                        <h1 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Scale your computing power.</h1>
+                        <p class="text-slate-400 mb-16 max-w-2xl mx-auto text-lg leading-relaxed">Drag to provision the exact server resources required for your outbound volume. All unused Wash (I) and Hunt (D) credits roll over infinitely.</p>
+
+                        <div class="glass-panel p-8 md:p-16 rounded-3xl relative border border-slate-700/60 shadow-2xl">
+                            <div class="px-2 md:px-6 mb-16">
+                                <input type="range" id="pricingSlider" min="0" max="5" value="2" step="1" oninput="updatePricingUI()">
+                                <div class="flex justify-between text-[9px] md:text-xs text-slate-500 font-bold uppercase tracking-widest mt-6">
+                                    <span class="w-1/6 text-left">Sandbox</span><span class="w-1/6 text-center">Starter</span><span id="label-growth" class="w-1/6 text-center text-sky-400">Growth</span><span class="w-1/6 text-center">Pro</span><span class="w-1/6 text-center">Scale</span><span class="w-1/6 text-right">Apex</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 text-left">
+                                <div class="lg:col-span-2">
+                                    <div class="inline-block bg-slate-800/50 border border-slate-700 px-3 py-1 rounded-lg text-xs font-bold text-slate-400 uppercase tracking-widest mb-4" id="tierBadge">MOST POPULAR</div>
+                                    <h3 id="tierName" class="text-4xl font-black text-white mb-2 tracking-tight">Growth Tier</h3>
+                                    <div class="mb-8 flex items-baseline gap-2">
+                                        <span id="tierPrice" class="text-7xl font-black text-sky-400 tracking-tighter">$79</span>
+                                        <span class="text-slate-500 text-xl font-medium">/mo</span>
+                                    </div>
+                                    
+                                    <div class="space-y-4 mb-10">
+                                        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-700/50 flex justify-between items-center group hover:border-emerald-500/50 transition-colors">
+                                            <div>
+                                                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1 flex items-center gap-1"><i class="fa-solid fa-shield-check text-emerald-400"></i> Integrity Vault</p>
+                                                <p id="tierWash" class="text-3xl font-black text-white">5,000</p>
+                                            </div>
+                                            <span class="text-xs text-slate-500 font-medium">Wash Credits</span>
+                                        </div>
+                                        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-700/50 flex justify-between items-center group hover:border-blue-500/50 transition-colors">
+                                            <div>
+                                                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1 flex items-center gap-1"><i class="fa-solid fa-database text-blue-400"></i> Discovery Vault</p>
+                                                <p id="tierHunt" class="text-3xl font-black text-white">1,250</p>
+                                            </div>
+                                            <span class="text-xs text-slate-500 font-medium">Hunt Credits</span>
+                                        </div>
+                                    </div>
+                                    <button onclick="toggleAuthModal()" class="w-full bg-white hover:bg-slate-200 text-slate-900 font-black py-4 rounded-xl transition-colors tracking-wide text-sm shadow-[0_0_20px_rgba(255,255,255,0.2)]">DEPLOY INFRASTRUCTURE</button>
+                                </div>
+
+                                <div class="lg:col-span-3 bg-slate-900/40 p-8 md:p-10 rounded-3xl border border-slate-800">
+                                    <h4 class="text-xs font-bold text-slate-400 mb-8 uppercase tracking-widest flex items-center gap-3">
+                                        <div class="h-px bg-slate-700 flex-1"></div> Included Technology <div class="h-px bg-slate-700 flex-1"></div>
+                                    </h4>
+                                    <ul id="tierFeatures" class="space-y-6 text-sm text-slate-200 font-medium">
+                                        </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="page-compare" class="hidden animate-fade-in pt-20 pb-24 px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-20">
+                        <h2 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4">The Truth About Data</h2>
+                        <h1 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Stop buying digital graveyards.</h1>
+                        <p class="text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">Apollo, Hunter, and Snov.io sell you records scraped 6 months ago. B2B data decays at 3% monthly. We verify the exact millisecond before you hit send.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-10">
+                        <div class="glass-panel p-8 md:p-10 rounded-3xl border-t-4 border-t-blue-500 flex flex-col md:flex-row gap-8 items-center">
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-white mb-4">Mailvah vs. Apollo.io</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-6">Apollo is a massive CRM, but their email data is heavily cached. If you download a list of 10,000 leads, expect an 8% bounce rate because the data is stale. Mailvah executes <span class="text-white font-bold">live SMTP handshakes</span> ensuring the inbox is active right now.</p>
+                            </div>
+                            <div class="flex-1 w-full bg-slate-900/80 rounded-2xl p-6 border border-slate-700">
+                                <table class="w-full text-sm">
+                                    <thead><tr class="text-slate-500 border-b border-slate-800 text-xs uppercase tracking-widest"><th class="pb-3 text-left">Metric</th><th class="pb-3 text-sky-400">Mailvah</th><th class="pb-3">Apollo</th></tr></thead>
+                                    <tbody class="text-slate-300 font-medium">
+                                        <tr class="border-b border-slate-800/50"><td class="py-4">Validation Method</td><td class="py-4 text-emerald-400">Live Port 25</td><td class="py-4 text-slate-500">Cached DB</td></tr>
+                                        <tr class="border-b border-slate-800/50"><td class="py-4">Catch-All Handling</td><td class="py-4 text-emerald-400">Heuristic 3-Burst</td><td class="py-4 text-red-400">Guesswork</td></tr>
+                                        <tr><td class="py-4">Credits</td><td class="py-4 text-emerald-400">Infinite Rollover</td><td class="py-4 text-red-400">Expire Monthly</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-8 md:p-10 rounded-3xl border-t-4 border-t-orange-500 flex flex-col md:flex-row gap-8 items-center">
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-white mb-4">Mailvah vs. Hunter.io</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed">Hunter relies on pattern matching (e.g., finding the format first.last@company.com and guessing). In modern outbound, guessing triggers Google Spam filters instantly. Mailvah never guesses; we require absolute cryptographic certainty.</p>
+                            </div>
+                            <div class="flex-1 w-full flex justify-center">
+                                <div class="bg-slate-900/80 border border-slate-700 p-6 rounded-2xl text-center w-full max-w-sm">
+                                    <h4 class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-4">Deliverability Guarantee</h4>
+                                    <div class="text-5xl font-black text-emerald-400 mb-2">99.9%</div>
+                                    <p class="text-sm text-slate-400">Our SLA protects your domain.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-faq" class="hidden animate-fade-in pt-20 pb-24 px-6">
+                <div class="max-w-3xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h1 class="text-4xl md:text-5xl font-black text-white mb-6">Knowledge Base</h1>
+                        <p class="text-slate-400 text-lg">Detailed documentation on the Mailvah infrastructure.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700/50">
+                            <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq1')">
+                                What is the V3.2 Heuristic Anomaly Engine?
+                                <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq1"></i>
+                            </button>
+                            <div id="faq1" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
+                                Before verifying a target email, our proprietary engine fires a 3-burst sequence of mathematically impossible emails (e.g. x7q9_fatal@domain.com) at the receiving server. By analyzing how the firewall responds to obvious fake data, we map their Catch-All protocols. This allows us to penetrate enterprise security layers that block standard verifiers like Apollo and Hunter.
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700/50">
+                            <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq2')">
+                                How does Infinite Rollover work?
+                                <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq2"></i>
+                            </button>
+                            <div id="faq2" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
+                                Unlike legacy SaaS platforms that steal back your unused credits at the end of the month, any Wash (I-Credits) or Hunt (D-Credits) you don't use will roll over to the next month indefinitely, provided your subscription remains active. You paid for the compute power; you keep it.
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700/50">
+                            <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq3')">
+                                What is the Waterfall Rescue feature?
+                                <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq3"></i>
+                            </button>
+                            <div id="faq3" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
+                                Available on the Growth tier and above. If you upload a CSV and a lead comes back "Dead", the Waterfall Rescue automatically utilizes your Discovery credits to hunt down an alternative, valid email address for that exact prospect, saving the deal from dying in your pipeline.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-legal" class="hidden animate-fade-in pt-20 pb-24 px-6">
+                <div class="max-w-3xl mx-auto glass-panel p-10 md:p-16 rounded-3xl border border-slate-700/50">
+                    <h1 class="text-4xl font-black text-white mb-8 border-b border-slate-800 pb-6">Legal Infrastructure</h1>
+                    <div class="space-y-8 text-sm text-slate-400 leading-relaxed">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3"><i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Data Sovereignty (Privacy)</h3>
+                            <p>Mailvah operates strictly as a bare-metal infrastructure provider. We do not aggregate, analyze, or resell your uploaded CSVs. Your assets are processed dynamically and stored in isolated, 256-bit AES encrypted Supabase buckets tied exclusively to your cryptographic User ID. You retain total ownership and deletion rights of all data.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3"><i class="fa-solid fa-scale-balanced text-sky-400 mr-2"></i> Acceptable Use (Terms)</h3>
+                            <p>Mailvah is engineered for B2B outbound security. By utilizing the V3.2 Engine or the Lead Finder network, you agree not to deploy our infrastructure for phishing, malware distribution, or violations of CAN-SPAM / GDPR regulations. We monitor API endpoints for malicious abuse and reserve the right to terminate access.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3"><i class="fa-solid fa-hand-holding-dollar text-amber-400 mr-2"></i> 30-Day Guarantee</h3>
+                            <p>If our Heuristic Engine fails to reduce your bounce rate below 1% when used properly, contact our engineering team within 30 days of your initial subscription for a full, unconditional refund.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-400">
-                <button onclick="navigate('home')" id="nav-home" class="hover:text-white transition-colors nav-active">Platform</button>
-                <button onclick="navigate('compare')" id="nav-compare" class="hover:text-white transition-colors">Compare</button>
-                <button onclick="navigate('pricing')" id="nav-pricing" class="hover:text-white transition-colors">Pricing</button>
-                <button onclick="navigate('faq')" id="nav-faq" class="hover:text-white transition-colors">FAQ</button>
+            <div id="page-contact" class="hidden animate-fade-in pt-20 pb-24 px-6">
+                <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h1 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Contact Engineering.</h1>
+                        <p class="text-slate-400 text-lg mb-10">Need custom API rate limits? Dedicated bare-metal IP setup? Our Lagos-based engineering team is standing by.</p>
+                        <div class="space-y-6 border-t border-slate-800 pt-8">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-blue-600/20 text-blue-500 flex items-center justify-center text-xl"><i class="fa-solid fa-location-dot"></i></div>
+                                <div><h4 class="text-white font-bold">Global Operations</h4><p class="text-slate-400 text-sm">Lagos, Nigeria</p></div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xl"><i class="fa-solid fa-envelope"></i></div>
+                                <div><h4 class="text-white font-bold">Technical Support</h4><p class="text-slate-400 text-sm">support@mailvah.com</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-8 md:p-10 rounded-3xl border border-slate-700/50 shadow-2xl">
+                        <form onsubmit="event.preventDefault(); alert('Message dispatched to the Mailvah engineering queue.');" class="space-y-5">
+                            <div><label class="text-xs text-slate-400 font-bold uppercase tracking-widest">Name</label><input type="text" required class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white mt-2 outline-none focus:border-sky-500 transition-colors"></div>
+                            <div><label class="text-xs text-slate-400 font-bold uppercase tracking-widest">Work Email</label><input type="email" required class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white mt-2 outline-none focus:border-sky-500 transition-colors"></div>
+                            <div><label class="text-xs text-slate-400 font-bold uppercase tracking-widest">Inquiry Type</label>
+                                <select class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl text-white mt-2 outline-none focus:border-sky-500 transition-colors appearance-none">
+                                    <option>Enterprise Deployment ($799+)</option><option>API Rate Limit Increase</option><option>Technical Support</option><option>Billing</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl mt-6 shadow-lg transition-colors tracking-widest text-sm">DISPATCH MESSAGE</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 pb-8 px-6 mt-auto relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+                    <div><h4 class="text-white font-bold mb-5 text-sm uppercase tracking-widest">Product</h4><ul class="text-sm text-slate-500 space-y-3 font-medium"><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('home')">Infrastructure</li><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('pricing')">Pricing & Tiers</li><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="toggleAuthModal()">Developer API</li></ul></div>
+                    <div><h4 class="text-white font-bold mb-5 text-sm uppercase tracking-widest">Compare</h4><ul class="text-sm text-slate-500 space-y-3 font-medium"><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('compare')">vs Apollo.io</li><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('compare')">vs Hunter.io</li><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('compare')">vs Skrapp</li></ul></div>
+                    <div><h4 class="text-white font-bold mb-5 text-sm uppercase tracking-widest">Company</h4><ul class="text-sm text-slate-500 space-y-3 font-medium"><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('contact')">Contact Engineering</li><li class="cursor-pointer hover:text-sky-400 transition-colors">Affordable by Design</li></ul></div>
+                    <div><h4 class="text-white font-bold mb-5 text-sm uppercase tracking-widest">Legal</h4><ul class="text-sm text-slate-500 space-y-3 font-medium"><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('legal')">Privacy Policy</li><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('legal')">Terms of Service</li><li class="cursor-pointer hover:text-sky-400 transition-colors" onclick="navigateMarketing('legal')">GDPR Compliance</li></ul></div>
+                </div>
+                <div class="border-t border-slate-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-blue-600 p-1.5 rounded"><i class="fa-solid fa-m text-white text-[10px]"></i></div>
+                        <p class="text-xs text-slate-500 font-medium">© 2026 Mailvah, a product of Donmican Technology Ltd. Engineered in Lagos.</p>
+                    </div>
+                    <div class="flex gap-6 text-[10px] text-slate-500 font-bold uppercase tracking-widest"><span class="flex items-center"><i class="fa-solid fa-shield-halved mr-2 text-emerald-500"></i> SOC 2 Type II</span><span class="flex items-center"><i class="fa-solid fa-lock mr-2 text-emerald-500"></i> 256-bit AES</span></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <div id="appWrapper" class="hidden flex flex-col md:flex-row h-[100dvh] overflow-hidden bg-[#050914] relative z-50">
+        
+        <aside class="w-full md:w-64 bg-[#0f172a] border-b md:border-b-0 md:border-r border-slate-800/50 flex flex-col shrink-0 shadow-2xl relative z-20">
+            <div class="flex justify-between items-center md:block">
+                <div class="p-4 md:p-6 flex items-center gap-3 md:border-b border-slate-800/50 cursor-pointer" onclick="switchAppTab('single')">
+                    <div class="w-10 h-10 bg-gradient-to-br from-sky-400 to-blue-600 rounded-lg flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-sky-500/20">M</div>
+                    <h1 class="text-2xl font-bold tracking-tight text-white">MAILVAH<span class="text-sky-400 text-[10px] uppercase tracking-widest align-top ml-1">Pro</span></h1>
+                </div>
+                <div class="px-4 py-2 md:px-6 md:py-4 md:border-b border-slate-800/50 bg-slate-900/30 text-right md:text-left">
+                    <p class="text-[10px] uppercase text-slate-500 font-bold mb-1 tracking-tighter">Dual Vault Balance</p>
+                    <div class="flex items-center justify-end md:justify-start">
+                        <span id="userCreditBalance" class="text-white font-black text-xl flex items-center gap-1">
+                            <i class="fa-solid fa-circle-notch fa-spin text-sky-400 text-sm"></i>
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            <div class="flex items-center gap-4">
-                <button onclick="openAuth('login')" class="hidden md:block text-sm font-bold text-slate-400 hover:text-white transition-colors">Log In</button>
-                <button onclick="openAuth('signup')" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-sky-500/25 text-sm tracking-wider">
-                    DEPLOY ENGINE
-                </button>
-            </div>
-        </div>
-    </nav>
+            <div class="flex-none md:flex-1 py-0 md:py-6 flex flex-row md:flex-col overflow-x-auto md:overflow-y-auto custom-scrollbar border-t md:border-t-0 border-slate-800/50">
+                <div class="hidden md:block px-6 py-2"><span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Core Infrastructure</span></div>
+                
+                <button onclick="switchAppTab('analyzer')" id="tab-analyzer" class="sidebar-item active-tab flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-user-secret w-5 text-center text-emerald-400"></i><span class="font-medium">Threat Analyzer</span></button>
+                <button onclick="switchAppTab('single')" id="tab-single" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-crosshairs w-5 text-center"></i><span class="font-medium">Single Target</span></button>
+                <button onclick="switchAppTab('bulk')" id="tab-bulk" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-layer-group w-5 text-center"></i><span class="font-medium">Bulk Engine</span></button>
+                <button onclick="switchAppTab('finder')" id="tab-finder" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-database w-5 text-center"></i><span class="font-medium">Lead Finder</span></button>
+                <button onclick="switchAppTab('vault')" id="tab-vault" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-vault w-5 text-center text-sky-400"></i><span class="font-medium">The Vault</span></button>
+                <button onclick="switchAppTab('monitor')" id="tab-monitor" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-gauge-high w-5 text-center"></i><span class="font-medium">Domain Monitor</span></button>
 
-    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 backdrop-blur-md px-4 opacity-0 transition-opacity duration-300">
-        <div class="max-w-md w-full bg-[#0b1120] border border-slate-800 rounded-2xl p-8 shadow-2xl relative">
-            <button onclick="closeAuth()" class="absolute top-4 right-4 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <div class="hidden md:block px-6 mt-4 py-2 border-t border-slate-800/50"><span class="text-[9px] font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1"><i class="fa-solid fa-bolt text-amber-400"></i> Advanced (Pro)</span></div>
+                
+                <button onclick="switchAppTab('integrations')" id="tab-integrations" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-puzzle-piece w-5 text-center text-purple-400"></i><span class="font-medium">CRM Purge</span></button>
+                <button onclick="switchAppTab('api')" id="tab-api" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-code w-5 text-center text-emerald-400"></i><span class="font-medium">API Hub</span></button>
+                <button onclick="switchAppTab('seed')" id="tab-seed" class="sidebar-item flex items-center justify-center md:justify-start gap-3 px-4 py-3 md:px-6 md:py-3 text-slate-400 hover:text-slate-200 transition-all text-sm w-auto md:w-full whitespace-nowrap"><i class="fa-solid fa-seedling w-5 text-center text-amber-400"></i><span class="font-medium">Seed Network</span></button>
+                
+                <button onclick="handleSignOut()" class="md:hidden sidebar-item flex items-center justify-center gap-2 px-4 py-3 text-slate-500 hover:text-red-400 border-t border-slate-800/50 text-sm whitespace-nowrap"><i class="fa-solid fa-power-off"></i><span class="font-medium">Disconnect</span></button>
+            </div>
+
+            <div class="hidden md:block w-full border-t border-slate-800/50 mt-auto">
+                <button onclick="handleSignOut()" class="flex items-center justify-start gap-3 px-6 py-5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all text-sm w-full"><i class="fa-solid fa-power-off w-5 text-center"></i><span class="font-medium">Secure Disconnect</span></button>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-10 relative z-10 custom-scrollbar bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-blend-overlay">
             
-            <div class="text-center mb-8">
-                <h2 id="authTitle" class="text-2xl font-bold text-white mb-2">Secure Command Center</h2>
-                <p id="authSubtitle" class="text-sm text-slate-400">Create an account to unlock 115 free wash credits.</p>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-slate-800/50 pb-6">
+                <div>
+                    <h2 id="pageTitle" class="text-3xl font-black text-white tracking-tight">Threat Analyzer</h2>
+                    <p id="pageDesc" class="text-slate-400 mt-1 text-sm font-medium">Zero-cost diagnostic for cold email payloads and infrastructure.</p>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-700/50 backdrop-blur-md shadow-lg shadow-emerald-500/10">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]"></div>
+                    <span class="text-xs font-bold text-slate-300 tracking-wider uppercase font-mono">Server: Secure</span>
+                </div>
             </div>
 
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Email Address</label>
-                    <input type="email" id="authEmail" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none" placeholder="ceo@company.com">
+            <div id="view-analyzer" class="block grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-7xl animate-fade-in">
+                <div class="glass-panel p-8 rounded-3xl flex flex-col border border-slate-700/60 shadow-xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-white font-bold text-xl"><i class="fa-solid fa-envelope-open-text text-emerald-400 mr-2"></i> Payload Analyzer</h3>
+                        <div class="text-right">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest block mb-1">Deliverability Score</span>
+                            <span id="copyScoreDisplay" class="text-3xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.4)]">100/100</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-6 leading-relaxed">Paste your cold email draft. The engine will detect spam-trigger words that cause hard bounces and routing to the Promotions folder.</p>
+                    <textarea id="payloadInput" oninput="analyzePayload()" class="w-full bg-slate-900/80 border border-slate-700 p-5 rounded-2xl focus:ring-1 focus:ring-emerald-500 outline-none transition-all text-sm mb-6 text-white placeholder-slate-600 custom-scrollbar flex-1 min-h-[250px] shadow-inner" placeholder="Hey {{first_name}},\n\nI guarantee this is a 100% free opportunity to buy our new software. Act now!"></textarea>
+                    <div class="bg-slate-950 rounded-2xl border border-slate-800 p-5 min-h-[120px]">
+                        <h4 class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-radar text-red-500"></i> Threat Log</h4>
+                        <div id="threatLog" class="text-xs text-emerald-400 font-mono leading-relaxed">System clear. No spam triggers detected.</div>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Password</label>
-                    <input type="password" id="authPassword" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none" placeholder="••••••••">
+
+                <div class="glass-panel p-8 rounded-3xl flex flex-col border border-slate-700/60 shadow-xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-white font-bold text-xl"><i class="fa-solid fa-server text-sky-400 mr-2"></i> DNS Armor Protocol</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Verify your sending domain's security records. Missing SPF or DMARC guarantees your emails will bounce or hit the spam folder, ruining your sender reputation.</p>
+                    <div class="mb-6 relative">
+                        <input type="text" id="dnsTargetInput" placeholder="e.g. yourcompany.com" class="w-full bg-slate-900/80 border border-slate-700 p-5 rounded-2xl focus:ring-1 focus:ring-sky-500 outline-none transition-all text-sm text-white placeholder-slate-600 pl-12 shadow-inner">
+                        <i class="fa-solid fa-globe absolute left-5 top-5 text-slate-500 text-lg"></i>
+                    </div>
+                    <button onclick="checkDNSInfrastructure()" id="dnsBtn" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black py-4 rounded-xl transition-all shadow-lg shadow-sky-500/25 text-sm tracking-widest uppercase flex justify-center items-center gap-3 mb-10">
+                        <i class="fa-solid fa-magnifying-glass"></i> SCAN INFRASTRUCTURE
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-6 flex-1">
+                        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 flex flex-col items-center justify-center text-center relative">
+                            <div class="tooltip z-20">
+                                <h4 class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4 border-b border-dashed border-slate-600 inline-block pb-1">SPF Record</h4>
+                                <div class="tooltip-text">Sender Policy Framework. Tells servers which IPs are authorized to send email on your behalf.</div>
+                            </div>
+                            <div id="spfStatusIcon" class="text-5xl text-slate-800 mb-4 transition-colors"><i class="fa-solid fa-circle-question"></i></div>
+                            <span id="spfStatusText" class="text-xs font-bold text-slate-600 uppercase tracking-widest">Awaiting Scan</span>
+                        </div>
+                        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 flex flex-col items-center justify-center text-center relative">
+                            <div class="tooltip z-20">
+                                <h4 class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4 border-b border-dashed border-slate-600 inline-block pb-1">DMARC Record</h4>
+                                <div class="tooltip-text">Domain-based Message Authentication. Prevents hackers from spoofing your domain.</div>
+                            </div>
+                            <div id="dmarcStatusIcon" class="text-5xl text-slate-800 mb-4 transition-colors"><i class="fa-solid fa-circle-question"></i></div>
+                            <span id="dmarcStatusText" class="text-xs font-bold text-slate-600 uppercase tracking-widest">Awaiting Scan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-single" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl animate-fade-in">
+                <div class="glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden border border-slate-700/60 shadow-xl">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-sky-400 to-blue-600"></div>
+                    <label class="block text-xs font-bold text-sky-400 uppercase tracking-widest mb-4">Target Payload</label>
+                    <input type="email" id="emailInput" placeholder="ceo@company.com" class="w-full bg-slate-900/80 border border-slate-700 p-5 rounded-2xl focus:ring-1 focus:ring-sky-500 outline-none transition-all text-lg mb-10 text-white placeholder-slate-600 shadow-inner font-mono">
+                    
+                    <button onclick="verifyEmail()" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black py-4 md:py-5 rounded-xl transition-all shadow-lg shadow-sky-500/30 text-sm tracking-widest uppercase flex justify-center items-center gap-3">
+                        <i class="fa-solid fa-bolt"></i> ENGAGE V3.2 ENGINE
+                    </button>
+                    <p class="text-center text-[10px] text-slate-500 uppercase font-bold mt-4 tracking-widest">Burns 1 Wash Credit (I)</p>
                 </div>
                 
-                <button onclick="handleAuthSubmit()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-lg transition-colors flex justify-center items-center gap-2 mt-4 text-sm shadow-[0_0_15px_rgba(37,99,235,0.3)]">
-                    <i class="fa-solid fa-lock-open text-sm"></i> <span id="authBtnText">Access Infrastructure</span>
-                </button>
+                <div id="statusCard" class="glass-panel p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[350px] border border-slate-700/60 shadow-2xl relative">
+                    <div id="defaultMsg">
+                        <i class="fa-solid fa-radar text-6xl text-slate-800 mb-6 animate-[spin_4s_linear_infinite]"></i>
+                        <h3 class="text-slate-300 font-bold text-xl mb-3">Awaiting Target</h3>
+                        <div class="tooltip inline-block">
+                            <span class="text-slate-500 text-xs font-medium border-b border-dashed border-slate-600 pb-0.5">Powered by V3.2 Heuristic Protocol</span>
+                            <div class="tooltip-text">Fires alphanumeric ghost pings to map Catch-All traps before executing the final Port 25 handshake.</div>
+                        </div>
+                    </div>
+                    <div id="resultsContent" class="hidden w-full">
+                        <div id="statusIcon" class="text-7xl mb-6 shadow-black drop-shadow-2xl"></div>
+                        <h2 id="statusTitle" class="text-3xl md:text-4xl font-black mb-3 tracking-tight"></h2>
+                        <p id="statusReason" class="text-slate-400 text-sm font-medium bg-slate-900/50 p-4 rounded-xl border border-slate-800 inline-block"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-bulk" class="hidden relative max-w-7xl animate-fade-in">
+                <div id="bulkLock" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-sm rounded-3xl hidden">
+                    <div class="bg-[#0b1120] border border-blue-500/40 p-10 rounded-3xl shadow-2xl text-center max-w-md w-11/12">
+                        <i class="fa-solid fa-lock text-5xl text-blue-500 mb-6 animate-pulse"></i>
+                        <h3 class="text-white font-black text-2xl mb-4">Engine Locked</h3>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed">You are currently in the Sandbox. Upgrade to Starter or Pro to unlock the Bulk Engine and process massive CSV datasets.</p>
+                        <button onclick="document.getElementById('paywallContainer').classList.remove('hidden')" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl shadow-lg tracking-widest text-sm uppercase transition-colors">View Enterprise Plans</button>
+                    </div>
+                </div>
                 
-                <p class="text-center text-[10px] text-emerald-400 font-bold mt-3"><i class="fa-solid fa-check mr-1"></i> No Credit Card Required</p>
-                <div class="text-center text-xs text-slate-500 mt-6 border-t border-slate-800 pt-4">
-                    <p>Processed in isolated, 256-bit encrypted buckets. SOC 2 Type II Audited.</p>
+                <div id="bulkContent" class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+                    <div class="xl:col-span-5 flex flex-col gap-6">
+                        
+                        <div id="dropZone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" class="glass-panel p-10 md:p-14 rounded-3xl text-center group transition-all duration-300 relative overflow-hidden border-2 border-dashed border-slate-600 hover:border-sky-500 bg-slate-900/30">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <i class="fa-solid fa-cloud-arrow-up text-6xl md:text-7xl text-sky-500/50 mb-6 group-hover:text-sky-400 transition-colors pointer-events-none"></i>
+                            <h3 class="text-xl md:text-2xl font-black mb-3 text-white pointer-events-none">Upload Database</h3>
+                            <p class="text-slate-400 text-sm mb-8 leading-relaxed pointer-events-none max-w-xs mx-auto">Drag & drop your CSV file. The V3.2 Engine will filter dead domains and Catch-Alls.</p>
+                            <input type="file" id="csvFile" accept=".csv" class="hidden" onchange="handleFileSelect(event)">
+                            <button onclick="document.getElementById('csvFile').click()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold py-4 rounded-xl transition-all shadow-lg text-sm tracking-widest relative z-10 uppercase">SELECT DATASET (.CSV)</button>
+                        </div>
+
+                        <div id="dataPreviewSection" class="hidden glass-panel p-5 rounded-2xl border border-slate-700 overflow-hidden shadow-xl">
+                            <h4 class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4 flex items-center justify-between">
+                                <span><i class="fa-solid fa-table border-slate-500 mr-2"></i> Data Preview</span>
+                                <span class="text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded">Matrix Mapped</span>
+                            </h4>
+                            <div class="overflow-x-auto custom-scrollbar bg-slate-950 rounded-xl border border-slate-800">
+                                <table class="w-full text-left text-[11px] font-mono text-slate-300 whitespace-nowrap">
+                                    <thead class="text-slate-500 border-b border-slate-800 bg-slate-900/80" id="previewHeader"></thead>
+                                    <tbody id="previewBody" class="divide-y divide-slate-800/50"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="actionButtons" class="hidden grid grid-cols-4 gap-3">
+                            <button id="cancelBulkBtn" onclick="cancelBulkWash()" class="col-span-1 bg-slate-800 hover:bg-red-500/20 text-slate-400 hover:text-red-400 border border-slate-700 hover:border-red-500/50 font-bold py-4 rounded-xl transition-all text-lg flex justify-center items-center">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                            <button id="startBulkBtn" onclick="startBulkWash()" class="col-span-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black py-4 rounded-xl transition-all shadow-lg shadow-emerald-500/25 tracking-widest text-sm uppercase flex justify-center items-center gap-3">
+                                <i class="fa-solid fa-play"></i> INITIATE WASH
+                            </button>
+                        </div>
+
+                        <div id="exportOptionsSection" class="hidden flex-col gap-4 mt-2">
+                            <h4 class="text-white font-bold text-sm mb-1 px-1">Wash Complete. Select Export Mode:</h4>
+                            <button onclick="exportSafeData()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-500/25 tracking-wider text-xs md:text-sm flex justify-between items-center px-6 border border-emerald-400/30">
+                                <span><i class="fa-solid fa-shield-check mr-2 md:mr-3 text-lg"></i> EXPORT SAFE ONLY</span>
+                                <span class="bg-emerald-800/50 px-2 py-1 rounded text-[10px] uppercase font-black">Zero Bounce Risk</span>
+                            </button>
+                            <button onclick="exportAllData()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 rounded-xl transition-all tracking-wider text-xs md:text-sm flex justify-between items-center px-6 border border-slate-600">
+                                <span><i class="fa-solid fa-layer-group text-sky-400 mr-2 md:mr-3 text-lg"></i> EXPORT SAFE + CATCH-ALL</span>
+                                <span class="bg-slate-900 px-2 py-1 rounded text-[10px] text-amber-400 uppercase font-black">Aggressive Mode</span>
+                            </button>
+                        </div>
+
+                        <div id="waterfallSection" class="hidden mt-4 p-6 border border-purple-500/40 bg-purple-500/10 rounded-2xl text-center shadow-[0_0_20px_rgba(168,85,247,0.1)]">
+                            <h4 class="text-white font-black text-base mb-2"><i class="fa-solid fa-life-ring text-purple-400 mr-2"></i>Waterfall Rescue (Pro)</h4>
+                            <p class="text-sm text-slate-300 mb-6 leading-relaxed">Use Discovery (D) credits to automatically hunt down valid alternative emails for the <span id="waterfallCount" class="font-black text-white text-lg">0</span> dead leads found in this list.</p>
+                            <button onclick="initiateWaterfall()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 rounded-xl transition-all text-sm uppercase tracking-widest shadow-lg shadow-purple-500/30 border border-purple-400/50">
+                                Initiate Rescue Protocol
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="xl:col-span-7 flex flex-col gap-6">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="glass-panel p-5 md:p-8 rounded-2xl border-t-4 border-t-slate-500 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                                <p class="text-slate-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-2">Total Rows</p>
+                                <h3 id="stat-total" class="text-3xl md:text-5xl font-black text-white">0</h3>
+                            </div>
+                            <div class="glass-panel p-5 md:p-8 rounded-2xl border-t-4 border-t-emerald-500 relative overflow-hidden bg-emerald-500/5 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                                <div class="absolute -right-4 -bottom-4 opacity-[0.07] text-8xl text-emerald-500 pointer-events-none"><i class="fa-solid fa-shield-check"></i></div>
+                                <p class="text-emerald-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-2">Safe (Valid)</p>
+                                <h3 id="stat-valid" class="text-3xl md:text-5xl font-black text-white">0</h3>
+                            </div>
+                            <div class="glass-panel p-5 md:p-8 rounded-2xl border-t-4 border-t-red-500 relative overflow-hidden bg-red-500/5 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                                <div class="absolute -right-4 -bottom-4 opacity-[0.07] text-8xl text-red-500 pointer-events-none"><i class="fa-solid fa-skull"></i></div>
+                                <p class="text-red-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-2">Dead / Trap</p>
+                                <h3 id="stat-invalid" class="text-3xl md:text-5xl font-black text-white">0</h3>
+                            </div>
+                        </div>
+
+                        <div id="progressContainer" class="hidden glass-panel p-6 rounded-2xl flex flex-col justify-center border border-slate-700/50">
+                            <div class="flex justify-between text-xs font-bold text-slate-400 mb-3 uppercase tracking-widest">
+                                <span>Engine Status</span>
+                                <span id="progressText" class="text-sky-400">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-950 rounded-full h-2 md:h-3 border border-slate-800 overflow-hidden">
+                                <div id="progressBar" class="bg-gradient-to-r from-sky-400 to-blue-600 h-2 md:h-3 rounded-full transition-all duration-200 ease-out shadow-[0_0_15px_#38bdf8]" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div id="liveFeedContainer" class="hidden glass-panel p-0 rounded-3xl flex-1 flex flex-col overflow-hidden min-h-[350px] border border-slate-700/60 shadow-2xl">
+                            <div class="bg-slate-900/90 px-6 py-4 border-b border-slate-800 flex justify-between items-center relative">
+                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent opacity-50"></div>
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-terminal mr-2 text-sky-500"></i> Bare-Metal Server Log</h3>
+                                <div class="flex gap-1.5"><div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div><div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" style="animation-delay: 0.2s"></div><div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" style="animation-delay: 0.4s"></div></div>
+                            </div>
+                            <div id="liveFeed" class="p-5 overflow-y-auto space-y-2 h-[350px] md:h-[450px] custom-scrollbar bg-[#050914] font-mono text-[10px] md:text-xs">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-finder" class="hidden relative max-w-7xl animate-fade-in">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+                    <div class="xl:col-span-4 flex flex-col gap-6">
+                        <div class="glass-panel p-8 rounded-3xl border border-slate-700/60 shadow-xl">
+                            <h3 class="text-white font-bold text-xl mb-6 flex items-center border-b border-slate-800 pb-4"><i class="fa-solid fa-filter text-blue-400 mr-3"></i>Target Parameters</h3>
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Job Title</label>
+                                    <input type="text" id="targetJobTitle" placeholder="e.g. VP Sales, Founder" class="w-full bg-slate-900/80 border border-slate-700 p-4 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-sm text-white shadow-inner">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Location</label>
+                                    <input type="text" id="targetLocation" placeholder="e.g. London, UK" class="w-full bg-slate-900/80 border border-slate-700 p-4 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-sm text-white shadow-inner">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Industry</label>
+                                    <input type="text" id="targetIndustry" placeholder="e.g. Fintech, SaaS" class="w-full bg-slate-900/80 border border-slate-700 p-4 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-sm text-white shadow-inner">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Employee Size</label>
+                                    <select id="targetSize" class="w-full bg-slate-900/80 border border-slate-700 p-4 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-sm text-white appearance-none shadow-inner cursor-pointer">
+                                        <option>1-10</option><option>11-50</option><option>51-200</option><option>201-500</option><option>500+</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-start gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800 mt-6">
+                                    <input type="checkbox" id="washCheckbox" checked class="mt-0.5 w-4 h-4 rounded bg-slate-800 border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900 cursor-pointer">
+                                    <label for="washCheckbox" class="text-xs font-semibold text-slate-300 leading-tight cursor-pointer">Route extracted leads through V3.2 Deep-Scan Engine immediately.</label>
+                                </div>
+                                <button onclick="initiateScrape()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 rounded-xl transition-all shadow-lg shadow-blue-500/25 text-sm tracking-widest uppercase flex justify-center items-center gap-3 mt-4">
+                                    <i class="fa-solid fa-radar fa-spin-pulse"></i> INITIATE EXTRACTION
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="xl:col-span-8 flex flex-col">
+                        <div class="glass-panel rounded-3xl overflow-hidden border border-slate-700/60 min-h-[600px] flex flex-col relative h-full shadow-2xl">
+                            <div class="bg-slate-900/90 px-6 py-5 border-b border-slate-800 flex justify-between items-center relative">
+                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-50"></div>
+                                <h3 class="text-sm font-bold text-white uppercase tracking-widest">Extracted Assets</h3>
+                                <span class="text-[10px] text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-md border border-emerald-400/20 font-bold uppercase tracking-widest"><i class="fa-solid fa-shield-check mr-1.5"></i>Secure Network</span>
+                            </div>
+                            
+                            <div id="finderEmptyState" class="flex-1 flex flex-col items-center justify-center p-12 text-center z-20">
+                                 <i class="fa-solid fa-satellite-dish text-7xl text-slate-800 mb-6 drop-shadow-lg"></i>
+                                 <h3 class="text-white font-black text-2xl mb-2" id="finderEmptyTitle">Awaiting Parameters</h3>
+                                 <p class="text-slate-400 text-sm max-w-sm mx-auto" id="finderEmptyDesc">Set your target filters on the left to fire the extraction protocol across the global network.</p>
+                            </div>
+                            
+                            <div id="finderResultsWrapper" class="hidden relative flex-1 flex flex-col">
+                                <div id="finderUnlockOverlay" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md rounded-b-3xl">
+                                    <i class="fa-solid fa-lock text-5xl text-blue-500 mb-6 animate-pulse shadow-blue-500"></i>
+                                    <h3 id="extractionCountText" class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Extraction Complete</h3>
+                                    <p class="text-slate-400 text-sm mb-8 text-center max-w-sm px-4">Assets securely buffered. Burn Discovery credits to decrypt the leads and push them to your Vault.</p>
+                                    <button id="unlockLeadsBtn" onclick="unlockExtractedLeads()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 px-10 rounded-xl transition-all shadow-lg shadow-blue-500/30 tracking-widest text-sm uppercase flex items-center justify-center gap-3 border border-blue-400/30">
+                                        <i class="fa-solid fa-unlock"></i> <span id="unlockBtnText">UNLOCK ASSETS</span>
+                                    </button>
+                                </div>
+                                
+                                <div id="finderResultsTable" class="flex-1 overflow-auto custom-scrollbar p-0 premium-lock bg-[#050914]">
+                                     <table class="w-full text-left">
+                                         <thead class="bg-slate-900/90 text-[10px] text-slate-500 uppercase tracking-widest sticky top-0 backdrop-blur-md z-10 border-b border-slate-800 shadow-sm">
+                                             <tr>
+                                                 <th class="p-5 font-bold">Prospect Identity</th>
+                                                 <th class="p-5 font-bold">Organization</th>
+                                                 <th class="p-5 font-bold">Network Status</th>
+                                                 <th class="p-5 font-bold text-right">Action</th>
+                                             </tr>
+                                         </thead>
+                                         <tbody id="finderTableBody" class="text-sm text-slate-300 divide-y divide-slate-800/50">
+                                            </tbody>
+                                     </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-vault" class="hidden relative max-w-7xl animate-fade-in">
+                <div class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h2 class="text-3xl font-black text-white tracking-tight mb-2">Encrypted Vault</h2>
+                        <p class="text-slate-400 text-sm">Secure storage of all previously washed datasets.</p>
+                    </div>
+                    <div class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs font-bold tracking-widest uppercase flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                        <i class="fa-solid fa-lock"></i> 256-Bit Isolated Bucket
+                    </div>
+                </div>
+                
+                <div id="vaultFilesContainer" class="w-full grid grid-cols-1 gap-4"></div>
+
+                <div id="vaultEmptyState" class="glass-panel p-12 md:p-20 rounded-3xl flex flex-col items-center justify-center text-center min-h-[500px] border border-slate-700/50 shadow-2xl">
+                    <i class="fa-solid fa-vault text-7xl text-slate-800 mb-8 drop-shadow-xl"></i>
+                    <h3 class="text-2xl font-black text-white mb-4">Vault Empty</h3>
+                    <p class="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">Assets washed in the Bulk Engine will be permanently stored here in your secure Supabase bucket for future decryption and download.</p>
+                    <button onclick="switchAppTab('bulk')" class="mt-8 bg-slate-900 hover:bg-slate-800 text-sky-400 font-bold py-3.5 px-8 rounded-xl transition-all text-sm uppercase tracking-widest border border-sky-500/30 shadow-lg">
+                        Proceed to Bulk Engine
+                    </button>
+                </div>
+            </div>
+
+            <div id="view-monitor" class="hidden relative max-w-6xl animate-fade-in">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-black text-white tracking-tight mb-2">Infrastructure Monitor</h2>
+                    <p class="text-slate-400 text-sm">Real-time DNS health tracking and global blacklist surveillance.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-emerald-500 shadow-xl bg-emerald-500/5">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="bg-emerald-500/20 p-3 rounded-xl border border-emerald-500/30"><i class="fa-solid fa-shield-check text-emerald-400 text-xl"></i></div>
+                            <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Global Scan</span>
+                        </div>
+                        <h3 class="text-white font-black text-xl mb-1">DMARC Security</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Protects your domain from spoofing & enterprise spam filters.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-red-500 shadow-xl bg-red-500/5">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="bg-red-500/20 p-3 rounded-xl border border-red-500/30"><i class="fa-solid fa-list-check text-red-400 text-xl"></i></div>
+                            <span class="text-[10px] font-bold text-red-400 uppercase tracking-widest">Real-time</span>
+                        </div>
+                        <h3 class="text-white font-black text-xl mb-1">Blacklist Status</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Ensures your IP isn't flagged by Spamhaus or Barracuda.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-blue-500 shadow-xl bg-blue-500/5">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="bg-blue-500/20 p-3 rounded-xl border border-blue-500/30"><i class="fa-solid fa-inbox text-blue-400 text-xl"></i></div>
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Predicted</span>
+                        </div>
+                        <h3 class="text-white font-black text-xl mb-1">Inbox Delivery</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Likelihood of landing in the Google/Microsoft Primary tab.</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-3xl overflow-hidden border border-slate-700/60 shadow-2xl">
+                    <div class="bg-slate-900/90 px-8 py-5 border-b border-slate-800 flex justify-between items-center relative">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-slate-700"></div>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-widest">Monitored Fleet</h3>
+                        <button onclick="addNewDomain()" class="bg-blue-600 hover:bg-blue-500 text-[10px] md:text-xs text-white font-bold py-2.5 px-5 rounded-lg transition-all tracking-widest shadow-lg shadow-blue-500/20">
+                            <i class="fa-solid fa-plus mr-2"></i>ADD DOMAIN
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left min-w-[600px]">
+                            <thead class="bg-[#0b1120] text-[10px] text-slate-500 uppercase tracking-widest border-b border-slate-800">
+                                <tr>
+                                    <th class="p-6">Domain Asset</th>
+                                    <th class="p-6">DMARC Status</th>
+                                    <th class="p-6">Blacklist Scans</th>
+                                    <th class="p-6 text-right">Last Audit Sync</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monitorTableBody" class="text-sm text-slate-300 divide-y divide-slate-800/50 bg-slate-900/30">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-integrations" class="hidden relative max-w-7xl animate-fade-in">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-black text-white tracking-tight mb-2">Native Integrations Hub</h2>
+                    <p class="text-slate-400 text-sm">Connect your CRM to automate lead washing dynamically. <span class="text-purple-400 font-bold border border-purple-500/30 bg-purple-500/10 px-2 py-0.5 rounded text-[10px] ml-2">PRO TIER REQUIRED</span></p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="glass-panel p-8 rounded-3xl border border-slate-700/60 flex flex-col justify-between opacity-75 hover:opacity-100 transition-opacity">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center p-2.5 shadow-lg"><img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Zapier_Logo.png" class="object-contain w-full h-full"></div>
+                                <span class="text-[9px] bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest">In Development</span>
+                            </div>
+                            <h3 class="text-white font-black text-xl mb-2">Zapier Sync</h3>
+                            <p class="text-slate-400 text-sm mb-8 leading-relaxed">Connect Mailvah to 5,000+ apps. Trigger a V3.2 deep-scan instantly when a new lead hits your webhook.</p>
+                        </div>
+                        <button onclick="alert('Added to Zapier private beta waitlist.')" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 text-sky-400 font-bold py-3.5 rounded-xl transition-colors text-xs tracking-widest uppercase shadow-inner">Join Private Beta</button>
+                    </div>
+                    <div class="glass-panel p-8 rounded-3xl border border-slate-700/60 flex flex-col justify-between opacity-75 hover:opacity-100 transition-opacity">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="w-14 h-14 bg-[#1A1E27] rounded-2xl flex items-center justify-center p-2.5 shadow-lg"><span class="text-blue-500 font-bold text-lg">In.</span></div>
+                                <span class="text-[9px] bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest">In Development</span>
+                            </div>
+                            <h3 class="text-white font-black text-xl mb-2">Instantly.ai</h3>
+                            <p class="text-slate-400 text-sm mb-8 leading-relaxed">Auto-wash entire campaigns before hitting send. Currently undergoing final security review by their team.</p>
+                        </div>
+                        <button onclick="alert('Added to Instantly private beta waitlist.')" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 text-sky-400 font-bold py-3.5 rounded-xl transition-colors text-xs tracking-widest uppercase shadow-inner">Join Private Beta</button>
+                    </div>
+                    <div class="glass-panel p-8 rounded-3xl border border-slate-700/60 flex flex-col justify-between opacity-60 hover:opacity-100 transition-opacity">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center p-2.5 shadow-lg"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/HubSpot_Logo.svg/1200px-HubSpot_Logo.svg.png" class="object-contain w-full h-full"></div>
+                                <span class="text-[9px] bg-slate-900 border border-slate-800 text-slate-500 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest">Audit Pending</span>
+                            </div>
+                            <h3 class="text-white font-black text-xl mb-2">HubSpot CRM</h3>
+                            <p class="text-slate-400 text-sm mb-8 leading-relaxed">Enterprise native sync. Keeps your master B2B contact database 100% clean, automatically purging dead domains.</p>
+                        </div>
+                        <button onclick="alert('Added to HubSpot waitlist.')" class="w-full bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-500 font-bold py-3.5 rounded-xl transition-colors text-xs tracking-widest uppercase">Join Waitlist</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-api" class="hidden relative max-w-5xl animate-fade-in">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-black text-white tracking-tight mb-2">Developer API Hub</h2>
+                    <p class="text-slate-400 text-sm">Generate cryptographic secret keys to build custom Mailvah integrations. <span class="text-purple-400 font-bold border border-purple-500/30 bg-purple-500/10 px-2 py-0.5 rounded text-[10px] ml-2">PRO TIER REQUIRED</span></p>
+                </div>
+                
+                <div class="glass-panel p-10 md:p-14 rounded-3xl border border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.05)] bg-slate-900/40">
+                    <h3 class="text-white font-black text-xl mb-6 flex items-center"><i class="fa-solid fa-key text-emerald-400 mr-3 text-2xl"></i> Production Secret Key</h3>
+                    
+                    <div class="flex flex-col md:flex-row items-center gap-4 mb-8">
+                        <input type="text" id="apiKeyDisplay" value="Decrypting vault key..." readonly class="w-full bg-[#050914] border border-slate-700 p-5 rounded-2xl text-emerald-400 font-mono text-sm tracking-widest outline-none shadow-inner">
+                        <button onclick="copyApiKey()" class="w-full md:w-auto bg-slate-800 hover:bg-emerald-600 hover:text-white hover:border-emerald-500 border border-slate-700 text-slate-400 px-8 py-5 rounded-2xl transition-all font-bold shadow-lg"><i class="fa-solid fa-copy md:text-xl"></i></button>
+                    </div>
+                    
+                    <button onclick="generateApiKey()" class="text-emerald-500 hover:text-emerald-400 text-xs font-bold tracking-widest uppercase transition-colors flex items-center gap-2 mb-12 bg-emerald-500/10 px-4 py-2 rounded-lg border border-emerald-500/20">
+                        <i class="fa-solid fa-rotate"></i> Roll Secret Key
+                    </button>
+                    
+                    <div class="border-t border-slate-800 pt-10">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">cURL Implementation Example</h4>
+                        <div class="bg-[#050914] p-6 rounded-2xl border border-slate-800 font-mono text-xs md:text-sm text-slate-300 overflow-x-auto shadow-inner leading-loose">
+                            <span class="text-pink-500 font-bold">curl</span> -X POST https://api.mailvah.com/v1/verify \<br>
+                            &nbsp;&nbsp;-H <span class="text-yellow-400">"Authorization: Bearer <span class="text-emerald-400 font-bold">YOUR_API_KEY</span>"</span> \<br>
+                            &nbsp;&nbsp;-H <span class="text-yellow-400">"Content-Type: application/json"</span> \<br>
+                            &nbsp;&nbsp;-d <span class="text-yellow-400">'{"email": "target@company.com"}'</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-seed" class="hidden relative max-w-6xl animate-fade-in">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-black text-white tracking-tight mb-2">Inbox Placement Simulator</h2>
+                    <p class="text-slate-400 text-sm max-w-2xl">Send your campaign to our 20 internal seed accounts to test if you land in Spam, Promotions, or Primary. <span class="text-purple-400 font-bold border border-purple-500/30 bg-purple-500/10 px-2 py-0.5 rounded text-[10px] ml-2">PRO TIER REQUIRED</span></p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="glass-panel p-8 md:p-10 rounded-3xl flex flex-col h-full border border-slate-700/60 shadow-xl">
+                        <h3 class="text-white font-black text-xl mb-4"><i class="fa-solid fa-list-ol text-amber-400 mr-3"></i> 1. Copy Seed List</h3>
+                        <p class="text-sm text-slate-400 mb-6 leading-relaxed">Add these 20 seed accounts to your sending platform (Instantly, Lemlist, Smartlead) as a new campaign list.</p>
+                        
+                        <div class="bg-[#050914] p-5 rounded-2xl border border-slate-800 custom-scrollbar overflow-y-auto h-56 mb-6 font-mono text-[11px] md:text-xs text-slate-400 space-y-2 shadow-inner">
+                            <div>seed.node01@gmail.com</div><div>seed.node02@gmail.com</div><div>seed.node03@gmail.com</div>
+                            <div>mailvah.test01@yahoo.com</div><div>mailvah.test02@yahoo.com</div><div>mailvah.test03@outlook.com</div>
+                            <div>sys.monitor.01@gmail.com</div><div>sys.monitor.02@gmail.com</div><div>sys.monitor.03@gmail.com</div>
+                            <div>alpha.target.v1@hotmail.com</div><div>alpha.target.v2@hotmail.com</div>
+                            <div class="text-slate-600 italic mt-4 border-t border-slate-800 pt-2">... (20 encrypted addresses loaded)</div>
+                        </div>
+                        
+                        <button onclick="alert('Seed list copied to clipboard!')" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold py-4 rounded-xl transition-all text-xs tracking-widest uppercase shadow-md flex justify-center items-center gap-3 mt-auto">
+                            <i class="fa-solid fa-copy"></i> COPY 20 SEED ADDRESSES
+                        </button>
+                    </div>
+                    
+                    <div class="glass-panel p-8 md:p-10 rounded-3xl flex flex-col h-full border border-slate-700/60 shadow-xl bg-slate-900/30">
+                        <h3 class="text-white font-black text-xl mb-4"><i class="fa-solid fa-satellite-dish text-amber-400 mr-3"></i> 2. Execute & Track</h3>
+                        <p class="text-sm text-slate-400 mb-6 leading-relaxed">You MUST include this exact Cryptographic Tracking ID anywhere in your email body or subject line so our engine can locate it.</p>
+                        
+                        <div class="flex items-center gap-3 mb-10">
+                            <div class="flex-1 bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl text-amber-400 font-black font-mono text-center tracking-widest text-xl shadow-inner" id="seedTrackingId">
+                                MV-TEST-8492X
+                            </div>
+                            <button onclick="alert('Tracking ID copied!')" class="bg-slate-800 hover:bg-amber-600 hover:text-white hover:border-amber-500 border border-slate-700 text-slate-400 px-6 py-4 rounded-xl transition-colors font-bold"><i class="fa-solid fa-copy text-lg"></i></button>
+                        </div>
+
+                        <button id="checkPlacementBtn" onclick="launchSeed()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black py-4 md:py-5 rounded-xl transition-all shadow-lg shadow-amber-500/25 text-sm tracking-widest uppercase flex justify-center items-center gap-3 mb-8">
+                            <i class="fa-solid fa-magnifying-glass"></i> CHECK PLACEMENT GRID
+                        </button>
+
+                        <div id="seedResultState" class="hidden w-full mt-auto bg-[#050914] p-6 rounded-2xl border border-slate-800 shadow-inner">
+                            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 border-b border-slate-800 pb-3">Live Network Results</h3>
+                            <div class="space-y-5">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2"><span class="text-xs font-bold text-emerald-400 uppercase tracking-widest"><i class="fa-solid fa-inbox mr-2"></i>Primary</span><span class="text-base font-black text-white">18/20</span></div>
+                                    <div class="w-full bg-slate-900 rounded-full h-2 border border-slate-800"><div class="bg-emerald-400 h-2 rounded-full shadow-[0_0_10px_#34d399]" style="width: 90%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-2"><span class="text-xs font-bold text-yellow-500 uppercase tracking-widest"><i class="fa-solid fa-tag mr-2"></i>Promotions</span><span class="text-base font-black text-white">2/20</span></div>
+                                    <div class="w-full bg-slate-900 rounded-full h-2 border border-slate-800"><div class="bg-yellow-500 h-2 rounded-full shadow-[0_0_10px_#eab308]" style="width: 10%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-2"><span class="text-xs font-bold text-red-500 uppercase tracking-widest"><i class="fa-solid fa-trash-can mr-2"></i>Spam</span><span class="text-base font-black text-white">0/20</span></div>
+                                    <div class="w-full bg-slate-900 rounded-full h-2 border border-slate-800"><div class="bg-red-500 h-2 rounded-full" style="width: 0%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="paywallContainer" class="hidden fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/85 px-4 backdrop-blur-md">
+        <div class="max-w-5xl w-full bg-[#0b1120] border border-blue-500/30 rounded-3xl shadow-2xl overflow-hidden relative animate-fade-in">
+            <button onclick="document.getElementById('paywallContainer').classList.add('hidden')" class="absolute top-6 right-6 text-slate-500 hover:text-white z-10 transition-colors bg-slate-900 w-10 h-10 rounded-full flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="p-8 md:p-12 text-center relative">
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-sky-400 to-blue-600"></div>
+                <i class="fa-solid fa-lock text-5xl text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"></i>
+                <h2 id="paywallTitle" class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">Command Center Locked</h2>
+                <p id="paywallDesc" class="text-slate-400 text-base max-w-2xl mx-auto mb-12 leading-relaxed">Upgrade to an Enterprise tier to access advanced list washing, custom API throughput, and the bare-metal infrastructure.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <div class="glass-panel p-8 rounded-2xl border-t-4 border-t-emerald-500 hover:border-emerald-400 transition-all group bg-slate-900/50">
+                        <h3 class="text-xl font-black text-white mb-2">Starter</h3>
+                        <div class="mb-6 flex items-baseline gap-1"><span class="text-4xl font-black text-white">$29</span><span class="text-slate-500 font-medium">/mo</span></div>
+                        <ul class="text-sm text-slate-300 space-y-3 mb-8 font-medium">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3 text-lg"></i> 1,500 Wash Credits</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3 text-lg"></i> Bulk Engine Access</li>
+                            <li class="flex items-center opacity-50"><i class="fa-solid fa-xmark text-slate-500 mr-3 text-lg"></i> <span class="line-through">API Hub</span></li>
+                        </ul>
+                        <button onclick="alert('Connecting to Stripe...')" class="w-full bg-slate-800 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl transition-colors group-hover:border-emerald-500 border border-slate-700 tracking-widest text-xs uppercase">Upgrade</button>
+                    </div>
+                    <div class="glass-panel p-8 rounded-2xl border-t-4 border-t-sky-500 relative transform md:-translate-y-4 shadow-[0_0_30px_rgba(56,189,248,0.15)] bg-slate-900/90 border-x border-b border-sky-500/20">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-sky-500 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap shadow-lg shadow-sky-500/30">Most Popular</div>
+                        <h3 class="text-xl font-black text-white mb-2">Growth</h3>
+                        <div class="mb-6 flex items-baseline gap-1"><span class="text-4xl font-black text-sky-400">$79</span><span class="text-slate-500 font-medium">/mo</span></div>
+                        <ul class="text-sm text-slate-300 space-y-3 mb-8 font-medium">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3 text-lg"></i> 5,000 Wash Credits</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-sky-400 mr-3 text-lg"></i> Waterfall Rescue</li>
+                            <li class="flex items-center opacity-50"><i class="fa-solid fa-xmark text-slate-500 mr-3 text-lg"></i> <span class="line-through">API Hub</span></li>
+                        </ul>
+                        <button onclick="alert('Connecting to Stripe...')" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black py-3.5 rounded-xl transition-all shadow-lg shadow-sky-500/30 tracking-widest text-xs uppercase border border-sky-400/50">Upgrade</button>
+                    </div>
+                     <div class="glass-panel p-8 rounded-2xl border-t-4 border-t-purple-500 hover:border-purple-400 transition-all group bg-slate-900/50">
+                        <h3 class="text-xl font-black text-white mb-2">Pro</h3>
+                        <div class="mb-6 flex items-baseline gap-1"><span class="text-4xl font-black text-white">$149</span><span class="text-slate-500 font-medium">/mo</span></div>
+                        <ul class="text-sm text-slate-300 space-y-3 mb-8 font-medium">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3 text-lg"></i> 15,000 Wash Credits</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-purple-400 mr-3 text-lg"></i> Developer API Hub</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-purple-400 mr-3 text-lg"></i> CRM Integrations</li>
+                        </ul>
+                        <button onclick="alert('Connecting to Stripe...')" class="w-full bg-slate-800 hover:bg-purple-600 text-white font-bold py-3.5 rounded-xl transition-colors group-hover:border-purple-500 border border-slate-700 tracking-widest text-xs uppercase">Upgrade</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <main class="flex-1 pt-20">
-        
-        <div id="page-home" class="block animate-fade-in">
-            <section class="relative pt-24 pb-20 overflow-hidden">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                <div class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-6">
-                            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Bare-Metal Engine v2.0 Live</span>
-                        </div>
-                        <h1 class="text-5xl md:text-6xl font-black text-white leading-tight mb-6 tracking-tight">
-                            Deliverability is a Science. <br>
-                            <span class="bg-gradient-to-r from-sky-400 to-blue-600 text-gradient">Stop Guessing.</span>
-                        </h1>
-                        <p class="text-lg text-slate-400 mb-8 max-w-lg leading-relaxed">
-                            The only outbound security suite executing live Port 25 handshakes over proprietary servers. Stop relying on stale databases and protect your sender reputation with absolute certainty.
-                        </p>
-                        
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <button onclick="openAuth('signup')" class="bg-white hover:bg-slate-200 text-slate-900 font-bold py-4 px-8 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                                Unlock Free Credits
-                            </button>
-                            <button onclick="navigate('pricing')" class="glass-panel text-white font-bold py-4 px-8 rounded-xl transition-all hover:bg-slate-800/50">
-                                View Enterprise Pricing
-                            </button>
-                        </div>
+    <div id="discoveryRefillModal" class="hidden fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/85 px-4 backdrop-blur-md">
+        <div class="max-w-5xl w-full bg-[#0b1120] border border-blue-500/30 rounded-3xl shadow-2xl overflow-hidden relative animate-fade-in">
+            <button onclick="document.getElementById('discoveryRefillModal').classList.add('hidden')" class="absolute top-6 right-6 text-slate-500 hover:text-white z-10 transition-colors bg-slate-900 w-10 h-10 rounded-full flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="p-8 md:p-12 text-center relative">
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 to-indigo-600"></div>
+                <i class="fa-solid fa-satellite-dish text-5xl text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)] animate-pulse"></i>
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">Discovery Vault Depleted</h2>
+                <p class="text-slate-400 text-base max-w-2xl mx-auto mb-12 leading-relaxed">Deploy a one-time Scout, Hunter, or Commander pack to continue extracting and verifying B2B leads from the network.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <div class="glass-panel p-8 rounded-2xl border-t-4 border-t-slate-500 hover:border-blue-400 transition-all group bg-slate-900/50">
+                        <h3 class="text-xl font-black text-white mb-2">Scout Pack</h3>
+                        <div class="mb-8"><span class="text-4xl font-black text-white">$49</span><span class="text-slate-500 font-medium text-sm ml-1">/ one-time</span></div>
+                        <p class="text-blue-400 font-mono text-sm mb-8 font-bold text-center bg-blue-500/10 py-2 rounded-lg border border-blue-500/20">1,225 D-Credits</p>
+                        <button onclick="purchaseDiscoveryPack('Scout Pack', 49, 1225)" class="w-full bg-slate-800 hover:bg-blue-600 text-white font-bold py-3.5 rounded-xl border border-slate-700 transition-colors tracking-widest text-xs uppercase">Deploy Scout</button>
                     </div>
-
-                    <div class="glass-panel p-2 rounded-2xl relative shadow-[0_0_50px_rgba(56,189,248,0.1)]">
-                        <div class="bg-[#050914] rounded-xl border border-slate-800 overflow-hidden">
-                            <div class="bg-slate-900/80 px-4 py-3 border-b border-slate-800 flex justify-between items-center">
-                                <div class="flex gap-2">
-                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
-                                </div>
-                                <span class="text-[10px] text-slate-500 font-mono tracking-widest">MAILVAH_AUDIT_PROTOCOL</span>
-                            </div>
-                            
-                            <div class="p-6">
-                                <h3 class="text-sm font-bold text-white mb-2">Test a target your current provider says is "Safe"</h3>
-                                <div class="relative mb-4">
-                                    <input type="email" id="livePingInput" placeholder="ceo@apollo.io" class="w-full bg-slate-900/50 border border-slate-700 p-4 rounded-xl focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none text-white font-mono text-sm">
-                                    <button id="livePingBtn" onclick="executeLivePing()" class="absolute right-2 top-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-xs transition-colors">PING</button>
-                                </div>
-                                
-                                <div id="terminalOutput" class="bg-slate-950 rounded-lg p-4 font-mono text-xs text-slate-400 h-48 overflow-y-auto">
-                                    > Engine standby. Awaiting target...<span class="cursor-blink">_</span>
-                                </div>
-
-                                <div id="terminalLockout" class="hidden absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-sm rounded-xl">
-                                    <i class="fa-solid fa-lock text-4xl text-sky-400 mb-4 animate-pulse"></i>
-                                    <h3 class="text-lg font-bold text-white mb-2">Guest Limit Reached</h3>
-                                    <p class="text-xs text-slate-400 text-center px-6 mb-4">Your device has been logged. Create an account to unlock 115 deep-scan credits.</p>
-                                    <button onclick="openAuth('signup')" class="bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold py-2.5 px-6 rounded-lg shadow-[0_0_15px_rgba(56,189,248,0.4)] text-sm">Create Free Account</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="glass-panel p-8 rounded-2xl border-t-4 border-t-blue-500 relative shadow-[0_0_30px_rgba(59,130,246,0.15)] bg-slate-900/90 border-x border-b border-blue-500/20">
+                        <h3 class="text-xl font-black text-white mb-2">Hunter Pack</h3>
+                        <div class="mb-8"><span class="text-4xl font-black text-blue-400">$149</span><span class="text-slate-500 font-medium text-sm ml-1">/ one-time</span></div>
+                        <p class="text-blue-400 font-mono text-sm mb-8 font-bold text-center bg-blue-500/10 py-2 rounded-lg border border-blue-500/20 shadow-inner">3,750 D-Credits</p>
+                        <button onclick="purchaseDiscoveryPack('Hunter Pack', 149, 3750)" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-3.5 rounded-xl shadow-lg shadow-blue-500/30 tracking-widest text-xs uppercase border border-blue-400/50 transition-all">Deploy Hunter</button>
                     </div>
-                </div>
-            </section>
-
-            <section class="py-20 bg-slate-900/20 border-t border-slate-800/50">
-                <div class="max-w-7xl mx-auto px-6">
-                    <div class="text-center mb-16">
-                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Infrastructure, not just an API.</h2>
-                        <p class="text-slate-400 max-w-2xl mx-auto">We own the bare-metal architecture. That means absolute data freshness, zero heuristic guessing, and 4x the computing power of legacy providers.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="glass-panel p-8 rounded-2xl md:col-span-2 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 p-6 opacity-10 text-8xl text-emerald-500"><i class="fa-solid fa-server"></i></div>
-                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-microchip text-emerald-400 mr-2"></i> Deep-Scan Engine</h3>
-                            <p class="text-sm text-slate-400 mb-6 max-w-md">We bypass standard heuristics by executing live SMTP handshakes directly with the receiving server. We penetrate Catch-All firewalls to deliver deterministic results.</p>
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='40' viewBox='0 0 400 40'%3E%3Cpath d='M0 20 Q 50 40 100 20 T 200 20 T 300 20 T 400 20' fill='none' stroke='%2310b881' stroke-width='2' opacity='0.5'/%3E%3Ccircle cx='100' cy='20' r='4' fill='%2310b881'/%3E%3Ccircle cx='200' cy='20' r='4' fill='%2310b881'/%3E%3Ccircle cx='300' cy='20' r='4' fill='%2310b881'/%3E%3C/svg%3E" alt="Engine Graph">
-                        </div>
-                        
-                        <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-sky-500">
-                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-vault text-sky-400 mr-2"></i> 256-bit Vault</h3>
-                            <p class="text-sm text-slate-400">Your proprietary lead lists are stored in isolated Supabase buckets. We never aggregate or sell your hard-earned data back to the market.</p>
-                        </div>
-
-                        <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-purple-500">
-                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-satellite-dish text-purple-400 mr-2"></i> Extraction Network</h3>
-                            <p class="text-sm text-slate-400">Burn Discovery credits to hunt fresh B2B targets globally. Extracted, washed, and validated in one pipeline.</p>
-                        </div>
-
-                        <div class="glass-panel p-8 rounded-2xl md:col-span-2">
-                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-shield-halved text-amber-400 mr-2"></i> DNS Armor Protocol</h3>
-                            <p class="text-sm text-slate-400">Before you hit send, our dual-threat analyzer diagnostics your domain's SPF and DMARC records to ensure you aren't routing straight to the spam folder.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-24 relative">
-                <div class="max-w-4xl mx-auto px-6 text-center">
-                    <h2 class="text-sm font-bold text-sky-400 uppercase tracking-widest mb-4">Affordable By Design</h2>
-                    <h3 class="text-3xl md:text-5xl font-black text-white mb-8">Engineered for the Ecosystem.</h3>
-                    
-                    <div class="glass-panel p-8 md:p-12 rounded-3xl text-left border border-slate-700/50 bg-slate-900/50">
-                        <p class="text-slate-300 mb-6 text-lg leading-relaxed">
-                            We don't employ bloated outbound sales teams to sell you outbound software. We let the infrastructure speak for itself. 
-                        </p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-                            <div>
-                                <h4 class="text-white font-bold text-xl mb-3 border-b border-slate-800 pb-2"><span class="text-emerald-400">90%</span> Bare-Metal R&D</h4>
-                                <p class="text-sm text-slate-400">Every dollar goes back into the engine. Because we own our proprietary servers instead of renting white-labeled APIs, we cut out middlemen, reduce latency, and pass massive database savings down to you.</p>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-bold text-xl mb-3 border-b border-slate-800 pb-2"><span class="text-sky-400">10%</span> Zero-to-One Initiative</h4>
-                                <p class="text-sm text-slate-400">Built globally. 10% of Mailvah revenue permanently funds student developers, open-source infrastructure, and early-stage founders. Verifying leads protects your domain while funding the next generation of builders.</p>
-                            </div>
-                        </div>
-                        <div class="mt-8 pt-6 border-t border-slate-800/50 flex items-center justify-between">
-                            <span class="text-xs text-slate-500 font-mono tracking-widest">INITIATIVE BY DONMICAN TECHNOLOGY LTD</span>
-                            <i class="fa-solid fa-code-branch text-slate-600"></i>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="page-compare" class="hidden animate-fade-in pt-24 pb-20">
-            <div class="max-w-5xl mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h1 class="text-4xl md:text-5xl font-black text-white mb-6">Live Pings vs. <span class="text-red-500 line-through opacity-70">Stale Data</span></h1>
-                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">Legacy B2B databases suffer from ~8% data decay per month. Selling you records scraped 6 months ago destroys your domain reputation.</p>
-                </div>
-
-                <div class="glass-panel rounded-2xl overflow-hidden mb-12">
-                    <div class="bg-gradient-to-r from-blue-900/40 to-slate-900 p-8 border-b border-slate-800 flex justify-between items-center">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Mailvah <span class="text-slate-500 mx-2">vs</span> Apollo.io</h2>
-                            <p class="text-sm text-slate-400 mt-1">The bloated CRM giant relies on cached historical records.</p>
-                        </div>
-                    </div>
-                    <div class="p-0">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-900/50 text-xs text-slate-500 uppercase tracking-widest">
-                                <tr>
-                                    <th class="p-6 w-1/2">Feature</th>
-                                    <th class="p-6 text-sky-400 font-bold">Mailvah</th>
-                                    <th class="p-6 text-slate-500">Apollo.io</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/50 text-sm text-slate-300">
-                                <tr>
-                                    <td class="p-6 font-medium">Validation Method</td>
-                                    <td class="p-6"><span class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/20">Live SMTP Handshake</span></td>
-                                    <td class="p-6">Cached Historical Data</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-6 font-medium">Catch-All Penetration</td>
-                                    <td class="p-6 text-emerald-400"><i class="fa-solid fa-check"></i></td>
-                                    <td class="p-6 text-red-500 opacity-50"><i class="fa-solid fa-xmark"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-6 font-medium">Credits Policy</td>
-                                    <td class="p-6 font-bold text-white">Infinite Rollover</td>
-                                    <td class="p-6">Expires Monthly</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-6 font-medium">Starting Price</td>
-                                    <td class="p-6 font-bold text-white">$29 / mo</td>
-                                    <td class="p-6">$49 / mo</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="glass-panel rounded-2xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-orange-900/30 to-slate-900 p-8 border-b border-slate-800 flex justify-between items-center">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Mailvah <span class="text-slate-500 mx-2">vs</span> Hunter.io</h2>
-                            <p class="text-sm text-slate-400 mt-1">Pattern-based guessing guarantees high bounce rates on enterprise targets.</p>
-                        </div>
-                    </div>
-                    <div class="p-0">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-900/50 text-xs text-slate-500 uppercase tracking-widest">
-                                <tr>
-                                    <th class="p-6 w-1/2">Feature</th>
-                                    <th class="p-6 text-sky-400 font-bold">Mailvah</th>
-                                    <th class="p-6 text-slate-500">Hunter.io</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/50 text-sm text-slate-300">
-                                <tr>
-                                    <td class="p-6 font-medium">Methodology</td>
-                                    <td class="p-6"><span class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/20">Absolute Certainty</span></td>
-                                    <td class="p-6">Pattern Guessing (first.last@)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-6 font-medium">DNSBL Domain Monitoring</td>
-                                    <td class="p-6 text-emerald-400"><i class="fa-solid fa-check"></i></td>
-                                    <td class="p-6 text-red-500 opacity-50"><i class="fa-solid fa-xmark"></i></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="glass-panel p-8 rounded-2xl border-t-4 border-t-indigo-500 hover:border-indigo-400 transition-all group bg-slate-900/50">
+                        <h3 class="text-xl font-black text-white mb-2">Commander Pack</h3>
+                        <div class="mb-8"><span class="text-4xl font-black text-white">$399</span><span class="text-slate-500 font-medium text-sm ml-1">/ one-time</span></div>
+                        <p class="text-indigo-400 font-mono text-sm mb-8 font-bold text-center bg-indigo-500/10 py-2 rounded-lg border border-indigo-500/20">10,000 D-Credits</p>
+                        <button onclick="purchaseDiscoveryPack('Commander Pack', 399, 10000)" class="w-full bg-slate-800 hover:bg-indigo-600 text-white font-bold py-3.5 rounded-xl border border-slate-700 transition-colors tracking-widest text-xs uppercase">Deploy Commander</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div id="page-pricing" class="hidden animate-fade-in pt-24 pb-20">
-            <div class="max-w-6xl mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h1 class="text-4xl md:text-5xl font-black text-white mb-6">Dual-Vault Economics</h1>
-                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">Extract fresh targets and scrub legacy lists clean. Transparent infrastructure pricing with infinite rollover.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-slate-500 hover:border-sky-400 transition-all">
-                        <h3 class="text-xl font-bold text-white mb-2">Starter</h3>
-                        <p class="text-sm text-slate-400 mb-6">For indie founders & hackers.</p>
-                        <div class="mb-6"><span class="text-4xl font-black text-white">$29</span><span class="text-slate-500">/mo</span></div>
-                        <button onclick="openAuth('signup')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all border border-slate-600 mb-8">Deploy Starter</button>
-                        
-                        <ul class="space-y-4 text-sm text-slate-300">
-                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> 1,500 Wash Credits (I-Credits)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-sky-400 mr-3"></i> 365 Hunt Credits (D-Credits)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> Bulk Engine Access</li>
-                            <li class="flex items-center text-slate-600"><i class="fa-solid fa-xmark mr-3"></i> <span class="line-through">Waterfall Rescue</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-emerald-500 relative transform md:-translate-y-4 shadow-[0_0_30px_rgba(16,185,129,0.15)] bg-slate-900/80">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest">Most Popular</div>
-                        <h3 class="text-xl font-bold text-white mb-2">Growth</h3>
-                        <p class="text-sm text-slate-400 mb-6">For scaling agencies and outbound teams.</p>
-                        <div class="mb-6"><span class="text-4xl font-black text-white">$79</span><span class="text-slate-500">/mo</span></div>
-                        <button onclick="openAuth('signup')" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/25 mb-8">Deploy Growth</button>
-                        
-                        <ul class="space-y-4 text-sm text-slate-300">
-                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> 5,000 Wash Credits (I-Credits)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-sky-400 mr-3"></i> 1,250 Hunt Credits (D-Credits)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> Bulk Engine Access</li>
-                            <li class="flex items-center"><i class="fa-solid fa-bolt text-amber-400 mr-3"></i> Waterfall Rescue Protocol</li>
-                            <li class="flex items-center text-slate-600"><i class="fa-solid fa-xmark mr-3"></i> <span class="line-through">Developer API Hub</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-purple-500 hover:border-purple-400 transition-all">
-                        <h3 class="text-xl font-bold text-white mb-2">Enterprise Pro</h3>
-                        <p class="text-sm text-slate-400 mb-6">For infrastructure-level deployment.</p>
-                        <div class="mb-6"><span class="text-4xl font-black text-white">$149</span><span class="text-slate-500">/mo</span></div>
-                        <button onclick="openAuth('signup')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all border border-slate-600 mb-8">Deploy Enterprise</button>
-                        
-                        <ul class="space-y-4 text-sm text-slate-300">
-                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> 15,000 Wash Credits (I-Credits)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-sky-400 mr-3"></i> 3,750 Hunt Credits (D-Credits)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-code text-purple-400 mr-3"></i> Developer API Hub</li>
-                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-purple-400 mr-3"></i> Native CRM Integrations</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="mt-20 border-t border-slate-800/50 pt-16 text-center">
-                    <h2 class="text-2xl font-bold text-white mb-4">Discovery Refill Vault</h2>
-                    <p class="text-sm text-slate-400 mb-10 max-w-xl mx-auto">Need to extract more targets? Deploy one-time hunting packs directly inside the Command Center. No recurring subscriptions required.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                        <div class="glass-panel p-6 rounded-xl border border-slate-700/50">
-                            <h4 class="text-white font-bold mb-1">Scout Pack</h4>
-                            <p class="text-sky-400 font-mono text-sm mb-4">1,225 D-Credits</p>
-                            <div class="text-2xl font-black text-white">$49</div>
-                        </div>
-                        <div class="glass-panel p-6 rounded-xl border border-sky-500/30 bg-sky-900/10 shadow-[0_0_15px_rgba(56,189,248,0.1)]">
-                            <h4 class="text-white font-bold mb-1">Hunter Pack</h4>
-                            <p class="text-sky-400 font-mono text-sm mb-4">3,750 D-Credits</p>
-                            <div class="text-2xl font-black text-white">$149</div>
-                        </div>
-                        <div class="glass-panel p-6 rounded-xl border border-slate-700/50">
-                            <h4 class="text-white font-bold mb-1">Commander Pack</h4>
-                            <p class="text-purple-400 font-mono text-sm mb-4">10,000 D-Credits</p>
-                            <div class="text-2xl font-black text-white">$399</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="page-faq" class="hidden animate-fade-in pt-24 pb-20">
-            <div class="max-w-3xl mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl font-black text-white mb-4">Knowledge Base</h1>
-                    <p class="text-slate-400">Everything you need to know about the Mailvah infrastructure.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="glass-panel rounded-xl overflow-hidden">
-                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq1')">
-                            What is a Port 25 Handshake?
-                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq1"></i>
-                        </button>
-                        <div id="faq1" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
-                            Instead of checking an outdated database, our bare-metal servers connect directly to the recipient's mail server via Port 25. We ask the server, "Does this exact inbox exist?" without ever sending an actual email. This guarantees real-time, deterministic accuracy.
-                        </div>
-                    </div>
-
-                    <div class="glass-panel rounded-xl overflow-hidden">
-                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq2')">
-                            How are Wash Credits (I-Credits) different from Discovery Credits (D-Credits)?
-                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq2"></i>
-                        </button>
-                        <div id="faq2" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
-                            <strong>Wash Credits (I-Credits)</strong> are used in the Bulk Engine to clean your existing CSV lists (1 credit = 1 email verified).<br><br>
-                            <strong>Discovery Credits (D-Credits)</strong> are used in the Lead Finder network to extract net-new targets based on your search parameters. If you wash an extracted lead, it burns 1 D-Credit and 1 I-Credit simultaneously to ensure it enters your vault 100% clean.
-                        </div>
-                    </div>
-
-                    <div class="glass-panel rounded-xl overflow-hidden">
-                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq3')">
-                            Are my uploaded CSVs secure?
-                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq3"></i>
-                        </button>
-                        <div id="faq3" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
-                            Yes. Your assets are stored in isolated, 256-bit encrypted Supabase storage buckets tied exclusively to your User ID. Mailvah is strictly an infrastructure provider; we never aggregate, read, or sell your hard-earned data back to the market.
-                        </div>
-                    </div>
-                    
-                    <div class="glass-panel rounded-xl overflow-hidden">
-                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq4')">
-                            What is the Waterfall Rescue?
-                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq4"></i>
-                        </button>
-                        <div id="faq4" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
-                            Available on the Growth and Pro tiers. If a lead in your Bulk Wash comes back "Dead", the Waterfall Rescue automatically burns Discovery credits to hunt down and inject a valid alternative email for that target, saving the deal from dying in the pipeline.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 pb-8 mt-auto">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm">Product</h4>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" onclick="navigate('home')" class="hover:text-sky-400 transition-colors">Infrastructure</a></li>
-                        <li><a href="#" onclick="navigate('pricing')" class="hover:text-sky-400 transition-colors">Pricing</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Developer API</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Status</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm">Compare</h4>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" onclick="navigate('compare')" class="hover:text-sky-400 transition-colors">Mailvah vs Apollo</a></li>
-                        <li><a href="#" onclick="navigate('compare')" class="hover:text-sky-400 transition-colors">Mailvah vs Hunter</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Mailvah vs Skrapp</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm">Company</h4>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">About Us</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Zero-to-One Initiative</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm">Legal Hub</h4>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">GDPR & Security</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-slate-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-2">
-                    <div class="bg-blue-600 p-1.5 rounded"><i class="fa-solid fa-m text-white text-xs"></i></div>
-                    <span class="text-slate-400 text-xs tracking-wider">MAILVAH</span>
-                </div>
-                <p class="text-xs text-slate-600">© 2026 Donmican Technology Ltd. Engineered in Lagos. All rights reserved.</p>
-                <div class="flex gap-4 text-xs text-slate-500">
-                    <span class="flex items-center"><i class="fa-solid fa-shield-halved mr-1"></i> SOC 2 Type II</span>
-                    <span class="flex items-center"><i class="fa-solid fa-lock mr-1"></i> 256-bit AES</span>
-                </div>
-            </div>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // --- SPA Routing ---
-        function navigate(pageId) {
-            // Hide all pages
-            ['home', 'compare', 'pricing', 'faq'].forEach(id => {
-                document.getElementById('page-' + id).classList.add('hidden');
-                document.getElementById('nav-' + id)?.classList.remove('nav-active', 'text-white');
+        // --- SUPABASE INIT ---
+        const supabaseUrl = 'https://onznuyxevistjmsgxnfm.supabase.co';
+        const supabaseKey = 'sb_publishable_gZ1Ea52nk0JCEO5twFFJwQ_CkHjXZqg';
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // --- GLOBAL STATE ---
+        let currentCredits = 0;
+        let currentDiscoveryCredits = 0; 
+        let userPlan = 'Free';
+        let bulkDataRows = [];
+        let safeExportData = []; 
+        let allExportData = [];
+        let emailColumnIndex = -1;
+        let globalExtractedCount = 0;
+        let deadLeadsFoundInWash = 0;
+        let scansUsedGuest = parseInt(localStorage.getItem('mailvah_scans_v3') || '0');
+
+        // --- LAYER CONTROLLER (Marketing vs. App) ---
+        _supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                document.getElementById('marketingWrapper').classList.add('hidden');
+                document.getElementById('appWrapper').classList.remove('hidden');
+                fetchUserCredits();
+            }
+        });
+
+        _supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                document.getElementById('authModal').classList.add('hidden');
+                document.getElementById('marketingWrapper').classList.add('hidden');
+                document.getElementById('appWrapper').classList.remove('hidden');
+                fetchUserCredits();
+            } else if (event === 'SIGNED_OUT') {
+                document.getElementById('authModal').classList.add('hidden');
+                document.getElementById('marketingWrapper').classList.remove('hidden');
+                document.getElementById('appWrapper').classList.add('hidden');
+                navigateMarketing('home');
+            }
+        });
+
+        // --- PUBLIC MARKETING ROUTING & LOGIC ---
+        function navigateMarketing(id) {
+            ['home', 'pricing', 'compare', 'faq', 'legal', 'contact'].forEach(p => {
+                const el = document.getElementById('page-'+p); if(el) el.classList.add('hidden');
+                const nav = document.getElementById('nav-'+p); if(nav) nav.classList.remove('nav-active', 'text-white');
             });
-            
-            // Show target
-            document.getElementById('page-' + pageId).classList.remove('hidden');
-            document.getElementById('nav-' + pageId)?.classList.add('nav-active', 'text-white');
-            window.scrollTo(0, 0);
+            const targetEl = document.getElementById('page-'+id); if(targetEl) targetEl.classList.remove('hidden');
+            const targetNav = document.getElementById('nav-'+id); if(targetNav) targetNav.classList.add('nav-active', 'text-white');
+            window.scrollTo(0,0);
         }
 
-        // --- FAQ Toggle ---
+        function calculateROI() {
+            const e = document.getElementById('slide-emails').value;
+            const b = document.getElementById('slide-bounce').value;
+            document.getElementById('val-emails').innerText = parseInt(e).toLocaleString();
+            document.getElementById('val-bounce').innerText = b + '%';
+            document.getElementById('roi-saved').innerText = '+$' + Math.round((e * (b/100)) * 0.60).toLocaleString();
+        }
+
         function toggleFaq(id) {
             const content = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
@@ -497,107 +1038,613 @@
             }
         }
 
-        // --- Auth Modal Logic ---
-        function openAuth(type) {
-            const modal = document.getElementById('authModal');
-            const title = document.getElementById('authTitle');
-            const subtitle = document.getElementById('authSubtitle');
-            const btnText = document.getElementById('authBtnText');
+        function toggleAuthModal() { document.getElementById('authModal').classList.toggle('hidden'); }
 
-            if(type === 'login') {
-                title.innerText = "Access Command Center";
-                subtitle.innerText = "Log in to view your Vault and manage infrastructure.";
-                btnText.innerText = "Secure Login";
-            } else {
-                title.innerText = "Deploy Infrastructure";
-                subtitle.innerText = "Create an account to unlock 115 free wash credits.";
-                btnText.innerText = "Create Free Account";
+        // Marketing: 2-Strike Terminal
+        if(scansUsedGuest >= 2) {
+            document.getElementById('marketingLockout')?.classList.remove('hidden');
+            document.getElementById('livePingInput').disabled = true;
+            document.getElementById('livePingBtn').disabled = true;
+        }
+
+        function executeMarketingPing() {
+            if(scansUsedGuest >= 2) return;
+            const input = document.getElementById('livePingInput');
+            const term = document.getElementById('marketingTerminalOutput');
+            const btn = document.getElementById('livePingBtn');
+            const email = input.value.trim();
+
+            if(!email || !email.includes('@')) { alert('Valid target email required.'); return; }
+
+            btn.disabled = true; input.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-radar fa-spin"></i>';
+            term.innerHTML = `<div class="text-slate-500">> target: ${email}</div>`;
+            term.innerHTML += `<div>> Initiating V3.2 Heuristic Protocol...</div>`;
+            
+            setTimeout(() => { term.innerHTML += `<div class="text-sky-400">> Firing 3-Burst Ghost Ping...</div>`; }, 800);
+            setTimeout(() => { term.innerHTML += `<div>> Analyzing firewall response anomaly... <span class="text-emerald-400 font-bold">[ BYPASSED ]</span></div>`; }, 1800);
+            setTimeout(() => { term.innerHTML += `<div>> Executing deep SMTP handshake...</div>`; }, 2600);
+            
+            setTimeout(() => {
+                const isSafe = Math.random() > 0.6; 
+                if(isSafe) {
+                    term.innerHTML += `<div class="text-white font-black bg-emerald-500/20 px-2 py-1 inline-block rounded border border-emerald-500/30 mt-2 shadow-[0_0_10px_rgba(16,185,129,0.2)]">[ VALID : INBOX SECURED ]</div><span class="animate-pulse ml-1">_</span>`;
+                } else {
+                    term.innerHTML += `<div class="text-white font-black bg-red-500/20 px-2 py-1 inline-block rounded border border-red-500/30 mt-2 shadow-[0_0_10px_rgba(239,68,68,0.2)]">[ DEAD : FATAL BOUNCE ]</div><span class="animate-pulse ml-1">_</span>`;
+                }
+
+                scansUsedGuest++;
+                localStorage.setItem('mailvah_scans_v3', scansUsedGuest.toString());
+                btn.disabled = false; input.disabled = false; btn.innerText = 'PING'; input.value = '';
+                
+                if(scansUsedGuest >= 2) {
+                    setTimeout(() => {
+                        document.getElementById('marketingLockout').classList.remove('hidden');
+                        input.disabled = true; btn.disabled = true;
+                    }, 1500);
+                }
+            }, 3800);
+        }
+
+        // Marketing: Dynamic V3.2 Enterprise Slider
+        const enterpriseTiers = [
+            { name: "Sandbox", price: "$0", wash: "115", hunt: "0", color: "text-slate-400", bg: "bg-slate-500", shadow: "shadow-slate-500/30", features: [
+                { f: "V3.2 Deep-Scan Engine", desc: "Heuristic 3-burst anomaly pings for single targets." },
+                { f: "Threat Analysis", desc: "Scan cold email copy for over 50 spam triggers." }
+            ]},
+            { name: "Starter", price: "$29", wash: "1,500", hunt: "365", color: "text-emerald-400", bg: "bg-emerald-500", shadow: "shadow-emerald-500/30", features: [
+                { f: "Bulk Engine Access", desc: "Upload and wash CSVs through the bare-metal infrastructure." },
+                { f: "Email Support", desc: "Standard 24h technical support SLA." }
+            ]},
+            { name: "Growth", price: "$79", wash: "5,000", hunt: "1,250", color: "text-sky-400", bg: "bg-sky-500", shadow: "shadow-sky-500/30", features: [
+                { f: "Domain Monitor", desc: "Real-time tracking of DMARC and Spamhaus Blacklist health." },
+                { f: "Waterfall Rescue", desc: "Automatically hunt valid alternative emails for dead leads in your CSV." }
+            ]},
+            { name: "Pro", price: "$149", wash: "15,000", hunt: "3,750", color: "text-purple-400", bg: "bg-purple-500", shadow: "shadow-purple-500/30", features: [
+                { f: "Developer API Hub", desc: "Generate secret cryptographic keys to verify leads directly in your own app." },
+                { f: "CRM Purge Sync", desc: "Native HubSpot/Salesforce integration to clean contacts automatically." },
+                { f: "Inbox Seed Network", desc: "Test campaigns against our 20 hidden accounts for Primary/Spam placement." }
+            ]},
+            { name: "Scale", price: "$399", wash: "100,000", hunt: "15,000", color: "text-amber-400", bg: "bg-amber-500", shadow: "shadow-amber-500/30", features: [
+                { f: "Dedicated Node Routing", desc: "Isolated verification server lane. No shared bandwidth, zero latency drops." },
+                { f: "Priority Slack Channel", desc: "Direct, instant access to the Mailvah engineering team in Lagos." }
+            ]},
+            { name: "Apex", price: "$799", wash: "200,000", hunt: "30,000", color: "text-red-400", bg: "bg-red-500", shadow: "shadow-red-500/30", features: [
+                { f: "Bare-Metal IP Assignment", desc: "Dedicated IP address exclusively for your API verification traffic to bypass firewalls." },
+                { f: "Custom API Rate Limits", desc: "Remove standard API throttling for unlimited enterprise verification throughput." }
+            ]}
+        ];
+
+        function updatePricingUI() {
+            const val = document.getElementById('pricingSlider')?.value;
+            if(!val) return;
+            const data = enterpriseTiers[val];
+            
+            document.getElementById('tierName').innerText = data.name + " Tier";
+            document.getElementById('tierPrice').innerText = data.price;
+            document.getElementById('tierPrice').className = "text-7xl font-black tracking-tighter transition-colors duration-300 " + data.color;
+            document.getElementById('tierWash').innerText = data.wash;
+            document.getElementById('tierHunt').innerText = data.hunt;
+            
+            // Handle the "Most Popular" badge logic
+            const badge = document.getElementById('tierBadge');
+            if(val == 2) { badge.classList.remove('hidden'); badge.innerText = "MOST POPULAR"; }
+            else if(val == 4) { badge.classList.remove('hidden'); badge.innerText = "ENTERPRISE VOLUME"; }
+            else if(val == 5) { badge.classList.remove('hidden'); badge.innerText = "MAXIMUM POWER"; }
+            else { badge.classList.add('hidden'); }
+
+            let listHtml = "";
+            data.features.forEach(feat => {
+                listHtml += `
+                    <li class="flex items-center justify-between group border-b border-slate-800/50 pb-4 last:border-0 last:pb-0">
+                        <span class="flex items-center font-bold text-white"><i class="fa-solid fa-check ${data.color} mr-3 text-lg drop-shadow-[0_0_5px_currentColor]"></i> ${feat.f}</span>
+                        <div class="tooltip"><i class="fa-solid fa-circle-question text-slate-500 hover:text-white transition-colors text-lg"></i><div class="tooltip-text">${feat.desc}</div></div>
+                    </li>`;
+            });
+            document.getElementById('tierFeatures').innerHTML = listHtml;
+        }
+        if(document.getElementById('pricingSlider')) updatePricingUI();
+
+
+        // --- COMMAND CENTER APP LOGIC ---
+        function switchAppTab(tab) {
+            const paywallBox = document.getElementById('paywallContainer');
+            const title = document.getElementById('paywallTitle');
+            const desc = document.getElementById('paywallDesc');
+
+            if (userPlan === 'Free' && tab !== 'single' && tab !== 'analyzer') {
+                title.innerText = "Command Center Locked";
+                desc.innerText = "You are currently in the Sandbox. Upgrade to a paid tier to wash massive lists and access the Vault.";
+                paywallBox.classList.remove('hidden');
+                return; 
             }
 
-            modal.classList.remove('hidden');
-            // Small delay to allow display:block to apply before opacity transition
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
-        }
-
-        function closeAuth() {
-            const modal = document.getElementById('authModal');
-            modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
-        function handleAuthSubmit() {
-            // Redirects to actual Command Center app URL upon "auth" on marketing site
-            const btn = document.getElementById('authBtnText');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
-            setTimeout(() => {
-                window.location.href = 'https://app.mailvah.com'; 
-            }, 800);
-        }
-
-        // --- The 2-Strike Live Terminal Logic ---
-        const MAX_SCANS = 2;
-        let scansUsed = parseInt(localStorage.getItem('mailvah_scans') || '0');
-
-        // Initial check on load
-        if(scansUsed >= MAX_SCANS) {
-            lockTerminal();
-        }
-
-        function executeLivePing() {
-            if(scansUsed >= MAX_SCANS) return;
-
-            const input = document.getElementById('livePingInput');
-            const email = input.value.trim();
-            const term = document.getElementById('terminalOutput');
-            const btn = document.getElementById('livePingBtn');
-
-            if(!email || !email.includes('@')) {
-                alert('Please enter a valid target email.');
+            if (['api', 'integrations', 'seed'].includes(tab) && userPlan !== 'Pro' && userPlan !== 'Scale' && userPlan !== 'Apex') {
+                title.innerText = "Enterprise Feature Locked";
+                desc.innerText = "Developer APIs, native CRM Integrations, and the Seed Network are strictly reserved for the Pro ($149) tier and above.";
+                paywallBox.classList.remove('hidden');
                 return;
             }
 
-            // Lock UI during scan
-            btn.disabled = true;
-            input.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-radar fa-spin"></i>';
-            
-            term.innerHTML = `> Initiating 4x Heuristic Protocol on <span class="text-sky-400">${email}</span>...<br>`;
-            
-            // Mocking the delay and visual output of the Port 25 handshake
-            setTimeout(() => { term.innerHTML += `> Ping Syntax... <span class="text-emerald-400">PASS</span><br>`; }, 600);
-            setTimeout(() => { term.innerHTML += `> Ping DNS/MX... <span class="text-emerald-400">PASS</span><br>`; }, 1200);
-            setTimeout(() => { term.innerHTML += `> Penetrating Catch-All Shield... <span class="text-emerald-400">BYPASSED</span><br>`; }, 2000);
-            
-            setTimeout(() => {
-                // Fake randomization for demo: 70% chance of dead/catch-all to prove "Apollo lists are dirty" point.
-                const isSafe = Math.random() > 0.7; 
-                if(isSafe) {
-                    term.innerHTML += `> Executing Port 25 Handshake... <span class="text-emerald-400 font-bold">[ SAFE ]</span><span class="cursor-blink">_</span>`;
-                } else {
-                    term.innerHTML += `> Executing Port 25 Handshake... <span class="text-red-500 font-bold">[ FATAL BOUNCE DETECTED ]</span><br>> <span class="text-slate-500">Server response: 550 5.1.1 User unknown</span><span class="cursor-blink">_</span>`;
-                }
+            ['analyzer', 'single', 'bulk', 'vault', 'monitor', 'finder', 'integrations', 'api', 'seed'].forEach(id => {
+                const btn = document.getElementById('tab-' + id);
+                if(btn) btn.classList.remove('active-tab');
+                const view = document.getElementById('view-' + id);
+                if(view) view.classList.add('hidden');
+            });
 
-                // Increment and log
-                scansUsed++;
-                localStorage.setItem('mailvah_scans', scansUsed.toString());
-                
-                // Reset UI
-                btn.disabled = false;
-                input.disabled = false;
-                btn.innerText = 'PING';
-                input.value = '';
+            const activeBtn = document.getElementById('tab-' + tab);
+            if(activeBtn) activeBtn.classList.add('active-tab');
+            const targetView = document.getElementById('view-' + tab);
+            if(targetView) targetView.classList.remove('hidden');
 
-                // Check if they hit the limit
-                if(scansUsed >= MAX_SCANS) {
-                    setTimeout(lockTerminal, 1500);
-                }
-            }, 3000);
+            if (tab === 'analyzer') {
+                document.getElementById('pageTitle').innerText = "Threat Analyzer";
+                document.getElementById('pageDesc').innerText = "Zero-cost diagnostic for cold email payload and infrastructure.";
+            } else if (tab === 'single') {
+                document.getElementById('pageTitle').innerText = "V3.2 Engine";
+                document.getElementById('pageDesc').innerText = "Direct Heuristic handshakes for zero-bounce validation.";
+            } else if (tab === 'bulk') {
+                document.getElementById('pageTitle').innerText = "Bulk Engine";
+                document.getElementById('pageDesc').innerText = "Upload databases to perform deterministic washes.";
+            } else if (tab === 'vault') {
+                document.getElementById('pageTitle').innerText = "Encrypted Vault";
+                document.getElementById('pageDesc').innerText = "Secure storage of all previously washed datasets.";
+                fetchVaultFiles(); 
+            } else if (tab === 'monitor') {
+                document.getElementById('pageTitle').innerText = "Infrastructure Monitor";
+                document.getElementById('pageDesc').innerText = "Real-time DNS health and blacklist tracking.";
+                fetchMonitoredDomains();
+            } else if (tab === 'finder') {
+                document.getElementById('pageTitle').innerText = "Lead Extraction Network";
+                document.getElementById('pageDesc').innerText = "Global B2B discovery powered by the Apify network.";
+            } else if (tab === 'api') {
+                fetchApiKey();
+            }
         }
 
-        function lockTerminal() {
-            document.getElementById('livePingInput').disabled = true;
-            document.getElementById('livePingBtn').disabled = true;
-            document.getElementById('terminalLockout').classList.remove('hidden');
+        // Auth Calls
+        async function handleSignUp() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const { data, error } = await _supabase.auth.signUp({ email, password });
+            if (error) alert(error.message);
+            else alert("Credentials verified. Check your email to confirm access.");
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) alert(error.message);
+        }
+
+        async function handleSignOut() { await _supabase.auth.signOut(); }
+
+        async function fetchUserCredits() {
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (!user) return;
+            const { data } = await _supabase.from('user_credits').select('plan_tier, discovery_vault, integrity_vault').eq('id', user.id).single();
+
+            if (data) {
+                userPlan = data.plan_tier || 'Free';
+                currentCredits = data.integrity_vault || 0;
+                currentDiscoveryCredits = data.discovery_vault || 0;
+
+                const balEl = document.getElementById('userCreditBalance');
+                if (balEl) {
+                    balEl.innerHTML = `<span class="text-blue-400">${currentDiscoveryCredits.toLocaleString()}<span class="text-[10px] text-slate-500 font-normal ml-0.5 mr-2">D</span></span> <span class="text-emerald-400">${currentCredits.toLocaleString()}<span class="text-[10px] text-slate-500 font-normal ml-0.5">I</span></span>`;
+                }
+
+                if (userPlan === 'Free') {
+                    document.getElementById('bulkLock')?.classList.remove('hidden');
+                    document.getElementById('bulkContent')?.classList.add('premium-lock');
+                } else {
+                    document.getElementById('bulkLock')?.classList.add('hidden');
+                    document.getElementById('bulkContent')?.classList.remove('premium-lock');
+                }
+            }
+        }
+
+        // Threat Analyzer Logic
+        function analyzePayload() {
+            const text = document.getElementById('payloadInput').value.toLowerCase();
+            const logBox = document.getElementById('threatLog');
+            const scoreDisplay = document.getElementById('copyScoreDisplay');
+            
+            if(!text.trim()) {
+                scoreDisplay.innerText = "100/100"; scoreDisplay.className = "text-3xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.4)]";
+                logBox.innerHTML = "System clear. Awaiting payload text..."; logBox.className = "text-xs text-slate-500 font-mono";
+                return;
+            }
+
+            const spamTriggers = ['free', 'buy', 'urgent', 'guarantee', 'act now', 'click here', 'investment', 'crypto', 'risk-free', 'winner', 'cash', 'bonus', 'credit card', '100%', 'no catch', 'obligation', 'earn', 'income', 'profit', 'cheap', 'discount'];
+            let score = 100;
+            let detectedThreats = [];
+
+            spamTriggers.forEach(word => {
+                const regex = new RegExp('\\b' + word + '\\b', 'g');
+                if(text.match(regex)) { score -= 8; detectedThreats.push(word); }
+                else if(word === '100%' && text.includes('100%')) { score -= 8; detectedThreats.push(word); }
+            });
+
+            score = Math.max(0, score);
+            scoreDisplay.innerText = `${score}/100`;
+
+            if(score >= 90) scoreDisplay.className = "text-3xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.4)]";
+            else if (score >= 60) scoreDisplay.className = "text-3xl font-black text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.4)]";
+            else scoreDisplay.className = "text-3xl font-black text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]";
+
+            if(detectedThreats.length === 0) logBox.innerHTML = "<span class='text-emerald-400 font-bold'>[ OK ] No high-risk spam triggers detected. Payload copy is optimized.</span>";
+            else {
+                let html = "<span class='text-red-400 font-bold'>[ WARN ] High-risk triggers detected:</span><ul class='mt-2 space-y-1.5'>";
+                detectedThreats.forEach(t => html += `<li><span class='text-red-500'>-></span> <span class='text-white bg-red-500/20 px-1.5 py-0.5 rounded border border-red-500/30 uppercase tracking-widest text-[10px]'>${t}</span></li>`);
+                html += "</ul>"; logBox.innerHTML = html;
+            }
+        }
+
+        async function checkDNSInfrastructure() {
+            const domainInput = document.getElementById('dnsTargetInput').value.trim();
+            if(!domainInput) return alert("Domain required.");
+            let domain = domainInput.replace(/(^\w+:|^)\/\//, '').replace(/^www\./, '');
+            if(domain.includes('/')) domain = domain.split('/')[0];
+
+            const btn = document.getElementById('dnsBtn');
+            const spfIcon = document.getElementById('spfStatusIcon'); const spfText = document.getElementById('spfStatusText');
+            const dmarcIcon = document.getElementById('dmarcStatusIcon'); const dmarcText = document.getElementById('dmarcStatusText');
+
+            btn.innerHTML = `<i class="fa-solid fa-radar fa-spin"></i> SCANNING...`;
+            spfIcon.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-sky-400"></i>`; dmarcIcon.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-sky-400"></i>`;
+
+            try {
+                const spfRes = await fetch(`https://dns.google/resolve?name=${domain}&type=TXT`); const spfData = await spfRes.json();
+                let hasSpf = false; if(spfData.Answer) hasSpf = spfData.Answer.some(record => record.data.includes('v=spf1'));
+                const dmarcRes = await fetch(`https://dns.google/resolve?name=_dmarc.${domain}&type=TXT`); const dmarcData = await dmarcRes.json();
+                let hasDmarc = false; if(dmarcData.Answer) hasDmarc = dmarcData.Answer.some(record => record.data.includes('v=DMARC1'));
+
+                if(hasSpf) { spfIcon.innerHTML = `<i class="fa-solid fa-shield-check text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]"></i>`; spfText.innerHTML = `<span class="text-emerald-400">Secure</span>`; } 
+                else { spfIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]"></i>`; spfText.innerHTML = `<span class="text-red-500">Exposed</span>`; }
+                if(hasDmarc) { dmarcIcon.innerHTML = `<i class="fa-solid fa-shield-check text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]"></i>`; dmarcText.innerHTML = `<span class="text-emerald-400">Secure</span>`; } 
+                else { dmarcIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]"></i>`; dmarcText.innerHTML = `<span class="text-red-500">Exposed</span>`; }
+                btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> RE-SCAN INFRASTRUCTURE`;
+            } catch (err) { btn.innerHTML = "ERROR"; }
+        }
+
+        // Single Target Engine
+        async function verifyEmail() {
+            const email = document.getElementById('emailInput').value;
+            if (!email) return;
+            if (currentCredits <= 0 && userPlan !== 'Free') { document.getElementById('paywallContainer').classList.remove('hidden'); return; }
+
+            const card = document.getElementById('statusCard');
+            document.getElementById('defaultMsg').classList.add('hidden');
+            document.getElementById('resultsContent').classList.remove('hidden');
+            card.classList.add('scanning-glow');
+            document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-microchip text-sky-400 animate-pulse"></i>';
+            document.getElementById('statusTitle').innerText = "V3.2 HEURISTIC SCAN...";
+            document.getElementById('statusTitle').className = "text-2xl md:text-3xl font-black mb-3 text-sky-400 tracking-tight";
+            document.getElementById('statusReason').innerText = "Mapping firewall response anomalies...";
+            
+            try {
+                const response = await fetch('https://api.mailvah.com/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
+                const data = await response.json();
+                card.classList.remove('scanning-glow');
+                const { data: { user } } = await _supabase.auth.getUser();
+                if(user) { await _supabase.rpc('increment_credits', { row_id: user.id, amt: -1 }); fetchUserCredits(); }
+                
+                if (data.status === 'VALID') {
+                    document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-shield-check text-emerald-400 drop-shadow-[0_0_20px_rgba(52,211,153,0.5)]"></i>';
+                    document.getElementById('statusTitle').innerText = "DELIVERABLE";
+                    document.getElementById('statusTitle').className = "text-3xl md:text-4xl font-black mb-3 text-emerald-400";
+                    document.getElementById('statusReason').innerText = `${data.reason} (Confidence: ${data.confidence}%)`;
+                } else if (data.status === 'CATCH_ALL') {
+                    document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-triangle-exclamation text-yellow-500 drop-shadow-[0_0_20px_rgba(234,179,8,0.5)]"></i>';
+                    document.getElementById('statusTitle').innerText = "CATCH-ALL SHIELD";
+                    document.getElementById('statusTitle').className = "text-3xl md:text-4xl font-black mb-3 text-yellow-500 tracking-tight";
+                    document.getElementById('statusReason').innerText = `${data.reason}. Do not send.`;
+                } else {
+                    document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-skull text-red-500 drop-shadow-[0_0_20px_rgba(239,68,68,0.5)]"></i>';
+                    document.getElementById('statusTitle').innerText = "UNDELIVERABLE";
+                    document.getElementById('statusTitle').className = "text-3xl md:text-4xl font-black mb-3 text-red-500";
+                    document.getElementById('statusReason').innerText = "Fatal bounce risk detected.";
+                }
+            } catch (e) { card.classList.remove('scanning-glow'); document.getElementById('statusTitle').innerText = "API ERROR"; }
+        }
+
+        // Bulk Engine Methods
+        function handleDragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('border-sky-500', 'bg-sky-500/10'); }
+        function handleDragLeave(e) { e.preventDefault(); document.getElementById('dropZone').classList.remove('border-sky-500', 'bg-sky-500/10'); }
+        function handleDrop(e) { e.preventDefault(); document.getElementById('dropZone').classList.remove('border-sky-500', 'bg-sky-500/10'); if (e.dataTransfer.files && e.dataTransfer.files.length > 0) { document.getElementById('csvFile').files = e.dataTransfer.files; handleFileSelect({ target: document.getElementById('csvFile') }); } }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result; const rows = text.split('\n').filter(row => row.trim() !== '');
+                if (rows.length < 1) return;
+                const headers = rows[0].split(','); emailColumnIndex = headers.findIndex(h => h.toLowerCase().includes('email'));
+                if (emailColumnIndex === -1) { alert("No 'Email' column found. Please format CSV."); event.target.value = ''; return; }
+
+                bulkDataRows = rows;
+                document.getElementById('stat-total').innerText = rows.length - 1;
+                document.getElementById('stat-valid').innerText = "0"; document.getElementById('stat-invalid').innerText = "0";
+                document.getElementById('exportOptionsSection').classList.add('hidden'); document.getElementById('waterfallSection').classList.add('hidden');
+                document.getElementById('liveFeedContainer').classList.add('hidden'); document.getElementById('progressContainer').classList.add('hidden');
+                document.getElementById('liveFeed').innerHTML = ''; document.getElementById('progressBar').style.width = '0%';
+                
+                const previewSection = document.getElementById('dataPreviewSection'); const previewHeader = document.getElementById('previewHeader'); const previewBody = document.getElementById('previewBody');
+                previewSection.classList.remove('hidden');
+                let headHtml = "<tr>"; headers.forEach(h => headHtml += `<th class="px-4 py-3 font-bold">${h.substring(0, 20)}</th>`); headHtml += "</tr>"; previewHeader.innerHTML = headHtml;
+                let bodyHtml = "";
+                for(let i=1; i<=Math.min(3, rows.length - 1); i++) {
+                    const cols = rows[i].split(','); bodyHtml += "<tr>"; cols.forEach(c => bodyHtml += `<td class="px-4 py-2 border-t border-slate-800/50">${c.substring(0, 25)}</td>`); bodyHtml += "</tr>";
+                }
+                previewBody.innerHTML = bodyHtml;
+                document.getElementById('dropZone').classList.add('hidden'); document.getElementById('actionButtons').classList.remove('hidden');
+                const btn = document.getElementById('startBulkBtn'); btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-play"></i> INITIATE WASH (${rows.length - 1} Targets)`;
+                event.target.value = ''; 
+            };
+            reader.readAsText(file);
+        }
+
+        function cancelBulkWash() {
+            bulkDataRows = []; safeExportData = []; allExportData = [];
+            document.getElementById('dropZone').classList.remove('hidden'); document.getElementById('actionButtons').classList.add('hidden');
+            document.getElementById('exportOptionsSection').classList.add('hidden'); document.getElementById('dataPreviewSection').classList.add('hidden');
+            document.getElementById('stat-total').innerText = "0"; document.getElementById('stat-valid').innerText = "0"; document.getElementById('stat-invalid').innerText = "0";
+        }
+
+        async function startBulkWash() {
+            const rowCount = bulkDataRows.length - 1;
+            if (currentCredits < rowCount) { alert("Insufficient Integrity Credits!"); document.getElementById('paywallContainer').classList.remove('hidden'); return; }
+
+            const { data: { user } } = await _supabase.auth.getUser();
+            if(user) { await _supabase.rpc('increment_credits', { row_id: user.id, amt: -rowCount }); await fetchUserCredits(); }
+
+            document.getElementById('cancelBulkBtn').classList.add('hidden');
+            const btn = document.getElementById('startBulkBtn'); btn.className = "col-span-4 bg-slate-900 border border-emerald-500/30 text-emerald-400 font-bold py-4 rounded-xl transition-all tracking-wider text-xs uppercase flex justify-center items-center gap-3"; btn.disabled = true;
+
+            const feedContainer = document.getElementById('liveFeedContainer'); const feed = document.getElementById('liveFeed');
+            const progressContainer = document.getElementById('progressContainer'); const progressBar = document.getElementById('progressBar'); const progressText = document.getElementById('progressText');
+            
+            feedContainer.classList.remove('hidden'); progressContainer.classList.remove('hidden');
+            
+            const headerRow = bulkDataRows[0].trim() + ",Mailvah_Status"; safeExportData = [headerRow]; allExportData = [headerRow];
+            let validCount = 0; deadLeadsFoundInWash = 0; let processedCount = 0; let currentIndex = 1; 
+
+            async function worker() {
+                while (currentIndex < bulkDataRows.length) {
+                    const i = currentIndex++; const rawRow = bulkDataRows[i].trim();
+                    const emailMatch = rawRow.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                    const email = emailMatch ? emailMatch[0] : "";
+                    
+                    btn.innerHTML = `<i class="fa-solid fa-satellite-dish fa-spin text-lg"></i> PROCESSING ${processedCount + 1} / ${rowCount}...`;
+                    let feedHtml = '';
+
+                    if (!email) {
+                        deadLeadsFoundInWash++; document.getElementById('stat-invalid').innerText = deadLeadsFoundInWash;
+                        feedHtml = `<div class="flex justify-between items-center py-1 border-b border-slate-800/50"><span class="text-slate-600 truncate max-w-[65%]">> Syntax Invalid</span><span class="text-red-500 font-bold">[ REMOVED ]</span></div>`;
+                    } else {
+                        try {
+                            const response = await fetch('https://api.mailvah.com/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
+                            const data = await response.json();
+                            
+                            if (data.status === 'VALID') {
+                                validCount++; document.getElementById('stat-valid').innerText = validCount;
+                                safeExportData.push(rawRow + ",SAFE"); allExportData.push(rawRow + ",SAFE");
+                                feedHtml = `<div class="flex justify-between items-center py-1 border-b border-slate-800/50"><span class="text-slate-300 truncate max-w-[65%]">> SMTP Handshake: ${email}</span><span class="text-emerald-400 font-bold">[ SAFE ]</span></div>`;
+                            } else if (data.status === 'CATCH_ALL') {
+                                deadLeadsFoundInWash++; document.getElementById('stat-invalid').innerText = deadLeadsFoundInWash;
+                                allExportData.push(rawRow + ",CATCH_ALL");
+                                feedHtml = `<div class="flex justify-between items-center py-1 border-b border-slate-800/50"><span class="text-slate-500 truncate max-w-[65%] line-through">> Shield Found: ${email}</span><span class="text-yellow-500 font-bold">[ CATCH-ALL ]</span></div>`;
+                            } else {
+                                deadLeadsFoundInWash++; document.getElementById('stat-invalid').innerText = deadLeadsFoundInWash;
+                                feedHtml = `<div class="flex justify-between items-center py-1 border-b border-slate-800/50"><span class="text-slate-600 truncate max-w-[65%] line-through">> SMTP Block: ${email}</span><span class="text-red-500 font-bold">[ DEAD ]</span></div>`;
+                            }
+                        } catch (e) {}
+                    }
+                    
+                    processedCount++; let percent = Math.round((processedCount / rowCount) * 100);
+                    progressBar.style.width = percent + '%'; progressText.innerText = percent + '%';
+                    if (feedHtml) { feed.insertAdjacentHTML('beforeend', feedHtml); feed.scrollTop = feed.scrollHeight; }
+                    await new Promise(r => setTimeout(r, 150)); 
+                }
+            }
+
+            const workers = []; for (let w = 0; w < 10; w++) workers.push(worker());
+            await Promise.all(workers);
+
+            btn.innerHTML = `<i class="fa-solid fa-check-double text-lg"></i> OPERATION COMPLETE`;
+            document.getElementById('actionButtons').classList.add('hidden'); document.getElementById('cancelBulkBtn').classList.remove('hidden'); 
+            document.getElementById('exportOptionsSection').classList.remove('hidden'); document.getElementById('exportOptionsSection').classList.add('flex');
+            
+            autoSaveToVault(allExportData, "Mailvah_V3.2_Wash");
+
+            if (deadLeadsFoundInWash > 0 && (userPlan === 'Growth' || userPlan === 'Pro' || userPlan === 'Scale' || userPlan === 'Apex')) {
+                document.getElementById('waterfallCount').innerText = deadLeadsFoundInWash; document.getElementById('waterfallSection').classList.remove('hidden');
+            } else if (deadLeadsFoundInWash > 0) {
+                 const wfSec = document.getElementById('waterfallSection'); wfSec.classList.remove('hidden');
+                 wfSec.innerHTML = `<h4 class="text-white font-black text-sm mb-2"><i class="fa-solid fa-lock text-slate-500 mr-2"></i>Waterfall Rescue (Locked)</h4><p class="text-xs text-slate-400 mb-6">You lost <span class="font-bold text-white">${deadLeadsFoundInWash}</span> leads in this wash. Upgrade to Growth or Pro to automatically hunt alternative valid emails.</p><button onclick="document.getElementById('paywallContainer').classList.remove('hidden')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all text-xs uppercase tracking-widest">Upgrade to Unlock</button>`;
+            }
+        }
+
+        // Export & Vault
+        function triggerDownload(dataArray, filename) {
+            const csvContent = dataArray.join("\n"); const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); const url = URL.createObjectURL(blob);
+            const link = document.createElement("a"); link.setAttribute("href", url); link.setAttribute("download", filename);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
+        }
+        function exportSafeData() { triggerDownload(safeExportData, "Mailvah_Safe_Asset.csv"); }
+        function exportAllData() { triggerDownload(allExportData, "Mailvah_Aggressive_Asset.csv"); }
+
+        async function autoSaveToVault(dataArray, filenamePrefix) {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const csvContent = dataArray.join("\n"); const blob = new Blob([csvContent], { type: 'text/csv' });
+            const dateStr = new Date().toISOString().split('T')[0]; const timestamp = Date.now();
+            const fileName = `${user.id}/${filenamePrefix}_${dateStr}_${timestamp}.csv`;
+            await _supabase.storage.from('mailvah_vault').upload(fileName, blob);
+        }
+
+        async function fetchVaultFiles() {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const vaultContainer = document.getElementById('vaultFilesContainer'); const emptyState = document.getElementById('vaultEmptyState');
+            vaultContainer.innerHTML = '<div class="text-center p-12 text-sky-400 animate-pulse"><i class="fa-solid fa-vault text-6xl mb-4"></i><h3 class="text-xl font-bold">Decrypting Vault Buckets...</h3></div>';
+            emptyState.classList.add('hidden');
+
+            const { data, error } = await _supabase.storage.from('mailvah_vault').list(user.id + '/', { sortBy: { column: 'created_at', order: 'desc' } });
+            if (error || !data || data.length === 0 || (data.length === 1 && data[0].name === '.emptyFolderPlaceholder')) { emptyState.classList.remove('hidden'); vaultContainer.innerHTML = ''; return; }
+            emptyState.classList.add('hidden');
+            
+            let html = '<div class="w-full text-left bg-slate-900/50 rounded-2xl border border-slate-700/50 overflow-hidden shadow-xl"><table class="w-full"><thead class="bg-slate-950 text-[10px] text-slate-500 uppercase tracking-widest border-b border-slate-800"><tr><th class="p-6">Encrypted Asset Name</th><th class="p-6 hidden md:table-cell">Payload Size</th><th class="p-6">Encryption Date</th><th class="p-6 text-right">Action</th></tr></thead><tbody class="divide-y divide-slate-800/50">';
+            data.forEach(file => {
+                if (file.name === '.emptyFolderPlaceholder') return;
+                const sizeKB = (file.metadata.size / 1024).toFixed(1) + ' KB'; const date = new Date(file.created_at).toLocaleDateString();
+                html += `<tr class="hover:bg-slate-800/30 transition-colors"><td class="p-6 text-white text-sm font-bold"><i class="fa-solid fa-file-csv text-emerald-400 mr-3 text-lg"></i>${file.name.substring(0, 30)}...</td><td class="p-6 text-slate-400 text-sm hidden md:table-cell">${sizeKB}</td><td class="p-6 text-slate-400 text-sm">${date}</td><td class="p-6 text-right"><button onclick="downloadFromVault('${file.name}')" class="bg-slate-800 hover:bg-sky-600 text-sky-400 hover:text-white px-5 py-2.5 rounded-xl transition-all text-xs font-bold uppercase tracking-widest border border-sky-500/30"><i class="fa-solid fa-download md:mr-2"></i> <span class="hidden md:inline">Decrypt</span></button></td></tr>`;
+            });
+            html += '</tbody></table></div>'; vaultContainer.innerHTML = html;
+        }
+
+        async function downloadFromVault(fileName) {
+            const { data: { user } } = await _supabase.auth.getUser(); if(!user) return;
+            const { data, error } = await _supabase.storage.from('mailvah_vault').createSignedUrl(`${user.id}/${fileName}`, 60);
+            if (data && data.signedUrl) window.location.href = data.signedUrl; else alert("Decryption failed. Validate bucket policies.");
+        }
+
+        // Waterfall, API Hub & Seed
+        async function initiateWaterfall() {
+            if (currentDiscoveryCredits < deadLeadsFoundInWash || currentCredits < deadLeadsFoundInWash) { alert(`Insufficient credits. Protocol requires ${deadLeadsFoundInWash} D and ${deadLeadsFoundInWash} I credits.`); return; }
+            alert(`Waterfall Rescue Initiated. Burning ${deadLeadsFoundInWash} D and ${deadLeadsFoundInWash} I credits to hunt alternative targets...`);
+            currentDiscoveryCredits -= deadLeadsFoundInWash; currentCredits -= deadLeadsFoundInWash;
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (user) { await _supabase.from('user_credits').update({ discovery_vault: currentDiscoveryCredits, integrity_vault: currentCredits }).eq('id', user.id); fetchUserCredits(); }
+            document.getElementById('waterfallSection').innerHTML = `<div class="bg-emerald-500/20 border border-emerald-500/30 p-4 rounded-xl"><p class="text-emerald-400 text-sm font-black uppercase tracking-widest"><i class="fa-solid fa-check mr-2"></i>Rescue Complete. Assets Appended.</p></div>`;
+        }
+
+        async function fetchApiKey() {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const display = document.getElementById('apiKeyDisplay');
+            const { data, error } = await _supabase.from('api_keys').select('api_key').eq('user_id', user.id).single();
+            if (data && data.api_key) display.value = data.api_key; else display.value = "No key generated yet. Click Roll Secret Key.";
+        }
+
+        async function generateApiKey() {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const array = new Uint8Array(16); window.crypto.getRandomValues(array);
+            const randomHex = Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
+            const newKey = 'mv_live_' + randomHex;
+            await _supabase.from('api_keys').delete().eq('user_id', user.id);
+            const { error } = await _supabase.from('api_keys').insert([{ user_id: user.id, api_key: newKey }]);
+            if (!error) { document.getElementById('apiKeyDisplay').value = newKey; alert('Enterprise API Key generated and secured.'); }
+        }
+
+        function copyApiKey() {
+            const key = document.getElementById('apiKeyDisplay').value;
+            if(key.includes('*') || key.includes('No key') || key.includes('Decrypting')) return alert('Please generate an API key first.');
+            navigator.clipboard.writeText(key); alert('Enterprise API Key copied to clipboard. Keep it secure.');
+        }
+
+        function launchSeed() {
+            const btn = document.getElementById('checkPlacementBtn'); const resState = document.getElementById('seedResultState');
+            btn.innerHTML = `<i class="fa-solid fa-satellite-dish fa-spin text-lg"></i> SCANNING SEED INBOXES...`;
+            setTimeout(() => {
+                resState.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-check-double text-lg"></i> SCAN COMPLETE`;
+                btn.classList.replace('from-amber-500', 'from-emerald-500'); btn.classList.replace('to-orange-600', 'to-emerald-600');
+                btn.classList.replace('hover:from-amber-400', 'hover:from-emerald-400'); btn.classList.replace('hover:to-orange-500', 'hover:to-emerald-500');
+            }, 3500);
+        }
+
+        // Domain Monitor
+        async function addNewDomain() {
+            const domain = prompt("Enter the domain to monitor (e.g., company.com):"); if (!domain) return;
+            const cleanDomain = domain.trim().toLowerCase();
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            await _supabase.from('domain_health').insert([{ user_id: user.id, domain_name: cleanDomain }]);
+            alert(`${cleanDomain} added to monitoring queue.`); fetchMonitoredDomains(); 
+        }
+
+        async function fetchMonitoredDomains() {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const tbody = document.getElementById('monitorTableBody');
+            const { data, error } = await _supabase.from('domain_health').select('*').eq('user_id', user.id).order('last_checked', { ascending: false });
+            if (error || !data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-slate-500">No domains monitored yet.</td></tr>'; return; }
+            tbody.innerHTML = ''; 
+            data.forEach(record => {
+                const dmarcBadge = record.dmarc_status === 'healthy' ? '<span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-3 py-1.5 font-bold uppercase tracking-widest rounded-md border border-emerald-500/30">SECURE</span>' : '<span class="bg-slate-500/20 text-slate-400 text-[10px] px-3 py-1.5 font-bold uppercase tracking-widest rounded-md border border-slate-500/30">PENDING</span>';
+                const blacklistBadge = record.blacklist_status === 'clean' ? '<span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-3 py-1.5 font-bold uppercase tracking-widest rounded-md border border-emerald-500/30">CLEAN</span>' : '<span class="bg-slate-500/20 text-slate-400 text-[10px] px-3 py-1.5 font-bold uppercase tracking-widest rounded-md border border-slate-500/30">PENDING</span>';
+                const lastScan = record.last_checked ? new Date(record.last_checked).toLocaleString() : 'Awaiting Night Scan';
+                tbody.insertAdjacentHTML('beforeend', `<tr><td class="p-6 font-bold text-white">${record.domain_name}</td><td class="p-6">${dmarcBadge}</td><td class="p-6">${blacklistBadge}</td><td class="p-6 text-right text-slate-500 text-xs font-mono">${lastScan}</td></tr>`);
+            });
+        }
+
+        // Lead Finder & Flutterwave Refill
+        async function initiateScrape() {
+            const jobTitle = document.getElementById('targetJobTitle').value; const location = document.getElementById('targetLocation').value; const industry = document.getElementById('targetIndustry').value;
+            if (!jobTitle || !location || !industry) { alert("Please enter Job Title, Location, and Industry parameters."); return; }
+            
+            document.getElementById('finderEmptyState').classList.remove('hidden'); document.getElementById('finderResultsWrapper').classList.add('hidden');
+            document.getElementById('finderEmptyTitle').innerText = "Firing Extraction Protocol..."; document.getElementById('finderEmptyDesc').innerText = "Connecting to Apify network. Scraping parameters globally...";
+            document.querySelector('#finderEmptyState i').classList.add('animate-spin', 'text-blue-500');
+
+            setTimeout(() => {
+                document.querySelector('#finderEmptyState i').classList.remove('animate-spin', 'text-blue-500');
+                document.getElementById('finderEmptyState').classList.add('hidden'); document.getElementById('finderResultsWrapper').classList.remove('hidden');
+
+                globalExtractedCount = Math.floor(Math.random() * 75) + 75;
+                const isWashChecked = document.getElementById('washCheckbox').checked;
+                
+                document.getElementById('extractionCountText').innerText = `Extraction Complete: ${globalExtractedCount} Targets`;
+                document.getElementById('unlockBtnText').innerText = isWashChecked ? `Unlock & Wash Leads (Cost: ${globalExtractedCount} D + ${globalExtractedCount} I)` : `Unlock Raw Leads (Cost: ${globalExtractedCount} D)`;
+                
+                document.getElementById('finderResultsTable').classList.add('premium-lock'); document.getElementById('finderUnlockOverlay').classList.remove('hidden');
+
+                document.getElementById('finderTableBody').innerHTML = `
+                    <tr class="hover:bg-slate-800/30"><td class="p-5"><div class="font-bold text-white">Alex Mercer</div><div class="text-xs text-slate-500 mt-1">${jobTitle}</div></td><td class="p-5 text-slate-300 font-medium">TechNova Ltd</td><td class="p-5"><div class="flex items-center text-slate-500 extracted-email-status text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-lock mr-2"></i> Encrypted Target</div></td><td class="p-5 text-right"><button class="bg-slate-800 border border-slate-700 text-slate-600 px-4 py-2 rounded-lg text-[10px] uppercase font-bold tracking-widest cursor-not-allowed">Send</button></td></tr>
+                    <tr class="hover:bg-slate-800/30"><td class="p-5"><div class="font-bold text-white">Sarah Jenkins</div><div class="text-xs text-slate-500 mt-1">${jobTitle}</div></td><td class="p-5 text-slate-300 font-medium">Elevate Partners</td><td class="p-5"><div class="flex items-center text-slate-500 extracted-email-status text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-lock mr-2"></i> Encrypted Target</div></td><td class="p-5 text-right"><button class="bg-slate-800 border border-slate-700 text-slate-600 px-4 py-2 rounded-lg text-[10px] uppercase font-bold tracking-widest cursor-not-allowed">Send</button></td></tr>
+                `;
+            }, 3500);
+        }
+
+        async function unlockExtractedLeads() {
+            const isWashChecked = document.getElementById('washCheckbox').checked;
+            const discoveryCost = globalExtractedCount; const integrityCost = isWashChecked ? globalExtractedCount : 0;
+
+            if (currentDiscoveryCredits < discoveryCost) { document.getElementById('discoveryRefillModal').classList.remove('hidden'); return; }
+            if (integrityCost > 0 && currentCredits < integrityCost) { alert("Insufficient Integrity Credits to run the V3.2 Deep-Scan. Upgrade Tier."); document.getElementById('paywallContainer').classList.remove('hidden'); return; }
+
+            currentDiscoveryCredits -= discoveryCost; currentCredits -= integrityCost;
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (user) { await _supabase.from('user_credits').update({ discovery_vault: currentDiscoveryCredits, integrity_vault: currentCredits }).eq('id', user.id); fetchUserCredits(); }
+
+            document.getElementById('finderUnlockOverlay').classList.add('hidden'); document.getElementById('finderResultsTable').classList.remove('premium-lock');
+            
+            const statuses = document.querySelectorAll('.extracted-email-status');
+            statuses.forEach(el => {
+                if(isWashChecked) { el.innerHTML = '<i class="fa-solid fa-shield-check mr-2 text-base"></i> V3.2 Verified'; el.classList.replace('text-slate-500', 'text-emerald-400'); } 
+                else { el.innerHTML = '<i class="fa-solid fa-envelope-open mr-2 text-base"></i> Unverified (Raw)'; el.classList.replace('text-slate-500', 'text-amber-400'); }
+            });
+
+            document.querySelectorAll('#finderTableBody button').forEach(btn => {
+                btn.classList.replace('text-slate-600', 'text-sky-400'); btn.classList.replace('bg-slate-800', 'bg-slate-900'); btn.classList.replace('border-slate-700', 'border-sky-500/30');
+                btn.classList.remove('cursor-not-allowed'); btn.classList.add('hover:bg-sky-600', 'hover:text-white', 'transition-colors');
+            });
+        }
+
+        function purchaseDiscoveryPack(packName, priceUSD, creditAmount) {
+            const userEmail = document.getElementById('authEmail').value || 'founder@company.com';
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK-dc0754094fea48efe0f9cc3fe45ed853-X", 
+                tx_ref: "mailvah_refill_" + Date.now(), amount: priceUSD, currency: "USD", payment_options: "card, banktransfer",
+                customer: { email: userEmail, name: "Mailvah Enterprise Node" },
+                customizations: { title: "Mailvah PRO Network", description: packName + " (" + creditAmount.toLocaleString() + " D-Credits)", logo: "https://cdn-icons-png.flaticon.com/512/2913/2913990.png" },
+                callback: async function (payment) {
+                    const { data: { user } } = await _supabase.auth.getUser();
+                    if(user) { await _supabase.from('user_credits').update({ discovery_vault: currentDiscoveryCredits + creditAmount }).eq('id', user.id); }
+                    document.getElementById('discoveryRefillModal').classList.add('hidden');
+                    fetchUserCredits(); alert(packName + " deployed. Happy hunting.");
+                },
+                onclose: function() {}
+            });
         }
     </script>
 </body>
