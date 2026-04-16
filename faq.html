@@ -46,8 +46,9 @@
                 
                 <div class="flex justify-center gap-4 overflow-x-auto mt-10 pb-4 custom-scrollbar">
                     <button onclick="filterFaq('tech')" class="px-6 py-2 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest hover:border-sky-500 transition-all whitespace-nowrap focus:bg-sky-500/20 focus:text-sky-400">Technical Engine</button>
-                    <button onclick="filterFaq('econ')" class="px-6 py-2 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest hover:border-emerald-500 transition-all whitespace-nowrap focus:bg-emerald-500/20 focus:text-emerald-400">Economics & Credits</button>
-                    <button onclick="filterFaq('legal')" class="px-6 py-2 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest hover:border-purple-500 transition-all whitespace-nowrap focus:bg-purple-500/20 focus:text-purple-400">Security & Privacy</button>
+                    <button onclick="filterFaq('deliv')" class="px-6 py-2 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest hover:border-blue-500 transition-all whitespace-nowrap focus:bg-blue-500/20 focus:text-blue-400">Deliverability</button>
+                    <button onclick="filterFaq('econ')" class="px-6 py-2 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest hover:border-emerald-500 transition-all whitespace-nowrap focus:bg-emerald-500/20 focus:text-emerald-400">Economics</button>
+                    <button onclick="filterFaq('legal')" class="px-6 py-2 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest hover:border-purple-500 transition-all whitespace-nowrap focus:bg-purple-500/20 focus:text-purple-400">Security & Legal</button>
                 </div>
             </div>
             
@@ -59,28 +60,129 @@
     <footer class="bg-[#03050a] border-t border-slate-800/80 pt-10 pb-10 px-6 mt-auto">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2026 Mailvah, a product of Donmican Technology Ltd. Engineered in Lagos.</p>
+            <div class="flex gap-8 text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
+            </div>
         </div>
     </footer>
 
     <script>
         const faqData = [
-            // Technical
-            { c: 'tech', q: "What is the V3.2 Heuristic Anomaly Engine?", a: "Most email verifiers rely on cached databases or simple syntax checks. Mailvah's V3.2 Heuristic Anomaly Engine goes directly to the source. Before verifying a target email, our proprietary engine fires a 3-burst sequence of mathematically impossible emails (e.g. x7q9_fatal@domain.com) at the receiving server. By analyzing how the firewall responds to obvious fake data, we map their Catch-All protocols. This allows us to penetrate enterprise security layers that block standard verifiers." },
-            { c: 'tech', q: "What is a Live Port 25 Handshake?", a: "Instead of checking an outdated database to see if an email was valid months ago, our bare-metal servers connect directly to the recipient's mail server via Port 25. We simulate the exact routing of an email and ask the server, 'Does this exact inbox exist?' without ever transmitting an actual payload. This guarantees real-time, deterministic accuracy at the millisecond of your request." },
-            { c: 'tech', q: "Where are your servers located?", a: "To ensure maximum throughput and minimal latency to major ESPs (Email Service Providers like Google and Microsoft), our primary verification cluster is hosted in Dallas, Texas. We are actively expanding our bare-metal node architecture to include edge locations in Luxembourg, Asia, South America, and Africa." },
-            { c: 'tech', q: "How does the Waterfall Rescue work?", a: "Available on the Growth tier and above. If you upload a CSV of leads to the Bulk Engine and a target comes back as 'Dead' or 'Bounced', the Waterfall Rescue feature kicks in. It automatically utilizes your Discovery (D) credits to query our extraction network and hunt down an alternative, valid email address for that exact prospect, saving the deal from dying in your pipeline." },
-            { c: 'tech', q: "What is the Seed Network / Inbox Placement?", a: "Hitting the inbox is about more than just having a valid email. Our Seed Network allows Pro and Enterprise users to send their cold email copy to our internal, proprietary network of 20 secure seed accounts. We then provide a report detailing exactly where your email landed: the Primary Inbox, the Promotions Tab, or the Spam Folder, allowing you to tweak your copy before a massive launch." },
-            
-            // Economics
-            { c: 'econ', q: "How does Infinite Rollover work?", a: "Legacy SaaS platforms operate on a 'use it or lose it' model, stealing back your unused credits at the end of every 30-day billing cycle. Mailvah treats compute power like an asset. Any Wash (I-Credits) or Hunt (D-Credits) you purchase or receive in your monthly allotment will roll over to the next month indefinitely, provided your subscription remains active." },
-            { c: 'econ', q: "What is the difference between I-Credits and D-Credits?", a: "Wash Credits (I-Credits / Integrity) are used to clean existing data. When you upload a CSV to the Bulk Engine or use the Single Target verifier, it costs 1 I-Credit per email checked. Discovery Credits (D-Credits / Hunt) are used to extract net-new leads via the Lead Finder network. Note: If you extract a new lead and immediately run it through the V3.2 wash, it consumes 1 D-Credit and 1 I-Credit." },
-            { c: 'econ', q: "Can I buy more credits without upgrading my monthly plan?", a: "Yes. We offer one-time 'Discovery Vault' refill packs (Scout, Hunter, and Commander packs) allowing you to purchase blocks of credits ranging from 1,225 to 10,000 without altering your base monthly recurring subscription." },
-            { c: 'econ', q: "Do you offer an SLA or Uptime Guarantee?", a: "Yes. Scale and Apex tier users receive a 99.99% uptime Service Level Agreement (SLA). Because we utilize isolated bare-metal routing rather than shared cloud instances, our API maintains extreme stability even during peak global outreach hours." },
-            
-            // Security & Legal
-            { c: 'legal', q: "Are my uploaded CSV databases secure?", a: "Absolutely. Mailvah is strictly a bare-metal infrastructure provider, not a data broker. When you upload a CSV for washing, it is processed dynamically in isolated memory. Your data is stored in 256-bit AES encrypted Supabase buckets tied exclusively to your cryptographic User ID. We never aggregate, read, train AI on, or resell your proprietary leads." },
-            { c: 'legal', q: "Is Mailvah GDPR Compliant?", a: "Yes. Mailvah operates as a Data Processor under the General Data Protection Regulation (GDPR). We process data based on the 'Legitimate Interest' of B2B prospecting. Users maintain total data sovereignty, including the ability to execute a 1-click purge of all data from our servers at any time to satisfy Right to Erasure requests." },
-            { c: 'legal', q: "Do you have a Money-Back Guarantee?", a: "Yes. If our V3.2 Engine fails to reduce your hard bounce rate below 1% when used properly on 'Safe' leads, you can contact our Lagos engineering team within 30 days of your initial subscription for a full, unconditional refund." }
+            // ==========================================
+            // CATEGORY 1: TECHNICAL ENGINE & INFRASTRUCTURE (25 Questions)
+            // ==========================================
+            { c: 'tech', q: "What exactly is a Port 25 Handshake?", a: "A Port 25 handshake is the exact protocol mail servers use to communicate. Instead of checking an old database, Mailvah connects directly to the recipient's mail server via Port 25, simulates the routing of a message, and asks the server if the specific inbox exists. We disconnect before any payload is sent, giving you real-time accuracy without sending an email." },
+            { c: 'tech', q: "How does the V4.5 Heuristic Engine bypass Catch-All shields?", a: "Standard verifiers fail at Catch-All firewalls because the server is programmed to accept all incoming requests. Our V4.5 engine fires a '3-burst ghost ping' containing mathematically impossible alphanumeric prefixes. By analyzing how the firewall handles the fake data, we map the server's ruleset and extract the true status of your actual target." },
+            { c: 'tech', q: "Why is live verification better than a cached database?", a: "B2B contact data decays at an average rate of 3% every month due to people changing jobs or domain migrations. Databases like Apollo cache their data for months to save on server costs. Live verification ensures the inbox is active the exact millisecond you query it." },
+            { c: 'tech', q: "What is the Waterfall Rescue feature?", a: "If you upload a CSV and a prospect's email comes back 'Dead', our Waterfall Rescue protocol activates. It automatically spends a Discovery (D) credit to query our global extraction network, hunting down a valid alternative email address for that exact person so you don't lose the lead." },
+            { c: 'tech', q: "What is the API rate limit on the Apex tier?", a: "The Apex tier removes standard SaaS rate limits. By assigning you a dedicated Bare-Metal IP, your infrastructure can process thousands of verification requests per minute without being throttled by shared cloud gateways." },
+            { c: 'tech', q: "Does Mailvah support webhooks?", a: "Yes. On Pro tiers and above, you can configure secure webhooks to push verified data directly to your endpoints the moment a Bulk Wash completes, rather than manually downloading a CSV." },
+            { c: 'tech', q: "What happens if a recipient server greylists the ping?", a: "Greylisting is an anti-spam tactic where a server temporarily rejects a request to see if the sender tries again. The V4.5 cluster has built-in retry logic with automated backoff delays to penetrate greylisting without burning your credits." },
+            { c: 'tech', q: "How does the 1-Click CRM Purge work?", a: "We natively integrate with CRMs like HubSpot and Salesforce. Mailvah scans your master contact list, runs the V4.5 verification protocol in the background, and automatically flags or deletes dead domains before your marketing automation attempts to email them." },
+            { c: 'tech', q: "Where are the Mailvah bare-metal servers located?", a: "Our primary verification core is hosted in Dallas, Texas to ensure ultra-low latency to major ESPs (Google Workspace, Microsoft 365). We also utilize edge routing nodes globally to bypass regional firewalls." },
+            { c: 'tech', q: "Do you offer a Chrome Extension?", a: "No. Browser extensions are inherently fragile and rely on client-side IP addresses, which leads to throttling and bans. Mailvah is a pure server-side application. You input parameters into our Command Center, and our infrastructure does the heavy lifting." },
+            { c: 'tech', q: "What file formats does the Bulk Engine support?", a: "The Bulk Engine currently supports standard .CSV files up to 500MB per upload. It automatically detects the email column regardless of where it is positioned in your dataset." },
+            { c: 'tech', q: "Can I use the API to verify consumer emails (Gmail/Yahoo)?", a: "Yes. While Mailvah is optimized for B2B enterprise routing, the V4.5 engine is fully capable of executing Port 25 handshakes against consumer domains like Gmail, Yahoo, and Outlook." },
+            { c: 'tech', q: "How long does a Bulk Wash take?", a: "Because we perform live verifications rather than database lookups, speed depends on the receiving servers. However, our parallel worker architecture typically processes 10,000 rows in under 4 minutes." },
+            { c: 'tech', q: "What is 'Dedicated Node Routing'?", a: "Available on the Scale tier. Instead of sharing verification bandwidth with thousands of other users, your requests are routed through an isolated server lane. This guarantees zero latency drops during peak global outreach hours." },
+            { c: 'tech', q: "Does the Lead Extraction feature scrape LinkedIn?", a: "Our Lead Finder taps into the Apify network and cross-references dozens of public data endpoints, corporate directories, and social signals to triangulate prospect data. It is far more robust than a simple single-site scraper." },
+            { c: 'tech', q: "Can I generate multiple API keys?", a: "Yes. Pro, Scale, and Apex users can generate multiple cryptographic secret keys from the API Hub to separate traffic across different applications or client accounts." },
+            { c: 'tech', q: "How does the Engine handle Microsoft 365's strict firewalls?", a: "Microsoft 365 frequently updates its anti-spam heuristics. Our Lagos engineering team continuously updates our node handshake protocols to ensure our pings mimic legitimate routing, preventing our IP blocks from being blackholed." },
+            { c: 'tech', q: "What is a 'Disposable' email address?", a: "A disposable email is a temporary address (like Mailinator) used to bypass signup forms. Mailvah automatically detects and flags over 100,000 known disposable domains as 'Dead' to protect your list quality." },
+            { c: 'tech', q: "Do you offer a Zapier integration?", a: "Yes. The Mailvah Zapier integration is currently in Private Beta for Pro tier users, allowing you to trigger a V3.2 deep-scan instantly when a new lead hits your webhook or CRM." },
+            { c: 'tech', q: "Can I extract leads directly via API?", a: "Currently, Lead Extraction is handled within the Command Center UI to ensure data quality. Verification via API is fully supported. Extraction API endpoints are on the Q3 2026 roadmap." },
+            { c: 'tech', q: "How do you handle role-based emails (info@, sales@)?", a: "Our engine verifies them like any other address, but the UI allows you to automatically filter out role-based emails during the CSV export phase if you strictly want personal B2B addresses." },
+            { c: 'tech', q: "What happens if a server simply times out?", a: "If a target server is completely offline and fails to respond to multiple handshake attempts, the engine marks the lead as 'Dead' to prevent you from sending into a black hole." },
+            { c: 'tech', q: "Is the Command Center mobile responsive?", a: "Yes. The Mailvah Command Center is built with an agile, responsive architecture, allowing you to monitor infrastructure health and initiate washes directly from your smartphone." },
+            { c: 'tech', q: "How do I roll my API key if it gets compromised?", a: "Inside the Developer API Hub, there is a 1-click 'Roll Secret Key' function. This instantly revokes the old cryptographic key and generates a new one. Update your application immediately after clicking." },
+            { c: 'tech', q: "What is the syntax for a cURL API request?", a: "Pass your API key as a Bearer token in the Authorization header. Send a POST request to `https://api.mailvah.com/v1/verify` with a JSON body containing `{\"email\": \"target@domain.com\"}`." },
+
+            // ==========================================
+            // CATEGORY 2: DELIVERABILITY & REPUTATION (25 Questions)
+            // ==========================================
+            { c: 'deliv', q: "What is the difference between a Hard Bounce and a Soft Bounce?", a: "A hard bounce means the email address or domain permanently does not exist. A soft bounce means the inbox is full, the server is temporarily down, or the message was too large. Mailvah specifically filters out hard bounces to protect your sending reputation." },
+            { c: 'deliv', q: "Will verifying emails hurt my own sending domain?", a: "No. Mailvah executes the Port 25 handshakes from our own isolated, bare-metal IPs. Your personal sending domain and infrastructure are completely shielded from the verification process." },
+            { c: 'deliv', q: "What is the Blacklist Monitor?", a: "Domain reputation is everything. Our monitor automatically checks your sending domain and IP against major global blacklists (Spamhaus, Barracuda, SORBS) every 24 hours. If you get flagged, we alert you instantly so you can pause your campaigns." },
+            { c: 'deliv', q: "What does the Payload Threat Analyzer actually check?", a: "Spam filters don't just look at bounces; they analyze your text. The Threat Analyzer scans your cold email copy against a constantly updating matrix of 50+ high-risk spam trigger words, formatting errors, and HTML-to-text ratio issues." },
+            { c: 'deliv', q: "How does the Inbox Placement Seed Network work?", a: "We maintain a proprietary network of 20 encrypted email accounts (across Gmail, Outlook, and Yahoo). Before launching a massive campaign, you send your draft to our seed list. We report exactly how many landed in the Primary inbox versus the Promotions or Spam folders." },
+            { c: 'deliv', q: "Why do I need to monitor my DMARC status?", a: "DMARC (Domain-based Message Authentication) prevents hackers from spoofing your domain. Google and Microsoft now require strict DMARC policies for bulk senders. Our infrastructure monitor ensures your DNS records stay locked down." },
+            { c: 'deliv', q: "Can Mailvah guarantee 100% deliverability?", a: "No honest company can guarantee 100% because deliverability also depends on your email copy, your domain age, and sender volume. However, we guarantee 99.9% accuracy on whether the inbox exists, which eliminates hard bounces." },
+            { c: 'deliv', q: "Does Mailvah detect Spam Traps and Honeypots?", a: "Yes. Spam traps are fake emails set up by anti-spam organizations to catch scrapers. Mailvah maintains a constantly updating suppression list of known honeypots. If a lead matches this list, it is instantly flagged as 'Dead'." },
+            { c: 'deliv', q: "What is SPF and does Mailvah check it?", a: "SPF (Sender Policy Framework) is a DNS record that lists the IPs authorized to send emails on your behalf. The Threat Analyzer scans your domain to ensure your SPF record is correctly configured before you launch a campaign." },
+            { c: 'deliv', q: "What is DKIM?", a: "DKIM (DomainKeys Identified Mail) adds a cryptographic signature to your emails. While Mailvah verifies the receiving end, we strongly advise you to set up DKIM on your sending domain to ensure your emails aren't flagged as altered in transit." },
+            { c: 'deliv', q: "Does Mailvah warm up my email domains?", a: "No. Mailvah is a verification and infrastructure engine, not an email warmer. We highly recommend using dedicated warm-up tools (like Instantly or Smartlead) in conjunction with Mailvah's verification to maintain a healthy sender score." },
+            { c: 'deliv', q: "What bounce rate triggers Google Workspace filters?", a: "Google's 2024/2025 anti-spam updates state that senders must maintain a spam rate below 0.3%. Furthermore, a hard bounce rate above 3-5% will quickly result in your domain being severely throttled or blacklisted. Mailvah keeps you below 1%." },
+            { c: 'deliv', q: "How many cold emails should I send per day?", a: "To protect deliverability, we recommend never sending more than 30-50 cold emails per day per individual inbox. Scale horizontally by buying more domains, not vertically by blasting from one." },
+            { c: 'deliv', q: "Why are my verified emails landing in Spam?", a: "If an email is verified 'Safe' but lands in spam, the issue is not the inbox—it is your reputation. You either have missing DMARC/SPF records, you triggered spam keywords in your copy, or your domain has not been properly warmed up." },
+            { c: 'deliv', q: "Does Mailvah check for toxic domains?", a: "Yes. Certain domains are known for high abuse or purely exist for spam. The V4.5 engine will flag toxic, high-risk domains and remove them from your 'Safe' export list." },
+            { c: 'deliv', q: "What does 'Accept-All' mean in other tools?", a: "Other tools use 'Accept-All' as a catch-all warning, essentially telling you they don't know if the email is valid. Mailvah's Heuristic ping is designed specifically to crack these servers so you don't have to guess." },
+            { c: 'deliv', q: "Will Mailvah fix my Google Postmaster score?", a: "Mailvah prevents the hard bounces that destroy your Postmaster score. By keeping your bounce rate near zero, your domain reputation will naturally repair over time as long as recipients aren't marking you as spam." },
+            { c: 'deliv', q: "Does verifying an email notify the recipient?", a: "No. The Port 25 handshake is an invisible server-to-server interaction. The target has absolutely no idea you verified their email." },
+            { c: 'deliv', q: "Can I use Mailvah to verify purchased lists?", a: "Yes. In fact, you MUST verify purchased lists. Data brokers frequently sell lists with 15-20% decay rates. Uploading a raw purchased list directly to your sender is the fastest way to ruin a domain." },
+            { c: 'deliv', q: "What is BIMI and does Mailvah support it?", a: "BIMI allows you to display your brand logo next to your messages in the inbox. Mailvah does not configure BIMI for you, but having a strict DMARC policy (which we monitor) is a prerequisite for setting up BIMI." },
+            { c: 'deliv', q: "Why did a 'Safe' email bounce?", a: "In rare cases (<0.1%), an email verified as Safe can bounce if the recipient's inbox became completely full between the time you verified it and the time you sent the email, or if their server went offline unexpectedly." },
+            { c: 'deliv', q: "How often should I re-verify my master database?", a: "B2B data decays at 3% a month. If a list has been sitting in your CRM for more than 45 days, it is highly recommended to run it through the Mailvah Bulk Engine again before launching a new campaign." },
+            { c: 'deliv', q: "Does Mailvah help me avoid the Promotions tab?", a: "Yes. The Payload Threat Analyzer checks for excessive HTML, too many links, and 'salesy' language that Gmail uses to route emails to the Promotions tab. Simplifying your copy based on our score helps you hit the Primary inbox." },
+            { c: 'deliv', q: "What happens if my sending IP is on a blacklist?", a: "If the Domain Monitor alerts you that your IP is on Spamhaus or Barracuda, immediately pause all sending. You must contact your hosting provider to request a new IP or submit a delisting request to the blacklist authority." },
+            { c: 'deliv', q: "Does formatting matter in cold email?", a: "Absolutely. Using excessive bolding, multiple font colors, or attaching heavy PDFs triggers heuristic spam filters. Keep it plain text or minimal HTML for the highest deliverability." },
+
+            // ==========================================
+            // CATEGORY 3: ECONOMICS & CREDITS (25 Questions)
+            // ==========================================
+            { c: 'econ', q: "How does Infinite Rollover work?", a: "Legacy platforms use a 'use it or lose it' model to force you into higher tiers. At Mailvah, compute power is an asset. Any Integrity (I) or Discovery (D) credits you don't use roll over to the next month indefinitely, as long as your paid subscription remains active." },
+            { c: 'econ', q: "What is the difference between an I-Credit and a D-Credit?", a: "Integrity (I) Credits are used to wash existing data (1 I-Credit = 1 verification). Discovery (D) Credits are used to extract net-new leads from our network. If you extract a lead and immediately wash it, it costs 1 D-Credit and 1 I-Credit." },
+            { c: 'econ', q: "What happens if I cancel my subscription?", a: "If you downgrade to the Sandbox (Free) tier, your accumulated rollover credits will be frozen and forfeited at the end of your current billing cycle. You must maintain at least the Starter tier to keep rolling over credits." },
+            { c: 'econ', q: "Do I get charged for a 'Catch-All' or 'Dead' result?", a: "Yes. Processing a dead email or mapping a Catch-All firewall requires the exact same bare-metal server compute power as verifying a safe email. You are paying for the execution of the V4.5 engine, regardless of the outcome." },
+            { c: 'econ', q: "Can I buy more credits without upgrading my monthly plan?", a: "Yes. You can access the 'Discovery Vault' to purchase one-time refill packs (Scout, Hunter, and Commander) ranging from 1,225 to 10,000 D-Credits without changing your base recurring plan." },
+            { c: 'econ', q: "How does the 30-Day Money-Back Guarantee work?", a: "If you properly wash a list using the V4.5 engine, send only to 'Safe' contacts, and still experience a hard bounce rate higher than 1%, contact our engineering team within 30 days of your initial subscription for an unconditional refund." },
+            { c: 'econ', q: "Do you offer custom Enterprise pricing?", a: "Yes. If your outbound volume exceeds 200,000 verifications per month, you require a custom SLA, or you need dedicated private nodes, please contact engineering for a tailored deployment contract." },
+            { c: 'econ', q: "What payment methods do you accept?", a: "We accept all major credit cards (Visa, Mastercard, Amex) via Stripe, as well as localized payments and bank transfers via Flutterwave for global clients." },
+            { c: 'econ', q: "Can I upgrade or downgrade my tier at any time?", a: "Yes. You can manage your tier directly from the Command Center. Prorated charges or credits will be automatically applied to your account when moving between paid tiers." },
+            { c: 'econ', q: "Are there any hidden fees or export charges?", a: "No. Once an email is verified or extracted, it belongs to you. We do not charge fees to export your CSV files, nor do we restrict how many times you can download your Vault assets." },
+            { c: 'econ', q: "Can I share my account with my team?", a: "Yes. The Pro tier and above support multi-seat access, allowing your SDRs and marketing managers to operate within the same Command Center and share the same credit pool." },
+            { c: 'econ', q: "Do you have an Agency program?", a: "Yes. We offer a Master Agency Dashboard for high-volume users handling multiple client domains. Contact support to apply for Agency status and access volume discounts." },
+            { c: 'econ', q: "What happens if a payment fails?", a: "If a recurring payment fails, your account will enter a 7-day grace period. You can still access the Vault and use remaining credits. After 7 days, the account downgrades to Sandbox and rollover credits are forfeited." },
+            { c: 'econ', q: "Are there discounts for annual billing?", a: "Yes. Choosing the annual billing cycle on any tier provides a 20% discount compared to the month-to-month pricing structure." },
+            { c: 'econ', q: "Can I get a refund on one-time Refill Packs?", a: "No. One-time Discovery Vault refill purchases (Scout, Hunter, Commander packs) are non-refundable as they are instantly deployed to your active balance." },
+            { c: 'econ', q: "Does Mailvah charge sales tax or VAT?", a: "Prices shown do not include local taxes. Depending on your billing address and country of operation, applicable VAT or sales tax will be calculated and added at checkout." },
+            { c: 'econ', q: "If I pause my account, do I keep my credits?", a: "You cannot 'pause' an account. You must maintain at least the $29/mo Starter tier to keep your Vault and rollover credits active. Canceling entirely clears the balance." },
+            { c: 'econ', q: "Why is Mailvah cheaper than ZoomInfo?", a: "ZoomInfo charges for the data itself and massive sales overhead. Mailvah charges purely for the bare-metal compute power to extract and verify the data. By owning our infrastructure, we pass the margin directly to you." },
+            { c: 'econ', q: "Do you offer discounts for non-profits or students?", a: "As part of our Zero-to-One initiative, we offer highly subsidized access for verified student developers and early-stage founders in emerging markets. Contact engineering to apply." },
+            { c: 'econ', q: "How do I get an invoice for my accounting department?", a: "Invoices are automatically generated and emailed to your billing address after every successful transaction. You can also download PDF invoices directly from the Billing tab in the Command Center." },
+            { c: 'econ', q: "Is the API usage billed differently than Bulk Wash usage?", a: "No. A verification is a verification. Whether you trigger it via the API, the Single Target tool, or the Bulk CSV dropzone, it consumes exactly 1 Integrity (I) Credit." },
+            { c: 'econ', q: "What is a 'Sandbox' account?", a: "The Sandbox is our free tier. It allows you to create a node, explore the Command Center UI, and utilize your 115 free signup credits. However, Bulk Washing and API access are locked until you upgrade." },
+            { c: 'econ', q: "If I hit my credit limit mid-wash, what happens?", a: "The Bulk Engine will automatically pause the wash at the exact row where your credits ran out. You can export the partial data, or purchase a Refill Pack to resume the wash instantly." },
+            { c: 'econ', q: "Can I transfer credits to another Mailvah account?", a: "No. For security and anti-fraud purposes, Integrity and Discovery credits are strictly locked to the cryptographic User ID that purchased them and cannot be transferred." },
+            { c: 'econ', q: "Do I have to talk to a sales rep to buy the Apex tier?", a: "No. Unlike legacy enterprise software, Mailvah is self-serve. You can deploy the $799/mo Apex tier instantly with a credit card from the Command Center." },
+
+            // ==========================================
+            // CATEGORY 4: SECURITY & LEGAL (25 Questions)
+            // ==========================================
+            { c: 'legal', q: "Is Mailvah GDPR Compliant?", a: "Yes. Mailvah operates as a 'Data Processor' under the GDPR. We process data under the legal framework of 'Legitimate Interest' for B2B communications. We provide full Right to Erasure controls directly in your Command Center." },
+            { c: 'legal', q: "Where are my uploaded CSV files stored?", a: "When you upload a database for washing, it is stored in an isolated Supabase storage bucket. We utilize 256-bit AES encryption at rest and TLS 1.3 in transit to ensure your proprietary assets are impregnable." },
+            { c: 'legal', q: "Does Mailvah sell my data?", a: "Never. We are a bare-metal infrastructure company, not a data broker. Your uploads, CRM syncs, and verification logs are strictly confidential and isolated to your cryptographic User ID. We do not aggregate or resell your leads." },
+            { c: 'legal', q: "How long do you retain my server logs?", a: "For your security and privacy, server verification logs and uploaded CSV assets are retained in your Vault for 30 days before being automatically and permanently purged, unless you manually delete them earlier." },
+            { c: 'legal', q: "Who builds and operates Mailvah?", a: "Mailvah is engineered, owned, and operated by Donmican Technology Ltd. Our core engineering team is based in Lagos, Nigeria, allowing us to maintain 24/7 global network surveillance and rapid architectural iterations." },
+            { c: 'legal', q: "Are my credit card details secure?", a: "We do not store your credit card information on our servers. All financial transactions are routed through fully compliant, PCI-DSS certified third-party payment gateways like Stripe and Flutterwave." },
+            { c: 'legal', q: "Can I delete my account entirely?", a: "Yes. You have total data sovereignty. Inside the Command Center, you can execute a 1-click purge that permanently deletes your account, credits, logs, and encrypted Vault assets from our servers." },
+            { c: 'legal', q: "Is Mailvah compliant with the CCPA?", a: "Yes. Mailvah complies with the California Consumer Privacy Act. As a service provider, we do not 'sell' personal information. You retain the ability to delete any processed data upon request." },
+            { c: 'legal', q: "Do you offer a Business Associate Agreement (BAA)?", a: "Because Mailvah is designed for B2B outbound and does not process protected health information (PHI), we do not enter into HIPAA BAAs. Do not upload medical records to the Bulk Engine." },
+            { c: 'legal', q: "Will Mailvah sign a Non-Disclosure Agreement (NDA)?", a: "Our standard Terms of Service and Privacy Policy include strict confidentiality clauses that act as a comprehensive NDA regarding your uploaded data. We only sign custom NDAs for custom Apex deployments." },
+            { c: 'legal', q: "How does Mailvah handle data breaches?", a: "In the highly unlikely event of a cryptographic breach affecting your isolated bucket, Donmican Technology Ltd has strict incident response protocols and will notify affected users within 72 hours per international compliance standards." },
+            { c: 'legal', q: "Do you use Sub-Processors?", a: "Yes, we utilize enterprise-grade sub-processors for specific infrastructure needs (e.g., Supabase for encrypted bucket storage, Stripe for payments). A full list of our audited sub-processors is available upon request." },
+            { c: 'legal', q: "Do you offer Multi-Factor Authentication (MFA)?", a: "Yes. All users are strongly encouraged to enable MFA/2FA on their Mailvah accounts to prevent unauthorized access to their Command Center and Vault." },
+            { c: 'legal', q: "Can I share my API key?", a: "API keys are cryptographic secrets tied to your billing account. You must never expose your API key in front-end code or public repositories. If an API key is leaked, roll it immediately in the Command Center." },
+            { c: 'legal', q: "Is scraping B2B data legal?", a: "Extracting publicly available B2B contact information is generally considered legal under the premise of Legitimate Interest, provided the outreach is relevant to the prospect's profession. However, you are responsible for ensuring your outreach complies with local laws (like CAN-SPAM)." },
+            { c: 'legal', q: "What is your policy on Phishing?", a: "Zero tolerance. Mailvah infrastructure is actively monitored. If we detect that a user is utilizing our verification API or extraction network to facilitate phishing attacks or malware, the account will be permanently terminated and reported to authorities." },
+            { c: 'legal', q: "Does Mailvah monitor my email copy?", a: "The Threat Analyzer is a local, stateless process. When you paste copy into the analyzer, it scores the text against spam triggers but does not save or transmit your proprietary email copy to our databases." },
+            { c: 'legal', q: "Can I use Mailvah if I am under 18?", a: "To enter into a binding agreement and purchase infrastructure credits, you must be 18 years of age or older, or the age of majority in your jurisdiction." },
+            { c: 'legal', q: "Who owns the Intellectual Property of Mailvah?", a: "The V4.5 Heuristic Engine, the Command Center UI, and all associated infrastructure code are the exclusive intellectual property of Donmican Technology Ltd. Reverse engineering the platform is strictly prohibited." },
+            { c: 'legal', q: "Do you have a Bug Bounty program?", a: "Yes. Donmican Technology Ltd operates a private bug bounty program for security researchers. If you discover a vulnerability in our API or infrastructure, please contact engineering directly for triage and reward processing." },
+            { c: 'legal', q: "How do I report abuse from a Mailvah user?", a: "If you believe a Mailvah user is violating our Acceptable Use Policy, please forward the evidence to our technical support team. We investigate all claims of network abuse rigorously." },
+            { c: 'legal', q: "Does Mailvah guarantee my emails will be read?", a: "We guarantee the infrastructural validity of the inbox. We cannot guarantee open rates, click rates, or replies, as those depend entirely on your market positioning and copywriting skills." },
+            { c: 'legal', q: "Where can I find the Terms of Service?", a: "The full, legally binding Terms of Service can be found in the Legal Hub section of our website, or linked directly from the footer of the Command Center." },
+            { c: 'legal', q: "Is my data transferred internationally?", a: "As a global infrastructure provider, your data may be processed in routing nodes outside your home country. However, all data transfers are protected by standard contractual clauses and 256-bit encryption." },
+            { c: 'legal', q: "How do I contact the Data Protection Officer (DPO)?", a: "For any escalations regarding GDPR or data privacy rights, you may address correspondence to the DPO at Donmican Technology Ltd via our legal contact email provided in the Privacy Policy." }
         ];
 
         function renderFaq(filter) {
@@ -91,7 +193,7 @@
             
             filteredData.forEach((item, index) => {
                 container.innerHTML += `
-                    <div class="glass-panel rounded-3xl overflow-hidden border border-slate-800/50 hover:border-slate-600 transition-colors">
+                    <div class="glass-panel rounded-[2rem] overflow-hidden border border-slate-800/50 hover:border-slate-600 transition-colors mb-4">
                         <button onclick="toggleFaq('faq-${index}')" class="w-full text-left p-8 font-black text-white flex justify-between items-center group">
                             ${item.q}
                             <i id="icon-faq-${index}" class="fa-solid fa-chevron-down text-slate-600 group-hover:text-sky-400 transition-transform"></i>
@@ -103,14 +205,34 @@
                 `;
             });
         }
-        function filterFaq(c) { renderFaq(c); }
-        function toggleFaq(id) {
-            const el = document.getElementById(id); const icon = document.getElementById('icon-' + id.split('-')[1]);
-            el.classList.toggle('hidden'); icon.classList.toggle('rotate-180');
+
+        // Category Filter Logic
+        function filterFaq(c) {
+            document.querySelectorAll('button[onclick^="filterFaq"]').forEach(btn => {
+                btn.classList.remove('bg-sky-500/20', 'text-sky-400', 'bg-blue-500/20', 'text-blue-400', 'bg-emerald-500/20', 'text-emerald-400', 'bg-purple-500/20', 'text-purple-400');
+                btn.classList.add('bg-slate-900', 'text-slate-200');
+            });
+            
+            const activeBtn = document.querySelector(`button[onclick="filterFaq('${c}')"]`);
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-slate-900', 'text-slate-200');
+                if(c === 'tech') activeBtn.classList.add('bg-sky-500/20', 'text-sky-400');
+                if(c === 'deliv') activeBtn.classList.add('bg-blue-500/20', 'text-blue-400');
+                if(c === 'econ') activeBtn.classList.add('bg-emerald-500/20', 'text-emerald-400');
+                if(c === 'legal') activeBtn.classList.add('bg-purple-500/20', 'text-purple-400');
+            }
+            
+            renderFaq(c);
         }
 
-        // Initialize with all
-        renderFaq('all');
+        function toggleFaq(id) {
+            const el = document.getElementById(id); 
+            const icon = document.getElementById('icon-' + id.split('-')[1]);
+            el.classList.toggle('hidden'); 
+            icon.classList.toggle('rotate-180');
+        }
+
+        filterFaq('tech');
     </script>
 </body>
 </html>
