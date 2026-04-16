@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer API | Mailvah Enterprise</title>
+    <title>Developer API & SDKs | Mailvah Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -27,9 +27,10 @@
             
             <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="engine.html" class="hover:text-white transition-colors px-2">Infrastructure</a>
-                <a href="api.html" class="text-sky-400 transition-colors px-2">API Hub</a>
+                <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
                 <a href="pricing.html" class="hover:text-white transition-colors px-2">Pricing</a>
                 <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
+                <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
             </div>
 
             <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
@@ -39,85 +40,172 @@
         </div>
     </nav>
 
-    <main class="pt-32 pb-24 px-4 md:px-6 flex-1">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
-            <div>
-                <div class="inline-flex items-center gap-3 bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full mb-8">
-                    <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div> 99.99% Uptime SLA</span>
+    <main class="pt-32 flex-1">
+        
+        <section class="pb-24 px-4 md:px-6">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div class="inline-flex items-center gap-3 bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full mb-8">
+                        <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div> 99.99% Uptime SLA</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-6 tracking-tighter">
+                        From developers,<br>to everyone.
+                    </h1>
+                    <p class="text-slate-400 text-sm md:text-lg mb-10 leading-relaxed">
+                        Integrate the V4.5 Cluster directly into your own SaaS, CRM, or internal applications. Mailvah provides unthrottled, agentic infrastructure built for massive scale.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="bg-slate-900 border border-sky-500 text-sky-400 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-colors">cURL</button>
+                        <button class="bg-slate-950/50 border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white transition-colors cursor-not-allowed">Node.js (SDK)</button>
+                        <button class="bg-slate-950/50 border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white transition-colors cursor-not-allowed">Python (SDK)</button>
+                    </div>
                 </div>
-                <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-6 tracking-tighter">
-                    Built by developers,<br>for developers.
-                </h1>
-                <p class="text-slate-400 text-sm md:text-lg mb-10 leading-relaxed">
-                    Integrate the V3.2 Engine directly into your own SaaS, CRM, or internal tools. Unthrottled bare-metal routing available for Apex users.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button class="bg-slate-900 border border-slate-700 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:border-sky-500 transition-colors">cURL</button>
-                    <button class="bg-transparent border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white transition-colors">Node.js</button>
-                    <button class="bg-transparent border border-slate-800 text-slate-500 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:text-white transition-colors">Python</button>
-                </div>
-            </div>
 
-            <div class="glass-panel p-1 rounded-2xl border border-slate-700/50 shadow-2xl relative overflow-hidden bg-[#0a0f1c]">
-                <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center gap-2 rounded-t-xl">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-emerald-500"></div>
-                    <span class="text-[10px] text-slate-500 font-mono ml-4">root@mailvah-dallas:~</span>
-                </div>
-                <div class="p-6 font-mono text-xs md:text-sm h-[380px] flex flex-col">
-                    <div class="text-slate-300 mb-4">$ <span id="term-type" class="text-emerald-400 blinking-cursor"></span></div>
-                    
-                    <div id="term-response" class="opacity-0 transition-opacity duration-300 flex-1">
-                        <span class="text-slate-500">// Response from V3.2 Engine (112ms)</span><br>
-                        <span class="text-white">{</span><br>
-                        <span class="text-white">&nbsp;&nbsp;"email": <span class="text-sky-300">"ceo@apollo.io"</span>,</span><br>
-                        <span class="text-white">&nbsp;&nbsp;"status": <span class="text-emerald-400">"deliverable"</span>,</span><br>
-                        <span class="text-white">&nbsp;&nbsp;"catch_all": <span class="text-orange-400">true</span>,</span><br>
-                        <span class="text-white">&nbsp;&nbsp;"score": <span class="text-sky-300">99</span>,</span><br>
-                        <span class="text-white">&nbsp;&nbsp;"did_you_mean": <span class="text-purple-400">null</span></span><br>
-                        <span class="text-white">}</span>
+                <div class="glass-panel p-1 rounded-2xl border border-slate-700/50 shadow-2xl relative overflow-hidden bg-[#0a0f1c]">
+                    <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center gap-2 rounded-t-xl">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <span class="text-[10px] text-slate-500 font-mono ml-4">root@mailvah-dallas:~</span>
+                    </div>
+                    <div class="p-6 font-mono text-xs md:text-sm h-[380px] flex flex-col">
+                        <div class="text-slate-300 mb-4">$ <span id="term-type" class="text-emerald-400 blinking-cursor"></span></div>
                         
-                        <div class="mt-8 text-slate-300">$ <span class="blinking-cursor"></span></div>
+                        <div id="term-response" class="opacity-0 transition-opacity duration-300 flex-1">
+                            <span class="text-slate-500">// Response from V4.5 Bare-Metal Cluster (185ms)</span><br>
+                            <span class="text-white">{</span><br>
+                            <span class="text-white">&nbsp;&nbsp;"email": <span class="text-sky-300">"ceo@apollo.io"</span>,</span><br>
+                            <span class="text-white">&nbsp;&nbsp;"status": <span class="text-emerald-400">"deliverable"</span>,</span><br>
+                            <span class="text-white">&nbsp;&nbsp;"catch_all": <span class="text-orange-400">true</span>,</span><br>
+                            <span class="text-white">&nbsp;&nbsp;"heuristic_score": <span class="text-sky-300">99.9</span>,</span><br>
+                            <span class="text-white">&nbsp;&nbsp;"execution_node": <span class="text-purple-400">"us-dallas-core-01"</span></span><br>
+                            <span class="text-white">}</span>
+                            
+                            <div class="mt-8 text-slate-300">$ <span class="blinking-cursor"></span></div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-        </div>
+        <section class="py-24 bg-slate-900/30 px-6 border-y border-slate-800/50">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-6">We are not an API Wrapper.</h2>
+                <p class="text-slate-400 text-sm md:text-lg mb-16 max-w-3xl mx-auto leading-relaxed">Most verifiers are just API wrappers renting shared IP blocks from AWS or DigitalOcean. When AWS throttles them, they throttle you. Mailvah owns the entire verification stack, end-to-end.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                    <div class="glass-panel p-8 md:p-12 rounded-[2rem] border-t-4 border-t-slate-600 bg-slate-900/50">
+                        <h4 class="text-xl font-black text-white mb-4">Standard SaaS APIs</h4>
+                        <ul class="space-y-4 text-sm text-slate-400">
+                            <li class="flex items-center"><i class="fa-solid fa-xmark text-slate-600 mr-3 text-lg"></i> Hard rate limits (e.g., 60 requests/min)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-xmark text-slate-600 mr-3 text-lg"></i> Shared IPs result in frequent greylisting</li>
+                            <li class="flex items-center"><i class="fa-solid fa-xmark text-slate-600 mr-3 text-lg"></i> High latency (600ms+ per verification)</li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel p-8 md:p-12 rounded-[2rem] border-t-4 border-t-sky-500 shadow-[0_0_30px_rgba(56,189,248,0.1)] bg-sky-900/10">
+                        <h4 class="text-xl font-black text-white mb-4">Mailvah Bare-Metal API</h4>
+                        <ul class="space-y-4 text-sm text-white font-medium">
+                            <li class="flex items-center"><i class="fa-solid fa-check-double text-sky-400 mr-3 text-lg"></i> Unthrottled Enterprise Throughput</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check-double text-sky-400 mr-3 text-lg"></i> Dedicated IP assignments (Apex Tier)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check-double text-sky-400 mr-3 text-lg"></i> ~200ms ultra-low latency execution</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-black text-white mb-12">Core Endpoints</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-[#0b1120] border border-slate-800 p-8 rounded-3xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-emerald-500/20 text-emerald-400 font-black text-[10px] px-3 py-1 rounded uppercase tracking-widest">POST</span>
+                            <span class="text-white font-mono text-sm">/v1/verify/single</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-6">Triggers the V4.5 Heuristic ping against a single target. Returns status, score, and Catch-All data.</p>
+                    </div>
+                    
+                    <div class="bg-[#0b1120] border border-slate-800 p-8 rounded-3xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-blue-500/20 text-blue-400 font-black text-[10px] px-3 py-1 rounded uppercase tracking-widest">POST</span>
+                            <span class="text-white font-mono text-sm">/v1/verify/bulk</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-6">Accepts CSV or JSON arrays up to 50,000 rows per request. Processes asynchronously via Mailvah Workers.</p>
+                    </div>
+
+                    <div class="bg-[#0b1120] border border-slate-800 p-8 rounded-3xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-purple-500/20 text-purple-400 font-black text-[10px] px-3 py-1 rounded uppercase tracking-widest">GET</span>
+                            <span class="text-white font-mono text-sm">/v1/monitor/status</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-6">Pings the Blacklist Monitor to return real-time DMARC, Spamhaus, and Barracuda reputation scores for your domains.</p>
+                    </div>
+
+                    <div class="bg-[#0b1120] border border-slate-800 p-8 rounded-3xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-amber-500/20 text-amber-400 font-black text-[10px] px-3 py-1 rounded uppercase tracking-widest">POST</span>
+                            <span class="text-white font-mono text-sm">/v1/extract/hunt</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-6">Dispatches Discovery (D) Credits to extract verified leads based on specific parameters (Title, Domain, Location).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-[#050914] px-6 border-t border-slate-800/50">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl font-black text-white mb-6">Agentic Webhook Triggers</h2>
+                    <p class="text-slate-400 text-base leading-relaxed mb-6">Don't poll the API waiting for bulk jobs to finish. Mailvah is built for agentic, event-driven architectures.</p>
+                    <p class="text-slate-400 text-base leading-relaxed mb-8">Register your endpoints in the Developer Hub. When our Mailvah Workers complete a 10,000-row bulk wash, or when the Domain Monitor detects a blacklist threat, we immediately push a secure, signed JSON payload directly to your server.</p>
+                    <ul class="space-y-4 text-sm text-white font-medium">
+                        <li class="flex items-center"><i class="fa-solid fa-arrow-right-arrow-left text-sky-400 mr-3"></i> Event: `wash.completed`</li>
+                        <li class="flex items-center"><i class="fa-solid fa-arrow-right-arrow-left text-sky-400 mr-3"></i> Event: `domain.blacklisted`</li>
+                        <li class="flex items-center"><i class="fa-solid fa-arrow-right-arrow-left text-sky-400 mr-3"></i> Event: `waterfall.rescued`</li>
+                    </ul>
+                </div>
+                <div class="glass-panel p-8 rounded-[2rem] border border-slate-700 shadow-2xl">
+                    <h3 class="text-white font-black text-lg mb-6 border-b border-slate-800 pb-4">Webhook Signature Verification (Node.js)</h3>
+                    <div class="font-mono text-[10px] text-slate-300 leading-loose overflow-x-auto">
+<span class="text-purple-400">const</span> crypto = require(<span class="text-sky-300">'crypto'</span>);<br><br>
+<span class="text-purple-400">function</span> <span class="text-blue-400">verifyWebhook</span>(req, secret) {<br>
+&nbsp;&nbsp;<span class="text-purple-400">const</span> signature = req.headers[<span class="text-sky-300">'x-mailvah-signature'</span>];<br>
+&nbsp;&nbsp;<span class="text-purple-400">const</span> hash = crypto<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.createHmac(<span class="text-sky-300">'sha256'</span>, secret)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.update(JSON.stringify(req.body))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.digest(<span class="text-sky-300">'hex'</span>);<br><br>
+&nbsp;&nbsp;<span class="text-purple-400">return</span> signature === hash;<br>
+}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 border-t border-slate-800/50">
+            <div class="max-w-4xl mx-auto text-center">
+                <i class="fa-solid fa-lock text-5xl text-emerald-500 mb-6 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
+                <h2 class="text-3xl font-black text-white mb-6">Cryptographic Security Standards</h2>
+                <p class="text-slate-400 text-base leading-relaxed mb-12">Every API request is secured via TLS 1.3. Your master API keys are generated using 256-bit entropy, and all payloads processed by our Dallas node are immediately purged from active memory post-verification. We log metadata for billing; we do not store your leads.</p>
+                <a href="privacy.html" class="text-emerald-400 text-sm font-bold uppercase tracking-widest hover:text-white transition-colors">View Enterprise Privacy Policy <i class="fa-solid fa-arrow-right ml-2"></i></a>
+            </div>
+        </section>
+
+        <section class="py-24 md:py-32 text-center px-4 md:px-6 relative overflow-hidden border-t border-slate-800/50">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-64 bg-blue-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+            <div class="max-w-3xl mx-auto relative z-10">
+                <i class="fa-solid fa-code text-5xl md:text-6xl text-sky-400 mb-6 md:mb-8 drop-shadow-[0_0_20px_rgba(56,189,248,0.6)]"></i>
+                <h2 class="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 tracking-tighter">Generate your Secret Key.</h2>
+                <p class="text-slate-400 text-sm md:text-xl mb-8 md:mb-12">Sign up for a Sandbox node and get 115 free verification credits to test the API instantly.</p>
+                <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-6">
+                    <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-4 px-8 md:px-10 rounded-xl md:rounded-2xl shadow-xl shadow-blue-500/25 text-xs md:text-sm tracking-widest uppercase transition-all transform hover:scale-105">START FOR FREE</a>
+                    <a href="pricing.html" class="glass-panel text-white font-black py-4 px-8 md:px-10 rounded-xl md:rounded-2xl hover:bg-slate-800 transition-colors text-xs md:text-sm tracking-widest uppercase border border-slate-700">VIEW PRICING</a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-10 pb-10 px-6 mt-auto">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2026 Mailvah, a product of Donmican Technology Ltd. Engineered in Lagos.</p>
-        </div>
-    </footer>
-
-    <script>
-        async function runTerminal() {
-            const wait = (ms) => new Promise(r => setTimeout(r, ms));
-            const typeArea = document.getElementById('term-type');
-            const responseArea = document.getElementById('term-response');
-            
-            while(true) {
-                responseArea.style.opacity = '0';
-                typeArea.innerText = "";
-                typeArea.classList.add('blinking-cursor');
-                await wait(1000);
-
-                const cmd = "curl -X POST https://api.mailvah.com/v1/verify \\\n  -H 'Authorization: Bearer sk_live_...' \\\n  -d '{\"email\": \"ceo@apollo.io\"}'";
-                
-                typeArea.classList.remove('blinking-cursor');
-                for(let i=0; i<cmd.length; i++) {
-                    typeArea.innerText += cmd.charAt(i);
-                    await wait(30);
-                }
-                
-                await wait(500);
-                responseArea.style.opacity = '1';
-                
-                await wait(5000);
-            }
-        }
-        setTimeout(runTerminal, 500);
-    </script>
-</body>
-</html>
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 md:pt-20 pb-8 md:pb-10 px-6 mt-auto relative z-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
+                <div>
+                    <h4 class="text-white font-black mb-4 md:mb-6 text-[10px] md:text-xs
