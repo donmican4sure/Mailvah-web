@@ -11,13 +11,15 @@
     <style>
         body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #111827, #050914); }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: transform 0.3s ease, border-color 0.3s ease; }
+        .glass-panel:hover { border-color: rgba(56, 189, 248, 0.3); }
         .text-gradient { background: linear-gradient(to right, #38bdf8, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hidden { display: none !important; }
         
         input[type=range] { -webkit-appearance: none; background: transparent; width: 100%; }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #1e293b; border-radius: 10px; border: 1px solid #334155; }
-        input[type=range]::-webkit-slider-thumb { height: 24px; width: 24px; border-radius: 50%; background: #38bdf8; cursor: pointer; -webkit-appearance: none; margin-top: -9px; box-shadow: 0 0 20px rgba(56,189,248,0.6); border: 3px solid #050914; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb { height: 28px; width: 28px; border-radius: 50%; background: #38bdf8; cursor: pointer; -webkit-appearance: none; margin-top: -11px; box-shadow: 0 0 20px rgba(56,189,248,0.6); border: 3px solid #050914; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
 
         /* CINEMATIC TOUR STYLES */
         .mock-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
@@ -27,7 +29,6 @@
         
         .blinking-cursor::after { content: '|'; animation: blink 1s step-end infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        
         .btn-press { transform: scale(0.95); opacity: 0.8; }
     </style>
 </head>
@@ -41,7 +42,7 @@
             </a>
             
             <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
-                <a href="index.html" class="hover:text-white text-sky-400 transition-colors px-2">Infrastructure</a>
+                <a href="index.html" class="text-sky-400 transition-colors px-2">Infrastructure</a>
                 <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
                 <a href="pricing.html" class="hover:text-white transition-colors px-2">Economics</a>
                 <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
@@ -56,10 +57,11 @@
     </nav>
 
     <main class="pt-20">
+        
         <section class="pt-20 md:pt-32 pb-24 px-6 text-center relative overflow-hidden border-b border-slate-800/50">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
             <div class="max-w-6xl mx-auto relative z-10">
-                <div class="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full mb-8">
+                <div class="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full mb-8 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
                     <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
                     <span class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">V3.2 Heuristic Anomaly Engine Live</span>
                 </div>
@@ -72,7 +74,6 @@
 
                 <div class="glass-panel p-2 rounded-[2rem] relative shadow-[0_0_80px_rgba(56,189,248,0.1)] w-full max-w-5xl mx-auto border border-slate-700">
                     <div class="bg-[#0b1120] rounded-[1.5rem] overflow-hidden text-left relative h-[450px] md:h-[550px] border border-slate-800 shadow-inner flex">
-                        
                         <div class="absolute top-0 w-full bg-slate-900/90 px-6 py-3 border-b border-slate-800 flex justify-between items-center z-30">
                             <div class="flex gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-emerald-500"></div></div>
                             <div class="bg-slate-950 border border-slate-800 rounded-md px-10 md:px-32 py-1 text-[10px] text-slate-500 font-mono flex items-center"><i class="fa-solid fa-lock mr-2 text-emerald-500"></i>app.mailvah.com/command-center</div>
@@ -93,15 +94,13 @@
                             </div>
                             
                             <div class="flex-1 relative bg-[#050914] z-10 overflow-hidden">
-                                
                                 <div id="view-single" class="mock-view active p-6 md:p-8 flex flex-col items-center justify-center">
-                                    <div class="w-full max-w-lg glass-panel p-6 md:p-8 rounded-2xl border border-slate-700">
+                                    <div class="w-full max-w-lg bg-slate-900/40 p-6 md:p-8 rounded-2xl border border-slate-700/50 shadow-2xl">
                                         <h3 class="text-xl font-black text-white mb-6">Target Payload</h3>
-                                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl mb-6 min-h-[56px] flex items-center">
+                                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl mb-6 min-h-[56px] flex items-center shadow-inner">
                                             <span id="mock-single-input" class="text-sky-400 font-mono text-sm blinking-cursor"></span>
                                         </div>
-                                        <div id="mock-single-btn" class="bg-blue-600 text-white font-black py-4 rounded-xl text-center text-xs tracking-widest uppercase transition-all duration-200">ENGAGE ENGINE</div>
-                                        
+                                        <div id="mock-single-btn" class="bg-blue-600 text-white font-black py-4 rounded-xl text-center text-xs tracking-widest uppercase transition-all duration-200 shadow-lg shadow-blue-500/20">ENGAGE ENGINE</div>
                                         <div id="mock-single-result" class="mt-6 bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl flex items-center gap-4 opacity-0 transition-opacity duration-300">
                                             <i class="fa-solid fa-shield-check text-emerald-400 text-3xl"></i>
                                             <div>
@@ -114,7 +113,7 @@
 
                                 <div id="view-bulk" class="mock-view p-6 md:p-8">
                                     <h2 class="text-2xl md:text-3xl font-black text-white mb-6">Bulk Wash Pipeline</h2>
-                                    <div id="mock-bulk-drop" class="glass-panel p-8 md:p-12 text-center rounded-2xl border-2 border-dashed border-slate-600 flex flex-col items-center justify-center h-40 md:h-48 transition-all duration-300">
+                                    <div id="mock-bulk-drop" class="bg-slate-900/40 border-slate-700/50 p-8 md:p-12 text-center rounded-2xl border-2 border-dashed flex flex-col items-center justify-center h-40 md:h-48 transition-all duration-300 shadow-inner">
                                         <i id="mock-bulk-icon" class="fa-solid fa-file-csv text-4xl md:text-5xl text-sky-500 mb-4 transition-all"></i>
                                         <h3 id="mock-bulk-text" class="text-white font-bold text-sm md:text-base">Awaiting enterprise_leads.csv...</h3>
                                     </div>
@@ -136,11 +135,11 @@
                                         <div id="mock-monitor-btn" class="bg-blue-600 text-white font-bold text-[10px] px-4 py-2 rounded-lg transition-all duration-200">ADD DOMAIN</div>
                                     </div>
                                     <div class="grid grid-cols-2 gap-4 mb-6">
-                                        <div class="glass-panel p-4 rounded-xl border-t-4 border-t-emerald-500"><div class="text-[10px] text-emerald-500 font-black uppercase mb-1">DMARC Security</div><div class="text-lg md:text-xl font-black text-white">SECURE</div></div>
-                                        <div class="glass-panel p-4 rounded-xl border-t-4 border-t-red-500"><div class="text-[10px] text-red-500 font-black uppercase mb-1">Blacklist Status</div><div class="text-lg md:text-xl font-black text-white">CLEAN</div></div>
+                                        <div class="bg-slate-900/50 p-4 rounded-xl border-t-4 border-t-emerald-500"><div class="text-[10px] text-emerald-500 font-black uppercase mb-1">DMARC Security</div><div class="text-lg md:text-xl font-black text-white">SECURE</div></div>
+                                        <div class="bg-slate-900/50 p-4 rounded-xl border-t-4 border-t-red-500"><div class="text-[10px] text-red-500 font-black uppercase mb-1">Blacklist Status</div><div class="text-lg md:text-xl font-black text-white">CLEAN</div></div>
                                     </div>
-                                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-                                        <table class="w-full text-left text-[10px] md:text-xs"><thead class="bg-slate-950 text-slate-500 uppercase font-black"><th class="p-3">Domain</th><th class="p-3">Status</th></thead>
+                                    <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                                        <table class="w-full text-left text-[10px] md:text-xs"><thead class="bg-slate-900 text-slate-500 uppercase font-black"><th class="p-3">Domain</th><th class="p-3">Status</th></thead>
                                         <tbody id="mock-monitor-table" class="text-slate-300">
                                             <tr><td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400">Secured</td></tr>
                                         </tbody></table>
@@ -154,75 +153,156 @@
             </div>
         </section>
 
-        <section class="py-24 bg-slate-900/20 px-6 border-t border-slate-800/50">
+        <section class="py-24 bg-[#050914] px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-sm font-black text-blue-500 uppercase tracking-[0.3em] mb-4">Complete Pipeline</h2>
+                    <h3 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">Everything required to scale outbound.</h3>
+                    <p class="text-slate-400 max-w-2xl mx-auto">We stripped away the bloat and focused entirely on data accuracy, server-side speed, and absolute cryptographic certainty.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
+                        <div class="bg-emerald-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-emerald-400 text-2xl mb-6 border border-emerald-500/20"><i class="fa-solid fa-microchip"></i></div>
+                        <h4 class="text-2xl font-black text-white mb-3">Live SMTP Engine</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Databases decay at 3% a month. We don't rely on cached data. We ping the mail server via Port 25 in real-time before you pay a credit.</p>
+                    </div>
+                    
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
+                        <div class="bg-blue-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-blue-400 text-2xl mb-6 border border-blue-500/20"><i class="fa-solid fa-satellite-dish"></i></div>
+                        <h4 class="text-2xl font-black text-white mb-3">Lead Extraction</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Powered by the Apify network. Extract verified leads globally based on job title, location, and industry, and route them directly into your Vault.</p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
+                        <div class="bg-purple-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-purple-400 text-2xl mb-6 border border-purple-500/20"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <h4 class="text-2xl font-black text-white mb-3">1-Click CRM Purge</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Push verified leads straight to HubSpot or Salesforce. Our engine detects existing contacts dynamically to prevent pipeline duplicates.</p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
+                        <div class="bg-amber-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-amber-400 text-2xl mb-6 border border-amber-500/20"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h4 class="text-2xl font-black text-white mb-3">Blacklist Monitor</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Constant, automated domain surveillance against global Spamhaus and Barracuda blacklists. If your domain health drops, we alert you instantly.</p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2 lg:col-span-2">
+                        <div class="bg-sky-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-sky-400 text-2xl mb-6 border border-sky-500/20"><i class="fa-solid fa-code"></i></div>
+                        <h4 class="text-2xl font-black text-white mb-3">Enterprise Developer API</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed max-w-xl">Generate cryptographic secret keys to verify leads directly within your own software infrastructure. Dedicated bare-metal IPs available for maximum unthrottled throughput.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 bg-slate-900/30 px-6 border-y border-slate-800/50">
             <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
                     <h2 class="text-sm font-black text-emerald-500 uppercase tracking-[0.3em] mb-4">Pipeline Economics</h2>
                     <h3 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">Stop burning your domain reputation.</h3>
-                    <p class="text-slate-400 mb-12 leading-relaxed">B2B data decays at 3% monthly. A 5% bounce rate triggers Google and Microsoft spam filters. Calculate the revenue leaking from your current provider.</p>
+                    <p class="text-slate-400 mb-12 leading-relaxed text-lg">A 5% bounce rate triggers Google and Microsoft spam filters permanently. Calculate the exact revenue leaking from your current legacy provider.</p>
                     
                     <div class="space-y-12 pr-0 lg:pr-12">
                         <div>
-                            <div class="flex justify-between items-center mb-6">
-                                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Monthly Emails Sent</span>
-                                <span class="text-white text-2xl font-black" id="val-emails">5,000</span>
-                            </div>
+                            <div class="flex justify-between items-center mb-6"><span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Monthly Emails Sent</span><span class="text-white text-2xl font-black" id="val-emails">5,000</span></div>
                             <input type="range" min="1000" max="100000" step="1000" value="5000" id="slide-emails" oninput="calculateROI()">
                         </div>
                         <div>
-                            <div class="flex justify-between items-center mb-6">
-                                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Current Bounce Rate</span>
-                                <span class="text-red-500 text-2xl font-black" id="val-bounce">8%</span>
-                            </div>
+                            <div class="flex justify-between items-center mb-6"><span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Current Bounce Rate</span><span class="text-red-500 text-2xl font-black" id="val-bounce">8%</span></div>
                             <input type="range" min="1" max="25" step="1" value="8" id="slide-bounce" oninput="calculateROI()">
                         </div>
                     </div>
                 </div>
                 
                 <div class="relative">
-                    <div class="absolute -inset-4 bg-emerald-500/5 blur-3xl rounded-full"></div>
+                    <div class="absolute -inset-4 bg-emerald-500/5 blur-3xl rounded-full pointer-events-none"></div>
                     <div class="glass-panel p-10 md:p-14 rounded-[3rem] border border-slate-700/50 text-center relative z-10 shadow-2xl">
                         <div class="inline-block bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-8">Projected Monthly Recovery</div>
                         <div class="text-7xl md:text-8xl font-black text-emerald-400 mb-4 tracking-tighter" id="roi-saved">+$240</div>
-                        <p class="text-slate-500 text-sm font-medium max-w-xs mx-auto leading-relaxed">Estimated revenue rescued from the spam folder based on standard conversion metrics.</p>
+                        <p class="text-slate-500 text-sm font-medium max-w-xs mx-auto leading-relaxed">Estimated pipeline revenue rescued from the spam folder based on standard conversion metrics.</p>
                     </div>
                 </div>
             </div>
         </section>
+
+        <section class="py-24 bg-[#050914] px-6">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="text-sm font-black text-red-500 uppercase tracking-[0.3em] mb-4">The Market Reality</h2>
+                <h3 class="text-4xl md:text-6xl font-black text-white leading-tight mb-8 tracking-tighter">Stop buying digital graveyards.</h3>
+                <p class="text-slate-400 text-lg mb-16 max-w-2xl mx-auto">Giant databases like Apollo sell you records scraped 6 months ago. Mailvah uses Heuristic 4x compute to verify the exact millisecond before you hit send.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                    <div class="glass-panel p-10 rounded-[2.5rem] border-t-4 border-t-red-500 bg-red-500/[0.02]">
+                        <h4 class="text-2xl font-black text-white mb-4">Legacy Databases</h4>
+                        <ul class="space-y-4 text-sm text-slate-400">
+                            <li class="flex items-center"><i class="fa-solid fa-xmark text-red-500 mr-3 text-lg"></i> Cached historical data (high decay)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-xmark text-red-500 mr-3 text-lg"></i> Pattern guessing (first.last@)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-xmark text-red-500 mr-3 text-lg"></i> Credits expire monthly</li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel p-10 rounded-[2.5rem] border-t-4 border-t-sky-500 bg-sky-500/[0.02] shadow-[0_0_30px_rgba(56,189,248,0.05)] relative">
+                        <div class="absolute -top-4 right-8 bg-sky-500 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">The Mailvah Standard</div>
+                        <h4 class="text-2xl font-black text-white mb-4">Bare-Metal Engine</h4>
+                        <ul class="space-y-4 text-sm text-white font-medium">
+                            <li class="flex items-center"><i class="fa-solid fa-check-double text-emerald-400 mr-3 text-lg drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]"></i> Live Port 25 SMTP Handshakes</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check-double text-emerald-400 mr-3 text-lg drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]"></i> V3.2 Catch-All Penetration</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check-double text-emerald-400 mr-3 text-lg drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]"></i> Infinite Credit Rollover</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-12 text-center">
+                    <a href="compare.html" class="inline-flex items-center gap-2 text-sky-400 font-bold hover:text-white transition-colors text-sm tracking-widest uppercase">View full competitor breakdown <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 text-center px-6 relative overflow-hidden border-t border-slate-800/50">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-64 bg-blue-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+            <div class="max-w-3xl mx-auto relative z-10">
+                <i class="fa-solid fa-server text-6xl text-sky-400 mb-8 drop-shadow-[0_0_20px_rgba(56,189,248,0.6)]"></i>
+                <h2 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter">Ready to deploy?</h2>
+                <p class="text-slate-400 text-lg md:text-xl mb-12">Join the founders and agencies scaling their outbound infrastructure with absolute cryptographic certainty.</p>
+                <div class="flex flex-col md:flex-row justify-center gap-6">
+                    <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-4 px-10 rounded-2xl shadow-xl shadow-blue-500/25 text-sm tracking-widest uppercase transition-all transform hover:scale-105">CREATE FREE NODE</a>
+                    <a href="pricing.html" class="glass-panel text-white font-black py-4 px-10 rounded-2xl hover:bg-slate-800 transition-colors text-sm tracking-widest uppercase border border-slate-700">VIEW ECONOMICS</a>
+                </div>
+                <p class="mt-8 text-xs font-bold text-emerald-400 uppercase tracking-widest"><i class="fa-solid fa-shield-check mr-1.5"></i> 115 Free wash credits on signup</p>
+            </div>
+        </section>
     </main>
 
-    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-20 pb-10 px-6 mt-auto">
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-20 pb-10 px-6 mt-auto relative z-20">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
                 <div>
                     <h4 class="text-white font-black mb-6 text-xs uppercase tracking-[0.3em]">Infrastructure</h4>
                     <ul class="space-y-4 text-sm text-slate-500 font-bold uppercase tracking-widest text-[10px]">
-                        <li><a href="index.html" class="hover:text-sky-400">V3.2 Engine</a></li>
-                        <li><a href="pricing.html" class="hover:text-sky-400">Pricing Tiers</a></li>
-                        <li><a href="https://app.mailvah.com" class="hover:text-sky-400">Developer API</a></li>
+                        <li><a href="index.html" class="hover:text-sky-400 transition-colors">V3.2 Engine</a></li>
+                        <li><a href="pricing.html" class="hover:text-sky-400 transition-colors">Pricing Tiers</a></li>
+                        <li><a href="https://app.mailvah.com" class="hover:text-sky-400 transition-colors">Developer API</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-white font-black mb-6 text-xs uppercase tracking-[0.3em]">Compare</h4>
                     <ul class="space-y-4 text-sm text-slate-500 font-bold uppercase tracking-widest text-[10px]">
-                        <li><a href="compare.html" class="hover:text-sky-400">vs Apollo.io</a></li>
-                        <li><a href="compare.html" class="hover:text-sky-400">vs Hunter.io</a></li>
-                        <li><a href="compare.html" class="hover:text-sky-400">vs Skrapp</a></li>
+                        <li><a href="compare.html" class="hover:text-sky-400 transition-colors">vs Apollo.io</a></li>
+                        <li><a href="compare.html" class="hover:text-sky-400 transition-colors">vs Hunter.io</a></li>
+                        <li><a href="compare.html" class="hover:text-sky-400 transition-colors">vs Skrapp</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-white font-black mb-6 text-xs uppercase tracking-[0.3em]">Company</h4>
                     <ul class="space-y-4 text-sm text-slate-500 font-bold uppercase tracking-widest text-[10px]">
-                        <li><a href="company.html" class="hover:text-sky-400">Affordable by Design</a></li>
-                        <li><a href="company.html" class="hover:text-sky-400">Contact Engineering</a></li>
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Affordable by Design</a></li>
+                        <li><a href="company.html" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-white font-black mb-6 text-xs uppercase tracking-[0.3em]">Legal Hub</h4>
                     <ul class="space-y-4 text-sm text-slate-500 font-bold uppercase tracking-widest text-[10px]">
-                        <li><a href="privacy.html" class="hover:text-sky-400">Privacy Policy</a></li>
-                        <li><a href="terms.html" class="hover:text-sky-400">Terms of Service</a></li>
-                        <li><a href="faq.html" class="hover:text-sky-400">FAQ & Knowledge</a></li>
+                        <li><a href="privacy.html" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="faq.html" class="hover:text-sky-400 transition-colors">FAQ & Knowledge</a></li>
                     </ul>
                 </div>
             </div>
@@ -240,6 +320,7 @@
     </footer>
 
     <script>
+        // ROI Logic
         function calculateROI() {
             const e = document.getElementById('slide-emails').value;
             const b = document.getElementById('slide-bounce').value;
@@ -247,10 +328,13 @@
             document.getElementById('val-bounce').innerText = b + '%';
             const wasted = Math.round(e * (b/100));
             document.getElementById('roi-saved').innerText = '+$' + Math.round(wasted * 0.60).toLocaleString();
+            
+            const leadsWasted = document.getElementById('leads-wasted');
+            if(leadsWasted) leadsWasted.innerText = wasted.toLocaleString();
         }
         calculateROI();
 
-        // THE IN-PLACE AUTONOMOUS ANIMATION LOOP
+        // THE IN-PLACE AUTONOMOUS ANIMATION LOOP (Platform Tour)
         async function animateTour() {
             function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
             
@@ -315,9 +399,9 @@
             addBtn.classList.add('btn-press', 'bg-blue-800'); await wait(150); addBtn.classList.remove('btn-press', 'bg-blue-800');
             
             const table = document.getElementById('mock-monitor-table');
-            table.insertAdjacentHTML('beforeend', '<tr class="bg-emerald-500/10"><td class="p-3 font-bold text-white">acne-corp.com</td><td class="p-3 text-emerald-400">Verifying...</td></tr>');
+            table.insertAdjacentHTML('beforeend', '<tr class="bg-emerald-500/10"><td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400">Verifying...</td></tr>');
             await wait(1500);
-            table.lastElementChild.innerHTML = '<td class="p-3 font-bold text-white">acne-corp.com</td><td class="p-3 text-emerald-400 font-bold">Secured</td>';
+            table.lastElementChild.innerHTML = '<td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400 font-bold">Secured</td>';
             await wait(3000);
 
             // Reset UI for Loop
