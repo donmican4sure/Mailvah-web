@@ -87,9 +87,9 @@
                                     <span class="hidden md:block font-black text-white text-lg">MAILVAH<span class="text-sky-400 text-[8px] align-top ml-1">PRO</span></span>
                                 </div>
                                 <div class="space-y-1">
-                                    <div id="btn-single" class="mock-sidebar-btn active flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-crosshairs text-sky-400 text-lg"></i><span class="hidden md:block">V3.2 Engine</span></div>
-                                    <div id="btn-bulk" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-layer-group text-lg"></i><span class="hidden md:block">Bulk Wash</span></div>
-                                    <div id="btn-monitor" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-shield-halved text-amber-400 text-lg"></i><span class="hidden md:block">Monitor</span></div>
+                                    <div id="btn-single" class="mock-sidebar-btn active flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-crosshairs text-sky-400 text-lg w-5 text-center"></i><span class="hidden md:block">V3.2 Engine</span></div>
+                                    <div id="btn-bulk" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-layer-group text-lg w-5 text-center"></i><span class="hidden md:block">Bulk Wash</span></div>
+                                    <div id="btn-monitor" class="mock-sidebar-btn flex items-center gap-3 px-4 md:px-6 py-3 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-globe text-amber-400 text-lg w-5 text-center"></i><span class="hidden md:block">Monitor</span></div>
                                 </div>
                             </div>
                             
@@ -102,7 +102,7 @@
                                         </div>
                                         <div id="mock-single-btn" class="bg-blue-600 text-white font-black py-4 rounded-xl text-center text-xs tracking-widest uppercase transition-all duration-200 shadow-lg shadow-blue-500/20">ENGAGE ENGINE</div>
                                         <div id="mock-single-result" class="mt-6 bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl flex items-center gap-4 opacity-0 transition-opacity duration-300">
-                                            <i class="fa-solid fa-shield-check text-emerald-400 text-3xl"></i>
+                                            <i class="fa-solid fa-shield text-emerald-400 text-3xl"></i>
                                             <div>
                                                 <div class="text-emerald-400 font-black text-sm tracking-widest">DELIVERABLE</div>
                                                 <div class="text-slate-400 text-[10px] font-mono mt-1">> Catch-All bypassed. Port 25 Secured.</div>
@@ -141,7 +141,7 @@
                                     <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
                                         <table class="w-full text-left text-[10px] md:text-xs"><thead class="bg-slate-900 text-slate-500 uppercase font-black"><th class="p-3">Domain</th><th class="p-3">Status</th></thead>
                                         <tbody id="mock-monitor-table" class="text-slate-300">
-                                            <tr><td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400">Secured</td></tr>
+                                            <tr><td class="p-3 font-bold text-white">mailvah.com</td><td class="p-3 text-emerald-400">Secured</td></tr>
                                         </tbody></table>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@
                     <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
                         <div class="bg-blue-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-blue-400 text-2xl mb-6 border border-blue-500/20"><i class="fa-solid fa-satellite-dish"></i></div>
                         <h4 class="text-2xl font-black text-white mb-3">Lead Extraction</h4>
-                        <p class="text-slate-400 text-sm leading-relaxed">Powered by the Apify network. Extract verified leads globally based on job title, location, and industry, and route them directly into your Vault.</p>
+                        <p class="text-slate-400 text-sm leading-relaxed">Powered by our proprietary V4.5 Mailvah Cluster. Extract verified leads globally based on job title, location, and industry, and route them directly into your Vault.</p>
                     </div>
 
                     <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
@@ -181,7 +181,7 @@
                     </div>
 
                     <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-start border border-slate-700/50 hover:-translate-y-2">
-                        <div class="bg-amber-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-amber-400 text-2xl mb-6 border border-amber-500/20"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="bg-amber-500/10 w-14 h-14 rounded-2xl flex items-center justify-center text-amber-400 text-2xl mb-6 border border-amber-500/20"><i class="fa-solid fa-shield"></i></div>
                         <h4 class="text-2xl font-black text-white mb-3">Blacklist Monitor</h4>
                         <p class="text-slate-400 text-sm leading-relaxed">Constant, automated domain surveillance against global Spamhaus and Barracuda blacklists. If your domain health drops, we alert you instantly.</p>
                     </div>
@@ -402,9 +402,9 @@
             addBtn.classList.add('btn-press', 'bg-blue-800'); await wait(150); addBtn.classList.remove('btn-press', 'bg-blue-800');
             
             const table = document.getElementById('mock-monitor-table');
-            table.insertAdjacentHTML('beforeend', '<tr class="bg-emerald-500/10"><td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400">Verifying...</td></tr>');
+            table.insertAdjacentHTML('beforeend', '<tr class="bg-emerald-500/10"><td class="p-3 font-bold text-white">target-node.io</td><td class="p-3 text-emerald-400">Scanning...</td></tr>');
             await wait(1500);
-            table.lastElementChild.innerHTML = '<td class="p-3 font-bold text-white">donmican.tech</td><td class="p-3 text-emerald-400 font-bold">Secured</td>';
+            table.lastElementChild.innerHTML = '<td class="p-3 font-bold text-white">target-node.io</td><td class="p-3 text-emerald-400 font-bold">Secured</td>';
             await wait(3000);
 
             // Reset UI for Loop
