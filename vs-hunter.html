@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mailvah vs Hunter.io | Stop Guessing, Start Verifying</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #111827, #050914); }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .text-gradient { background: linear-gradient(to right, #f97316, #ea580c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
+                <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1 tracking-widest">PRO</span></span>
+            </a>
+            
+            <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="index.html" class="hover:text-white transition-colors px-2">Infrastructure</a>
+                <a href="compare.html" class="text-sky-400 transition-colors px-2">The Giants</a>
+                <a href="pricing.html" class="hover:text-white transition-colors px-2">Economics</a>
+                <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
+                <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://app.mailvah.com" class="hidden md:block text-slate-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">Log In</a>
+                <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 text-xs tracking-widest uppercase transition-all transform hover:scale-105">DEPLOY ENGINE</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20">
+        
+        <section class="pt-24 pb-16 px-6 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
+            <div class="max-w-4xl mx-auto relative z-10">
+                <div class="inline-flex items-center gap-3 bg-orange-500/10 border border-orange-500/20 px-5 py-2 rounded-full mb-8">
+                    <span class="text-[10px] font-black text-orange-400 uppercase tracking-[0.2em]">Mailvah vs. Hunter.io</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-6 tracking-tighter">
+                    Stop paying for <br><span class="text-gradient">pattern guessing.</span>
+                </h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+                    Hunter relies on finding common formats (like "first.last@company.com") and assuming your target matches. In 2026, guessing ruins domain reputation. Mailvah utilizes our proprietary V4.5 Cluster to execute bare-metal SMTP handshakes for absolute cryptographic certainty.
+                </p>
+            </div>
+        </section>
+
+        <section class="py-20 bg-slate-900/30 px-6 border-y border-slate-800/50">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-3xl font-black text-white mb-6">Deterministic Fact vs. Probability</h2>
+                        <p class="text-slate-400 leading-relaxed mb-6">Hunter.io built an incredible platform for the 2018 era of outbound. They scrape the web, find that 80% of employees at Microsoft use "first.last@microsoft.com", and when you search for the CEO, they return that pattern with a "Confidence Score."</p>
+                        <p class="text-slate-400 leading-relaxed mb-8">Confidence scores are not facts. If a CEO uses a custom format (e.g., "initials@"), Hunter's guess will bounce, permanently damaging your domain's sending health. Mailvah's <span class="text-white font-bold">V4.5 Cluster</span> never guesses. We verify.</p>
+                        
+                        <div class="bg-[#0b1120] border border-slate-700/50 p-6 rounded-2xl shadow-inner">
+                            <h4 class="text-xs font-black text-sky-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-server"></i> V4.5 Heuristic Shield Bypass</h4>
+                            <p class="text-sm text-slate-300 leading-relaxed">When Hunter encounters an Enterprise "Catch-All" firewall, they mark the lead as "Risky" and give up. Mailvah fires a sequential 3-burst ghost ping of impossible alphanumeric emails to map the firewall rules, allowing us to extract the deterministic truth.</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="glass-panel p-8 md:p-12 rounded-[2.5rem] border-t-4 border-t-orange-500 shadow-2xl">
+                            <h3 class="text-white font-black text-xl mb-8 border-b border-slate-800 pb-4">Catch-All Handling</h3>
+                            <div class="space-y-8">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 font-black flex-shrink-0">H</div>
+                                    <div>
+                                        <h4 class="text-white font-bold mb-1">Hunter.io</h4>
+                                        <p class="text-xs text-slate-400">"We detected a Catch-All server. We cannot verify this email. Status: Risky."</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 font-black shadow-[0_0_15px_rgba(16,185,129,0.3)] flex-shrink-0">M</div>
+                                    <div>
+                                        <h4 class="text-white font-bold mb-1">Mailvah</h4>
+                                        <p class="text-xs text-emerald-400 font-mono">> Firewall mapped via 3-burst ping...<br>> Catch-All bypassed...<br>> Target verified: SAFE.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl font-black text-white text-center mb-16">Deep Technical Comparison</h2>
+                <div class="overflow-x-auto custom-scrollbar glass-panel rounded-[2rem] border border-slate-700/50">
+                    <table class="w-full text-left min-w-[700px]">
+                        <thead class="bg-slate-900 border-b border-slate-800">
+                            <tr>
+                                <th class="p-6 text-xs font-black text-slate-500 uppercase tracking-widest">Capabilities</th>
+                                <th class="p-6 text-sm font-black text-sky-400 bg-sky-500/5 border-x border-sky-500/20">Mailvah</th>
+                                <th class="p-6 text-sm font-black text-slate-400">Hunter.io</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm font-medium text-slate-300 divide-y divide-slate-800/50">
+                            <tr>
+                                <td class="p-6">Methodology</td>
+                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20 text-emerald-400">Live Port 25 Handshake</td>
+                                <td class="p-6 text-slate-500">Pattern Guessing / Probability</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6">Catch-All Penetration</td>
+                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20 text-emerald-400">V3.2 Heuristic Accuracy</td>
+                                <td class="p-6 text-red-500">Fails (Marked as Risky)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6">Global Infrastructure</td>
+                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20 text-white">Dallas, Luxembourg, Asia, SA, Africa</td>
+                                <td class="p-6 text-slate-500">Standard Cloud</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6">Domain Blacklist Monitor</td>
+                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20"><i class="fa-solid fa-check text-emerald-400"></i> Included Free</td>
+                                <td class="p-6"><i class="fa-solid fa-xmark text-red-500"></i> Not Available</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6">Payload Threat Analyzer</td>
+                                <td class="p-6 bg-sky-500/5 border-x border-sky-500/20"><i class="fa-solid fa-check text-emerald-400"></i> 50+ Spam Triggers Checked</td>
+                                <td class="p-6"><i class="fa-solid fa-xmark text-red-500"></i> Not Available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 text-center px-6">
+            <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Upgrade your infrastructure.</h2>
+            <p class="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">Export your "Risky" lists from Hunter, drop them into the Mailvah Bulk Engine, and watch the V3.2 protocol verify the un-verifiable.</p>
+            <a href="https://app.mailvah.com" class="inline-block bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-4 px-12 rounded-2xl shadow-xl shadow-blue-500/25 text-sm tracking-widest uppercase transition-all transform hover:scale-105">CREATE FREE NODE</a>
+        </section>
+    </main>
+
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-10 pb-10 px-6 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-800 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest leading-relaxed">© 2026 Mailvah, a product of Donmican Technology Ltd. Engineered in Lagos.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
