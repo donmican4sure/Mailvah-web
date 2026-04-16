@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Mailvah Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #111827, #050914); }
+        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
 
+    <nav class="fixed w-full z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/50 h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="bg-blue-600 p-2 rounded-lg"><i class="fa-solid fa-m text-white text-xl"></i></div>
+                <span class="text-2xl font-black text-white tracking-tight uppercase">MAILVAH<span class="text-blue-500 font-bold text-sm align-top ml-1">PRO</span></span>
+            </a>
+            <div class="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="index.html" class="hover:text-white transition-colors px-2">Infrastructure</a>
+                <a href="compare.html" class="hover:text-white transition-colors px-2">The Giants</a>
+                <a href="pricing.html" class="hover:text-white transition-colors px-2">Economics</a>
+                <a href="company.html" class="hover:text-white transition-colors px-2">Company</a>
+                <a href="faq.html" class="hover:text-white transition-colors px-2">FAQ</a>
+            </div>
+            <a href="https://app.mailvah.com" class="bg-gradient-to-r from-blue-600 to-blue-500 text-white font-black py-2.5 px-6 rounded-xl shadow-lg text-xs tracking-widest uppercase">DEPLOY ENGINE</a>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24 px-6 flex-1">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-16">
+                <h2 class="text-sm font-black text-sky-500 uppercase tracking-[0.3em] mb-4">Legal Hub</h2>
+                <h1 class="text-4xl md:text-6xl font-black text-white tracking-tighter mb-6">Privacy Policy</h1>
+                <p class="text-slate-400 text-sm">Last Updated: April 2026 • Donmican Technology Ltd.</p>
+            </div>
+
+            <div class="glass-panel p-8 md:p-16 rounded-[3rem] border border-slate-700/50 space-y-12">
+                
+                <section>
+                    <h3 class="text-2xl font-black text-white mb-4">1. Data Sovereignty & Isolation</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Mailvah operates fundamentally as a bare-metal infrastructure provider, not a data broker. We do not aggregate, analyze, or resell any CRM data or CSV assets uploaded to our platform.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">All data processed through the V3.2 Heuristic Engine or stored in the Vault is encrypted using 256-bit AES standards and is isolated entirely to your specific cryptographic User ID.</p>
+                </section>
+
+                <section>
+                    <h3 class="text-2xl font-black text-white mb-4">2. The Information We Collect</h3>
+                    <ul class="list-disc list-inside text-slate-400 text-sm leading-relaxed space-y-2 ml-4">
+                        <li><strong class="text-slate-300">Account Information:</strong> We collect your email address, name, and encrypted password upon node creation.</li>
+                        <li><strong class="text-slate-300">Billing Information:</strong> Payments are securely processed via authorized third-party gateways (e.g., Stripe, Flutterwave). Mailvah does not store full credit card numbers on our servers.</li>
+                        <li><strong class="text-slate-300">Infrastructure Logs:</strong> We collect basic telemetry data (IP address, browser type, API request volume) to monitor network health and prevent abuse.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 class="text-2xl font-black text-white mb-4">3. GDPR Compliance & Right to Erasure</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Mailvah acts as a "Data Processor" regarding the leads you verify. We process this information under the legal basis of "Legitimate Interest" for B2B communications.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">You maintain total control over your data. You may execute a 1-click purge from within the Command Center at any time, which permanently deletes all uploaded lists, API logs, and Vault archives from our servers.</p>
+                </section>
+
+                <section>
+                    <h3 class="text-2xl font-black text-white mb-4">4. Heuristic Verification Ethics</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">When executing verification protocols, Mailvah utilizes Port 25 SMTP handshakes to communicate with recipient mail servers. We simulate delivery to map firewalls, but we terminate the connection prior to payload transmission. No unsolicited emails, tracking pixels, or spam are ever dispatched by our engine during the verification process.</p>
+                </section>
+
+                <section>
+                    <h3 class="text-2xl font-black text-white mb-4">5. Contact Information</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">For legal inquiries, data deletion requests, or questions regarding this policy, please contact our engineering and compliance team directly.</p>
+                    <div class="bg-slate-900/50 border border-slate-800 p-4 rounded-xl mt-4 inline-block">
+                        <p class="text-slate-300 text-sm font-mono">legal@mailvah.com</p>
+                        <p class="text-slate-500 text-xs mt-1">Donmican Technology Ltd. Lagos, Nigeria.</p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-10 pb-10 px-6 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2026 Mailvah, a product of Donmican Technology Ltd. Engineered in Lagos.</p>
+            <div class="flex gap-8 text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> 256-bit Encrypted</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
