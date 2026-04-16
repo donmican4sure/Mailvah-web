@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mailvah | Enterprise Outbound Security</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #050914; color: white; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top right, #1e293b, #050914); }
+        .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .glass-panel:hover { border-color: rgba(56, 189, 248, 0.3); }
+        .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hidden { display: none !important; }
+        .nav-active { color: #38bdf8 !important; }
+        
+        /* Terminal Typing Effect */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        
+        .premium-lock { filter: blur(4px); pointer-events: none; user-select: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 bg-[#050914]/80 backdrop-blur-lg border-b border-slate-800/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
+                <div class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.5)]"><i class="fa-solid fa-m text-white text-xl"></i></div>
+                <span class="text-2xl font-black text-white tracking-tight">MAILVAH<span class="text-blue-500 font-medium text-sm align-top ml-1">PRO</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-400">
+                <button onclick="navigate('home')" id="nav-home" class="hover:text-white transition-colors nav-active">Platform</button>
+                <button onclick="navigate('compare')" id="nav-compare" class="hover:text-white transition-colors">Compare</button>
+                <button onclick="navigate('pricing')" id="nav-pricing" class="hover:text-white transition-colors">Pricing</button>
+                <button onclick="navigate('faq')" id="nav-faq" class="hover:text-white transition-colors">FAQ</button>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="openAuth('login')" class="hidden md:block text-sm font-bold text-slate-400 hover:text-white transition-colors">Log In</button>
+                <button onclick="openAuth('signup')" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-sky-500/25 text-sm tracking-wider">
+                    DEPLOY ENGINE
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 backdrop-blur-md px-4 opacity-0 transition-opacity duration-300">
+        <div class="max-w-md w-full bg-[#0b1120] border border-slate-800 rounded-2xl p-8 shadow-2xl relative">
+            <button onclick="closeAuth()" class="absolute top-4 right-4 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <div class="text-center mb-8">
+                <h2 id="authTitle" class="text-2xl font-bold text-white mb-2">Secure Command Center</h2>
+                <p id="authSubtitle" class="text-sm text-slate-400">Create an account to unlock 115 free wash credits.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Email Address</label>
+                    <input type="email" id="authEmail" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none" placeholder="ceo@company.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Password</label>
+                    <input type="password" id="authPassword" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none" placeholder="••••••••">
+                </div>
+                
+                <button onclick="handleAuthSubmit()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-lg transition-colors flex justify-center items-center gap-2 mt-4 text-sm shadow-[0_0_15px_rgba(37,99,235,0.3)]">
+                    <i class="fa-solid fa-lock-open text-sm"></i> <span id="authBtnText">Access Infrastructure</span>
+                </button>
+                
+                <p class="text-center text-[10px] text-emerald-400 font-bold mt-3"><i class="fa-solid fa-check mr-1"></i> No Credit Card Required</p>
+                <div class="text-center text-xs text-slate-500 mt-6 border-t border-slate-800 pt-4">
+                    <p>Processed in isolated, 256-bit encrypted buckets. SOC 2 Type II Audited.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-1 pt-20">
+        
+        <div id="page-home" class="block animate-fade-in">
+            <section class="relative pt-24 pb-20 overflow-hidden">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+                <div class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-6">
+                            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Bare-Metal Engine v2.0 Live</span>
+                        </div>
+                        <h1 class="text-5xl md:text-6xl font-black text-white leading-tight mb-6 tracking-tight">
+                            Deliverability is a Science. <br>
+                            <span class="bg-gradient-to-r from-sky-400 to-blue-600 text-gradient">Stop Guessing.</span>
+                        </h1>
+                        <p class="text-lg text-slate-400 mb-8 max-w-lg leading-relaxed">
+                            The only outbound security suite executing live Port 25 handshakes over proprietary servers. Stop relying on stale databases and protect your sender reputation with absolute certainty.
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="openAuth('signup')" class="bg-white hover:bg-slate-200 text-slate-900 font-bold py-4 px-8 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                                Unlock Free Credits
+                            </button>
+                            <button onclick="navigate('pricing')" class="glass-panel text-white font-bold py-4 px-8 rounded-xl transition-all hover:bg-slate-800/50">
+                                View Enterprise Pricing
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-2 rounded-2xl relative shadow-[0_0_50px_rgba(56,189,248,0.1)]">
+                        <div class="bg-[#050914] rounded-xl border border-slate-800 overflow-hidden">
+                            <div class="bg-slate-900/80 px-4 py-3 border-b border-slate-800 flex justify-between items-center">
+                                <div class="flex gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500 font-mono tracking-widest">MAILVAH_AUDIT_PROTOCOL</span>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-sm font-bold text-white mb-2">Test a target your current provider says is "Safe"</h3>
+                                <div class="relative mb-4">
+                                    <input type="email" id="livePingInput" placeholder="ceo@apollo.io" class="w-full bg-slate-900/50 border border-slate-700 p-4 rounded-xl focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none text-white font-mono text-sm">
+                                    <button id="livePingBtn" onclick="executeLivePing()" class="absolute right-2 top-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-xs transition-colors">PING</button>
+                                </div>
+                                
+                                <div id="terminalOutput" class="bg-slate-950 rounded-lg p-4 font-mono text-xs text-slate-400 h-48 overflow-y-auto">
+                                    > Engine standby. Awaiting target...<span class="cursor-blink">_</span>
+                                </div>
+
+                                <div id="terminalLockout" class="hidden absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-sm rounded-xl">
+                                    <i class="fa-solid fa-lock text-4xl text-sky-400 mb-4 animate-pulse"></i>
+                                    <h3 class="text-lg font-bold text-white mb-2">Guest Limit Reached</h3>
+                                    <p class="text-xs text-slate-400 text-center px-6 mb-4">Your device has been logged. Create an account to unlock 115 deep-scan credits.</p>
+                                    <button onclick="openAuth('signup')" class="bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold py-2.5 px-6 rounded-lg shadow-[0_0_15px_rgba(56,189,248,0.4)] text-sm">Create Free Account</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-20 bg-slate-900/20 border-t border-slate-800/50">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Infrastructure, not just an API.</h2>
+                        <p class="text-slate-400 max-w-2xl mx-auto">We own the bare-metal architecture. That means absolute data freshness, zero heuristic guessing, and 4x the computing power of legacy providers.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-panel p-8 rounded-2xl md:col-span-2 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-6 opacity-10 text-8xl text-emerald-500"><i class="fa-solid fa-server"></i></div>
+                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-microchip text-emerald-400 mr-2"></i> Deep-Scan Engine</h3>
+                            <p class="text-sm text-slate-400 mb-6 max-w-md">We bypass standard heuristics by executing live SMTP handshakes directly with the receiving server. We penetrate Catch-All firewalls to deliver deterministic results.</p>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='40' viewBox='0 0 400 40'%3E%3Cpath d='M0 20 Q 50 40 100 20 T 200 20 T 300 20 T 400 20' fill='none' stroke='%2310b881' stroke-width='2' opacity='0.5'/%3E%3Ccircle cx='100' cy='20' r='4' fill='%2310b881'/%3E%3Ccircle cx='200' cy='20' r='4' fill='%2310b881'/%3E%3Ccircle cx='300' cy='20' r='4' fill='%2310b881'/%3E%3C/svg%3E" alt="Engine Graph">
+                        </div>
+                        
+                        <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-sky-500">
+                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-vault text-sky-400 mr-2"></i> 256-bit Vault</h3>
+                            <p class="text-sm text-slate-400">Your proprietary lead lists are stored in isolated Supabase buckets. We never aggregate or sell your hard-earned data back to the market.</p>
+                        </div>
+
+                        <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-purple-500">
+                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-satellite-dish text-purple-400 mr-2"></i> Extraction Network</h3>
+                            <p class="text-sm text-slate-400">Burn Discovery credits to hunt fresh B2B targets globally. Extracted, washed, and validated in one pipeline.</p>
+                        </div>
+
+                        <div class="glass-panel p-8 rounded-2xl md:col-span-2">
+                            <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-shield-halved text-amber-400 mr-2"></i> DNS Armor Protocol</h3>
+                            <p class="text-sm text-slate-400">Before you hit send, our dual-threat analyzer diagnostics your domain's SPF and DMARC records to ensure you aren't routing straight to the spam folder.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-24 relative">
+                <div class="max-w-4xl mx-auto px-6 text-center">
+                    <h2 class="text-sm font-bold text-sky-400 uppercase tracking-widest mb-4">Affordable By Design</h2>
+                    <h3 class="text-3xl md:text-5xl font-black text-white mb-8">Engineered for the Ecosystem.</h3>
+                    
+                    <div class="glass-panel p-8 md:p-12 rounded-3xl text-left border border-slate-700/50 bg-slate-900/50">
+                        <p class="text-slate-300 mb-6 text-lg leading-relaxed">
+                            We don't employ bloated outbound sales teams to sell you outbound software. We let the infrastructure speak for itself. 
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
+                            <div>
+                                <h4 class="text-white font-bold text-xl mb-3 border-b border-slate-800 pb-2"><span class="text-emerald-400">90%</span> Bare-Metal R&D</h4>
+                                <p class="text-sm text-slate-400">Every dollar goes back into the engine. Because we own our proprietary servers instead of renting white-labeled APIs, we cut out middlemen, reduce latency, and pass massive database savings down to you.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-xl mb-3 border-b border-slate-800 pb-2"><span class="text-sky-400">10%</span> Zero-to-One Initiative</h4>
+                                <p class="text-sm text-slate-400">Built globally. 10% of Mailvah revenue permanently funds student developers, open-source infrastructure, and early-stage founders. Verifying leads protects your domain while funding the next generation of builders.</p>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-slate-800/50 flex items-center justify-between">
+                            <span class="text-xs text-slate-500 font-mono tracking-widest">INITIATIVE BY DONMICAN TECHNOLOGY LTD</span>
+                            <i class="fa-solid fa-code-branch text-slate-600"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="page-compare" class="hidden animate-fade-in pt-24 pb-20">
+            <div class="max-w-5xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h1 class="text-4xl md:text-5xl font-black text-white mb-6">Live Pings vs. <span class="text-red-500 line-through opacity-70">Stale Data</span></h1>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">Legacy B2B databases suffer from ~8% data decay per month. Selling you records scraped 6 months ago destroys your domain reputation.</p>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden mb-12">
+                    <div class="bg-gradient-to-r from-blue-900/40 to-slate-900 p-8 border-b border-slate-800 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Mailvah <span class="text-slate-500 mx-2">vs</span> Apollo.io</h2>
+                            <p class="text-sm text-slate-400 mt-1">The bloated CRM giant relies on cached historical records.</p>
+                        </div>
+                    </div>
+                    <div class="p-0">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-900/50 text-xs text-slate-500 uppercase tracking-widest">
+                                <tr>
+                                    <th class="p-6 w-1/2">Feature</th>
+                                    <th class="p-6 text-sky-400 font-bold">Mailvah</th>
+                                    <th class="p-6 text-slate-500">Apollo.io</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/50 text-sm text-slate-300">
+                                <tr>
+                                    <td class="p-6 font-medium">Validation Method</td>
+                                    <td class="p-6"><span class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/20">Live SMTP Handshake</span></td>
+                                    <td class="p-6">Cached Historical Data</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-medium">Catch-All Penetration</td>
+                                    <td class="p-6 text-emerald-400"><i class="fa-solid fa-check"></i></td>
+                                    <td class="p-6 text-red-500 opacity-50"><i class="fa-solid fa-xmark"></i></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-medium">Credits Policy</td>
+                                    <td class="p-6 font-bold text-white">Infinite Rollover</td>
+                                    <td class="p-6">Expires Monthly</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-medium">Starting Price</td>
+                                    <td class="p-6 font-bold text-white">$29 / mo</td>
+                                    <td class="p-6">$49 / mo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-orange-900/30 to-slate-900 p-8 border-b border-slate-800 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Mailvah <span class="text-slate-500 mx-2">vs</span> Hunter.io</h2>
+                            <p class="text-sm text-slate-400 mt-1">Pattern-based guessing guarantees high bounce rates on enterprise targets.</p>
+                        </div>
+                    </div>
+                    <div class="p-0">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-900/50 text-xs text-slate-500 uppercase tracking-widest">
+                                <tr>
+                                    <th class="p-6 w-1/2">Feature</th>
+                                    <th class="p-6 text-sky-400 font-bold">Mailvah</th>
+                                    <th class="p-6 text-slate-500">Hunter.io</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/50 text-sm text-slate-300">
+                                <tr>
+                                    <td class="p-6 font-medium">Methodology</td>
+                                    <td class="p-6"><span class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/20">Absolute Certainty</span></td>
+                                    <td class="p-6">Pattern Guessing (first.last@)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-medium">DNSBL Domain Monitoring</td>
+                                    <td class="p-6 text-emerald-400"><i class="fa-solid fa-check"></i></td>
+                                    <td class="p-6 text-red-500 opacity-50"><i class="fa-solid fa-xmark"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-pricing" class="hidden animate-fade-in pt-24 pb-20">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h1 class="text-4xl md:text-5xl font-black text-white mb-6">Dual-Vault Economics</h1>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">Extract fresh targets and scrub legacy lists clean. Transparent infrastructure pricing with infinite rollover.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-slate-500 hover:border-sky-400 transition-all">
+                        <h3 class="text-xl font-bold text-white mb-2">Starter</h3>
+                        <p class="text-sm text-slate-400 mb-6">For indie founders & hackers.</p>
+                        <div class="mb-6"><span class="text-4xl font-black text-white">$29</span><span class="text-slate-500">/mo</span></div>
+                        <button onclick="openAuth('signup')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all border border-slate-600 mb-8">Deploy Starter</button>
+                        
+                        <ul class="space-y-4 text-sm text-slate-300">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> 1,500 Wash Credits (I-Credits)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-sky-400 mr-3"></i> 365 Hunt Credits (D-Credits)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> Bulk Engine Access</li>
+                            <li class="flex items-center text-slate-600"><i class="fa-solid fa-xmark mr-3"></i> <span class="line-through">Waterfall Rescue</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-emerald-500 relative transform md:-translate-y-4 shadow-[0_0_30px_rgba(16,185,129,0.15)] bg-slate-900/80">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest">Most Popular</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Growth</h3>
+                        <p class="text-sm text-slate-400 mb-6">For scaling agencies and outbound teams.</p>
+                        <div class="mb-6"><span class="text-4xl font-black text-white">$79</span><span class="text-slate-500">/mo</span></div>
+                        <button onclick="openAuth('signup')" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/25 mb-8">Deploy Growth</button>
+                        
+                        <ul class="space-y-4 text-sm text-slate-300">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> 5,000 Wash Credits (I-Credits)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-sky-400 mr-3"></i> 1,250 Hunt Credits (D-Credits)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> Bulk Engine Access</li>
+                            <li class="flex items-center"><i class="fa-solid fa-bolt text-amber-400 mr-3"></i> Waterfall Rescue Protocol</li>
+                            <li class="flex items-center text-slate-600"><i class="fa-solid fa-xmark mr-3"></i> <span class="line-through">Developer API Hub</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-2xl border-t-2 border-t-purple-500 hover:border-purple-400 transition-all">
+                        <h3 class="text-xl font-bold text-white mb-2">Enterprise Pro</h3>
+                        <p class="text-sm text-slate-400 mb-6">For infrastructure-level deployment.</p>
+                        <div class="mb-6"><span class="text-4xl font-black text-white">$149</span><span class="text-slate-500">/mo</span></div>
+                        <button onclick="openAuth('signup')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all border border-slate-600 mb-8">Deploy Enterprise</button>
+                        
+                        <ul class="space-y-4 text-sm text-slate-300">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-3"></i> 15,000 Wash Credits (I-Credits)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-sky-400 mr-3"></i> 3,750 Hunt Credits (D-Credits)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-code text-purple-400 mr-3"></i> Developer API Hub</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-purple-400 mr-3"></i> Native CRM Integrations</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-20 border-t border-slate-800/50 pt-16 text-center">
+                    <h2 class="text-2xl font-bold text-white mb-4">Discovery Refill Vault</h2>
+                    <p class="text-sm text-slate-400 mb-10 max-w-xl mx-auto">Need to extract more targets? Deploy one-time hunting packs directly inside the Command Center. No recurring subscriptions required.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                        <div class="glass-panel p-6 rounded-xl border border-slate-700/50">
+                            <h4 class="text-white font-bold mb-1">Scout Pack</h4>
+                            <p class="text-sky-400 font-mono text-sm mb-4">1,225 D-Credits</p>
+                            <div class="text-2xl font-black text-white">$49</div>
+                        </div>
+                        <div class="glass-panel p-6 rounded-xl border border-sky-500/30 bg-sky-900/10 shadow-[0_0_15px_rgba(56,189,248,0.1)]">
+                            <h4 class="text-white font-bold mb-1">Hunter Pack</h4>
+                            <p class="text-sky-400 font-mono text-sm mb-4">3,750 D-Credits</p>
+                            <div class="text-2xl font-black text-white">$149</div>
+                        </div>
+                        <div class="glass-panel p-6 rounded-xl border border-slate-700/50">
+                            <h4 class="text-white font-bold mb-1">Commander Pack</h4>
+                            <p class="text-purple-400 font-mono text-sm mb-4">10,000 D-Credits</p>
+                            <div class="text-2xl font-black text-white">$399</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-faq" class="hidden animate-fade-in pt-24 pb-20">
+            <div class="max-w-3xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-black text-white mb-4">Knowledge Base</h1>
+                    <p class="text-slate-400">Everything you need to know about the Mailvah infrastructure.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass-panel rounded-xl overflow-hidden">
+                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq1')">
+                            What is a Port 25 Handshake?
+                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq1"></i>
+                        </button>
+                        <div id="faq1" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
+                            Instead of checking an outdated database, our bare-metal servers connect directly to the recipient's mail server via Port 25. We ask the server, "Does this exact inbox exist?" without ever sending an actual email. This guarantees real-time, deterministic accuracy.
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl overflow-hidden">
+                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq2')">
+                            How are Wash Credits (I-Credits) different from Discovery Credits (D-Credits)?
+                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq2"></i>
+                        </button>
+                        <div id="faq2" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
+                            <strong>Wash Credits (I-Credits)</strong> are used in the Bulk Engine to clean your existing CSV lists (1 credit = 1 email verified).<br><br>
+                            <strong>Discovery Credits (D-Credits)</strong> are used in the Lead Finder network to extract net-new targets based on your search parameters. If you wash an extracted lead, it burns 1 D-Credit and 1 I-Credit simultaneously to ensure it enters your vault 100% clean.
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl overflow-hidden">
+                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq3')">
+                            Are my uploaded CSVs secure?
+                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq3"></i>
+                        </button>
+                        <div id="faq3" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
+                            Yes. Your assets are stored in isolated, 256-bit encrypted Supabase storage buckets tied exclusively to your User ID. Mailvah is strictly an infrastructure provider; we never aggregate, read, or sell your hard-earned data back to the market.
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel rounded-xl overflow-hidden">
+                        <button class="w-full text-left p-6 font-bold text-white flex justify-between items-center focus:outline-none" onclick="toggleFaq('faq4')">
+                            What is the Waterfall Rescue?
+                            <i class="fa-solid fa-chevron-down text-slate-500" id="icon-faq4"></i>
+                        </button>
+                        <div id="faq4" class="hidden px-6 pb-6 text-sm text-slate-400 leading-relaxed border-t border-slate-800/50 pt-4">
+                            Available on the Growth and Pro tiers. If a lead in your Bulk Wash comes back "Dead", the Waterfall Rescue automatically burns Discovery credits to hunt down and inject a valid alternative email for that target, saving the deal from dying in the pipeline.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#03050a] border-t border-slate-800/80 pt-16 pb-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm">Product</h4>
+                    <ul class="space-y-2 text-sm text-slate-500">
+                        <li><a href="#" onclick="navigate('home')" class="hover:text-sky-400 transition-colors">Infrastructure</a></li>
+                        <li><a href="#" onclick="navigate('pricing')" class="hover:text-sky-400 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Developer API</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm">Compare</h4>
+                    <ul class="space-y-2 text-sm text-slate-500">
+                        <li><a href="#" onclick="navigate('compare')" class="hover:text-sky-400 transition-colors">Mailvah vs Apollo</a></li>
+                        <li><a href="#" onclick="navigate('compare')" class="hover:text-sky-400 transition-colors">Mailvah vs Hunter</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Mailvah vs Skrapp</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm">Company</h4>
+                    <ul class="space-y-2 text-sm text-slate-500">
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Zero-to-One Initiative</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Contact Engineering</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm">Legal Hub</h4>
+                    <ul class="space-y-2 text-sm text-slate-500">
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">GDPR & Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="bg-blue-600 p-1.5 rounded"><i class="fa-solid fa-m text-white text-xs"></i></div>
+                    <span class="text-slate-400 text-xs tracking-wider">MAILVAH</span>
+                </div>
+                <p class="text-xs text-slate-600">© 2026 Donmican Technology Ltd. Engineered in Lagos. All rights reserved.</p>
+                <div class="flex gap-4 text-xs text-slate-500">
+                    <span class="flex items-center"><i class="fa-solid fa-shield-halved mr-1"></i> SOC 2 Type II</span>
+                    <span class="flex items-center"><i class="fa-solid fa-lock mr-1"></i> 256-bit AES</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- SPA Routing ---
+        function navigate(pageId) {
+            // Hide all pages
+            ['home', 'compare', 'pricing', 'faq'].forEach(id => {
+                document.getElementById('page-' + id).classList.add('hidden');
+                document.getElementById('nav-' + id)?.classList.remove('nav-active', 'text-white');
+            });
+            
+            // Show target
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            document.getElementById('nav-' + pageId)?.classList.add('nav-active', 'text-white');
+            window.scrollTo(0, 0);
+        }
+
+        // --- FAQ Toggle ---
+        function toggleFaq(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if(content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        // --- Auth Modal Logic ---
+        function openAuth(type) {
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('authTitle');
+            const subtitle = document.getElementById('authSubtitle');
+            const btnText = document.getElementById('authBtnText');
+
+            if(type === 'login') {
+                title.innerText = "Access Command Center";
+                subtitle.innerText = "Log in to view your Vault and manage infrastructure.";
+                btnText.innerText = "Secure Login";
+            } else {
+                title.innerText = "Deploy Infrastructure";
+                subtitle.innerText = "Create an account to unlock 115 free wash credits.";
+                btnText.innerText = "Create Free Account";
+            }
+
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before opacity transition
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeAuth() {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function handleAuthSubmit() {
+            // Redirects to actual Command Center app URL upon "auth" on marketing site
+            const btn = document.getElementById('authBtnText');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
+            setTimeout(() => {
+                window.location.href = 'https://app.mailvah.com'; 
+            }, 800);
+        }
+
+        // --- The 2-Strike Live Terminal Logic ---
+        const MAX_SCANS = 2;
+        let scansUsed = parseInt(localStorage.getItem('mailvah_scans') || '0');
+
+        // Initial check on load
+        if(scansUsed >= MAX_SCANS) {
+            lockTerminal();
+        }
+
+        function executeLivePing() {
+            if(scansUsed >= MAX_SCANS) return;
+
+            const input = document.getElementById('livePingInput');
+            const email = input.value.trim();
+            const term = document.getElementById('terminalOutput');
+            const btn = document.getElementById('livePingBtn');
+
+            if(!email || !email.includes('@')) {
+                alert('Please enter a valid target email.');
+                return;
+            }
+
+            // Lock UI during scan
+            btn.disabled = true;
+            input.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-radar fa-spin"></i>';
+            
+            term.innerHTML = `> Initiating 4x Heuristic Protocol on <span class="text-sky-400">${email}</span>...<br>`;
+            
+            // Mocking the delay and visual output of the Port 25 handshake
+            setTimeout(() => { term.innerHTML += `> Ping Syntax... <span class="text-emerald-400">PASS</span><br>`; }, 600);
+            setTimeout(() => { term.innerHTML += `> Ping DNS/MX... <span class="text-emerald-400">PASS</span><br>`; }, 1200);
+            setTimeout(() => { term.innerHTML += `> Penetrating Catch-All Shield... <span class="text-emerald-400">BYPASSED</span><br>`; }, 2000);
+            
+            setTimeout(() => {
+                // Fake randomization for demo: 70% chance of dead/catch-all to prove "Apollo lists are dirty" point.
+                const isSafe = Math.random() > 0.7; 
+                if(isSafe) {
+                    term.innerHTML += `> Executing Port 25 Handshake... <span class="text-emerald-400 font-bold">[ SAFE ]</span><span class="cursor-blink">_</span>`;
+                } else {
+                    term.innerHTML += `> Executing Port 25 Handshake... <span class="text-red-500 font-bold">[ FATAL BOUNCE DETECTED ]</span><br>> <span class="text-slate-500">Server response: 550 5.1.1 User unknown</span><span class="cursor-blink">_</span>`;
+                }
+
+                // Increment and log
+                scansUsed++;
+                localStorage.setItem('mailvah_scans', scansUsed.toString());
+                
+                // Reset UI
+                btn.disabled = false;
+                input.disabled = false;
+                btn.innerText = 'PING';
+                input.value = '';
+
+                // Check if they hit the limit
+                if(scansUsed >= MAX_SCANS) {
+                    setTimeout(lockTerminal, 1500);
+                }
+            }, 3000);
+        }
+
+        function lockTerminal() {
+            document.getElementById('livePingInput').disabled = true;
+            document.getElementById('livePingBtn').disabled = true;
+            document.getElementById('terminalLockout').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
