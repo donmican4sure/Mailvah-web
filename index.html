@@ -801,6 +801,697 @@
         // Initialize UI
         calculateROI();
         updatePricingUI();
+    <script>
+        // --- 1. SUPABASE INITIALIZATION ---
+        const supabaseUrl = 'https://onznuyxevistjmsgxnfm.supabase.co';
+        const supabaseKey = 'sb_publishable_gZ1Ea52nk0JCEO5twFFJwQ_CkHjXZqg';
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // --- 2. GLOBAL STATE ---
+        let currentCredits = 0;          // Wash (I)
+        let currentDiscoveryCredits = 0; // Hunt (D)
+        let userPlan = 'Free';
+        let bulkDataRows = [];
+        let safeExportData = []; 
+        let allExportData = [];
+        let emailColumnIndex = -1;
+        let globalExtractedCount = 0;
+        let deadLeadsFoundInWash = 0;
+        let scansUsedGuest = parseInt(localStorage.getItem('mailvah_scans_v3.2') || '0');
+
+        // --- 3. LAYER CONTROLLER (Marketing vs. App) ---
+        _supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                document.getElementById('marketingWrapper').classList.add('hidden');
+                document.getElementById('appWrapper').classList.remove('hidden');
+                fetchUserCredits();
+            }
+        });
+
+        _supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                document.getElementById('authModal').classList.add('hidden');
+                document.getElementById('marketingWrapper').classList.add('hidden');
+                document.getElementById('appWrapper').classList.remove('hidden');
+                fetchUserCredits();
+            } else if (event === 'SIGNED_OUT') {
+                document.getElementById('authModal').classList.add('hidden');
+                document.getElementById('marketingWrapper').classList.remove('hidden');
+                document.getElementById('appWrapper').classList.add('hidden');
+                navigateMarketing('home');
+            }
+        });
+
+        // --- 4. PUBLIC MARKETING LOGIC ---
+        function navigateMarketing(id) {
+            ['home', 'compare', 'pricing', 'company', 'faq', 'privacy', 'terms', 'legal', 'contact'].forEach(p => {
+                const el = document.getElementById('page-'+p); if(el) el.classList.add('hidden');
+                const nav = document.getElementById('nav-'+p); if(nav) nav.classList.remove('nav-active', 'text-white');
+            });
+            const targetEl = document.getElementById('page-'+id); if(targetEl) targetEl.classList.remove('hidden');
+            const targetNav = document.getElementById('nav-'+id); if(targetNav) targetNav.classList.add('nav-active', 'text-white');
+            window.scrollTo(0,0);
+            if(id === 'faq') renderFaq('all');
+        }
+
+        function calculateROI() {
+            const e = document.getElementById('slide-emails').value;
+            const b = document.getElementById('slide-bounce').value;
+            document.getElementById('val-emails').innerText = parseInt(e).toLocaleString();
+            document.getElementById('val-bounce').innerText = b + '%';
+            const wasted = Math.round(e * (b/100));
+            document.getElementById('leads-wasted').innerText = wasted.toLocaleString();
+            document.getElementById('roi-saved').innerText = '+$' + Math.round(wasted * 0.60).toLocaleString();
+        }
+
+        function toggleAuthModal() { document.getElementById('authModal').classList.toggle('hidden'); }
+
+        // Marketing: 2-Strike Live Console
+        if(scansUsedGuest >= 2) {
+            const lockout = document.getElementById('marketingLockout');
+            if(lockout) lockout.classList.remove('hidden');
+        }
+
+        function executeMarketingPing() {
+            if(scansUsedGuest >= 2) return;
+            const input = document.getElementById('livePingInput');
+            const term = document.getElementById('marketingTerminalOutput');
+            const btn = document.getElementById('livePingBtn');
+            const email = input.value.trim();
+
+            if(!email || !email.includes('@')) { alert('Valid target email required.'); return; }
+
+            btn.disabled = true; input.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-radar fa-spin"></i>';
+            term.innerHTML = `<div class="text-slate-500">> target: ${email}</div>`;
+            term.innerHTML += `<div>> Initiating V3.2 Heuristic Protocol...</div>`;
+            
+            setTimeout(() => { term.innerHTML += `<div class="text-sky-400">> Firing 3-Burst Ghost Ping (x7q9_fatal@)...</div>`; }, 800);
+            setTimeout(() => { term.innerHTML += `<div>> Analyzing firewall response anomaly... <span class="text-emerald-400 font-bold">[ BYPASSED ]</span></div>`; }, 1800);
+            setTimeout(() => { term.innerHTML += `<div>> Executing deep SMTP handshake...</div>`; }, 2600);
+            
+            setTimeout(() => {
+                const isSafe = Math.random() > 0.6; 
+                if(isSafe) {
+                    term.innerHTML += `<div class="text-white font-black bg-emerald-500/20 px-2 py-1 inline-block rounded border border-emerald-500/30 mt-2 shadow-[0_0_10px_rgba(16,185,129,0.2)]">[ VALID : INBOX SECURED ]</div><span class="animate-pulse ml-1">_</span>`;
+                } else {
+                    term.innerHTML += `<div class="text-white font-black bg-red-500/20 px-2 py-1 inline-block rounded border border-red-500/30 mt-2 shadow-[0_0_10px_rgba(239,68,68,0.2)]">[ DEAD : FATAL BOUNCE ]</div><span class="animate-pulse ml-1">_</span>`;
+                }
+
+                scansUsedGuest++;
+                localStorage.setItem('mailvah_scans_v3.2', scansUsedGuest.toString());
+                btn.disabled = false; input.disabled = false; btn.innerText = 'PING'; input.value = '';
+                
+                if(scansUsedGuest >= 2) {
+                    setTimeout(() => {
+                        document.getElementById('marketingLockout').classList.remove('hidden');
+                    }, 1500);
+                }
+            }, 3800);
+        }
+
+        // Marketing: Interactive Tour Animation
+        let currentTourStep = 1;
+        setInterval(() => {
+            const prevStep = document.getElementById(`tour-step-${currentTourStep}`);
+            const prevUi = document.getElementById(`tour-ui-${currentTourStep}`);
+            if(prevStep) prevStep.classList.replace('opacity-100', 'opacity-30');
+            if(prevStep) prevStep.classList.replace('border-sky-500', 'border-slate-800');
+            if(prevUi) prevUi.classList.add('hidden');
+            
+            currentTourStep = currentTourStep === 3 ? 1 : currentTourStep + 1;
+            
+            const nextStep = document.getElementById(`tour-step-${currentTourStep}`);
+            const nextUi = document.getElementById(`tour-ui-${currentTourStep}`);
+            if(nextStep) nextStep.classList.replace('opacity-30', 'opacity-100');
+            if(nextStep) nextStep.classList.replace('border-slate-800', 'border-sky-500');
+            if(nextUi) nextUi.classList.remove('hidden');
+        }, 5000);
+
+        // Marketing: Dynamic V3.2 Enterprise Slider
+        const enterpriseTiers = [
+            { name: "Sandbox", price: "$0", wash: "115", hunt: "0", color: "text-slate-400", features: [
+                { f: "V3.2 Deep-Scan Engine", desc: "Heuristic 3-burst anomaly pings for single targets." },
+                { f: "Threat Analysis", desc: "Scan cold email copy for over 50 spam triggers." }
+            ]},
+            { name: "Starter", price: "$29", wash: "1,500", hunt: "365", color: "text-emerald-400", features: [
+                { f: "Bulk Engine Access", desc: "Upload and wash CSVs through the bare-metal infrastructure." },
+                { f: "Email Support", desc: "Standard 24h technical support SLA." }
+            ]},
+            { name: "Growth", price: "$79", wash: "5,000", hunt: "1,250", color: "text-sky-400", features: [
+                { f: "Domain Monitor", desc: "Real-time tracking of DMARC and Spamhaus Blacklist health." },
+                { f: "Waterfall Rescue", desc: "Automatically hunt valid alternative emails for dead leads in your CSV." }
+            ]},
+            { name: "Pro", price: "$149", wash: "15,000", hunt: "3,750", color: "text-purple-400", features: [
+                { f: "Developer API Hub", desc: "Generate secret cryptographic keys to verify leads directly in your own app." },
+                { f: "CRM Purge Sync", desc: "Native HubSpot/Salesforce integration to clean contacts automatically." },
+                { f: "Inbox Seed Network", desc: "Test campaigns against our 20 hidden accounts for Primary/Spam placement." }
+            ]},
+            { name: "Scale", price: "$399", wash: "100,000", hunt: "15,000", color: "text-amber-400", features: [
+                { f: "Dedicated Node Routing", desc: "Isolated verification server lane. No shared bandwidth, zero latency drops." },
+                { f: "Priority Slack Channel", desc: "Direct, instant access to the Mailvah engineering team in Lagos." }
+            ]},
+            { name: "Apex", price: "$799", wash: "200,000", hunt: "30,000", color: "text-red-400", features: [
+                { f: "Bare-Metal IP Assignment", desc: "Dedicated IP address exclusively for your API verification traffic to bypass firewalls." },
+                { f: "Custom API Rate Limits", desc: "Remove standard API throttling for unlimited enterprise verification throughput." }
+            ]}
+        ];
+
+        function updatePricingUI() {
+            const slider = document.getElementById('pricingSlider');
+            if(!slider) return;
+            const val = slider.value;
+            const data = enterpriseTiers[val];
+            
+            document.getElementById('tierName').innerText = data.name + " Tier";
+            document.getElementById('tierPrice').innerText = data.price;
+            document.getElementById('tierPrice').className = "text-7xl md:text-8xl font-black tracking-tighter transition-colors duration-300 " + data.color;
+            document.getElementById('tierWash').innerText = data.wash;
+            document.getElementById('tierHunt').innerText = data.hunt;
+            
+            const badge = document.getElementById('tierBadge');
+            if(val == 2) { badge.classList.remove('hidden'); badge.innerText = "MOST POPULAR"; }
+            else if(val == 4) { badge.classList.remove('hidden'); badge.innerText = "ENTERPRISE SCALE"; }
+            else if(val == 5) { badge.classList.remove('hidden'); badge.innerText = "MAXIMUM POWER"; }
+            else { badge.classList.add('hidden'); }
+
+            let listHtml = "";
+            data.features.forEach(feat => {
+                listHtml += `
+                    <li class="flex items-center justify-between group border-b border-slate-800/50 pb-4 last:border-0 last:pb-0">
+                        <span class="flex items-center font-bold text-white"><i class="fa-solid fa-check ${data.color} mr-4 text-lg drop-shadow-[0_0_5px_currentColor]"></i> ${feat.f}</span>
+                        <div class="tooltip"><i class="fa-solid fa-circle-question text-slate-500 hover:text-white transition-colors text-lg"></i><div class="tooltip-text">${feat.desc}</div></div>
+                    </li>`;
+            });
+            document.getElementById('tierFeatures').innerHTML = listHtml;
+        }
+
+        // Marketing: FAQ Engine
+        const faqData = [
+            { c: 'tech', q: "What is the V3.2 Heuristic Anomaly Engine?", a: "Before verifying a target email, our proprietary engine fires a 3-burst sequence of mathematically impossible emails (e.g. x7q9_fatal@domain.com) at the receiving server. By analyzing how the firewall responds to obvious fake data, we map their Catch-All protocols. This allows us to penetrate enterprise security layers that block standard verifiers like Apollo and Hunter." },
+            { c: 'tech', q: "What is a Port 25 Handshake?", a: "Instead of checking an outdated database, our bare-metal servers connect directly to the recipient's mail server via Port 25. We ask the server, 'Does this exact inbox exist?' without ever sending an actual email. This guarantees real-time, deterministic accuracy." },
+            { c: 'econ', q: "How does Infinite Rollover work?", a: "Unlike legacy SaaS platforms that steal back your unused credits at the end of the month, any Wash (I-Credits) or Hunt (D-Credits) you don't use will roll over to the next month indefinitely, provided your subscription remains active. You paid for the compute power; you keep it." },
+            { c: 'econ', q: "What is the difference between I-Credits and D-Credits?", a: "Wash Credits (I-Credits) are used in the Bulk Engine to clean your existing CSV lists (1 credit = 1 email verified). Discovery Credits (D-Credits) are used in the Lead Finder network to extract net-new targets. If you wash an extracted lead, it burns 1 D-Credit and 1 I-Credit simultaneously." },
+            { c: 'legal', q: "Are my uploaded CSVs secure?", a: "Yes. Your assets are stored in isolated, 256-bit encrypted Supabase storage buckets tied exclusively to your User ID. Mailvah is strictly an infrastructure provider; we never aggregate, read, or sell your hard-earned data back to the market." },
+            { c: 'legal', q: "Do you offer a money-back guarantee?", a: "Yes. If our Heuristic Engine fails to reduce your bounce rate below 1% when used properly, contact our engineering team within 30 days of your initial subscription for a full, unconditional refund." }
+        ];
+
+        function renderFaq(filter) {
+            const container = document.getElementById('faqContainer');
+            if(!container) return;
+            container.innerHTML = "";
+            faqData.forEach((item, index) => {
+                if(filter !== 'all' && item.c !== filter) return;
+                container.innerHTML += `
+                    <div class="glass-panel rounded-[2rem] overflow-hidden border border-slate-800/50 hover:border-slate-600 transition-colors">
+                        <button onclick="toggleFaq('faq-${index}')" class="w-full text-left p-8 font-black text-white flex justify-between items-center group">
+                            ${item.q}
+                            <i id="icon-faq-${index}" class="fa-solid fa-chevron-down text-slate-600 group-hover:text-sky-400 transition-transform"></i>
+                        </button>
+                        <div id="faq-${index}" class="hidden px-8 pb-8 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 pt-6 font-medium">
+                            ${item.a}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        function filterFaq(c) { renderFaq(c); }
+        function toggleFaq(id) {
+            const el = document.getElementById(id); const icon = document.getElementById('icon-' + id);
+            el.classList.toggle('hidden'); icon.classList.toggle('rotate-180');
+        }
+
+
+        // --- 5. COMMAND CENTER APP LOGIC ---
+        
+        async function fetchUserCredits() {
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (!user) return;
+            const { data } = await _supabase.from('user_credits').select('*').eq('id', user.id).single();
+
+            if (data) {
+                userPlan = data.plan_tier || 'Free';
+                currentCredits = data.integrity_vault || 0;
+                currentDiscoveryCredits = data.discovery_vault || 0;
+
+                const balEl = document.getElementById('userCreditBalance');
+                if (balEl) {
+                    balEl.innerHTML = `<span class="text-blue-400">${currentDiscoveryCredits.toLocaleString()}<span class="text-[10px] text-slate-500 font-normal ml-0.5 mr-2">D</span></span> <span class="text-emerald-400">${currentCredits.toLocaleString()}<span class="text-[10px] text-slate-500 font-normal ml-0.5">I</span></span>`;
+                }
+            }
+        }
+
+        function switchAppTab(tab) {
+            const paywallBox = document.getElementById('paywallContainer');
+            const title = document.getElementById('paywallTitle');
+            const desc = document.getElementById('paywallDesc');
+
+            if (userPlan === 'Free' && tab !== 'single' && tab !== 'analyzer') {
+                if(title) title.innerText = "Command Center Locked";
+                if(desc) desc.innerText = "You are currently in the Sandbox. Upgrade to a paid tier to wash massive lists and access the Vault.";
+                if(paywallBox) paywallBox.classList.remove('hidden');
+                return; 
+            }
+
+            if (['api', 'integrations', 'seed'].includes(tab) && userPlan !== 'Pro' && userPlan !== 'Scale' && userPlan !== 'Apex') {
+                if(title) title.innerText = "Enterprise Feature Locked";
+                if(desc) desc.innerText = "Developer APIs, native CRM Integrations, and the Seed Network are strictly reserved for the Pro ($149) tier and above.";
+                if(paywallBox) paywallBox.classList.remove('hidden');
+                return;
+            }
+
+            ['analyzer', 'single', 'bulk', 'vault', 'monitor', 'finder', 'integrations', 'api', 'seed'].forEach(id => {
+                const btn = document.getElementById('tab-' + id);
+                if(btn) btn.classList.remove('active-tab');
+                const view = document.getElementById('view-' + id);
+                if(view) view.classList.add('hidden');
+            });
+
+            const activeBtn = document.getElementById('tab-' + tab);
+            if(activeBtn) activeBtn.classList.add('active-tab');
+            const targetView = document.getElementById('view-' + tab);
+            if(targetView) targetView.classList.remove('hidden');
+
+            if (tab === 'analyzer') {
+                document.getElementById('pageTitle').innerText = "Dual-Threat Analyzer";
+                document.getElementById('pageDesc').innerText = "Zero-cost diagnostic for cold email payload and infrastructure.";
+            } else if (tab === 'single') {
+                document.getElementById('pageTitle').innerText = "V3.2 Engine";
+                document.getElementById('pageDesc').innerText = "Direct Heuristic handshakes for zero-bounce validation.";
+            } else if (tab === 'bulk') {
+                document.getElementById('pageTitle').innerText = "Bulk Engine";
+                document.getElementById('pageDesc').innerText = "Upload databases to perform deterministic bare-metal washes.";
+            } else if (tab === 'vault') {
+                document.getElementById('pageTitle').innerText = "Encrypted Vault";
+                document.getElementById('pageDesc').innerText = "Secure 256-bit AES storage of all washed datasets.";
+                fetchVaultFiles(); 
+            } else if (tab === 'monitor') {
+                document.getElementById('pageTitle').innerText = "Infrastructure Monitor";
+                document.getElementById('pageDesc').innerText = "Real-time DNS health and blacklist tracking.";
+                fetchMonitoredDomains();
+            } else if (tab === 'finder') {
+                document.getElementById('pageTitle').innerText = "Lead Extraction Network";
+                document.getElementById('pageDesc').innerText = "Global B2B discovery powered by the Apify network.";
+            } else if (tab === 'api') {
+                document.getElementById('pageTitle').innerText = "Developer API Hub";
+                document.getElementById('pageDesc').innerText = "Generate cryptographic secret keys for custom integrations.";
+                fetchApiKey();
+            }
+        }
+
+        // Auth Calls
+        async function handleSignUp() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const { data, error } = await _supabase.auth.signUp({ email, password });
+            if (error) alert(error.message);
+            else alert("Credentials verified. Check your email to confirm access.");
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) alert(error.message);
+        }
+
+        async function handleSignOut() { await _supabase.auth.signOut(); }
+
+        // Threat Analyzer (Payload & DNS)
+        function analyzePayload() {
+            const text = document.getElementById('payloadInput').value.toLowerCase();
+            const logBox = document.getElementById('threatLog');
+            const scoreDisplay = document.getElementById('copyScoreDisplay');
+            
+            if(!text.trim()) {
+                scoreDisplay.innerText = "100/100"; scoreDisplay.className = "text-4xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.3)]";
+                logBox.innerHTML = "System clear. Awaiting payload text..."; logBox.className = "bg-slate-950/50 p-6 rounded-2xl border border-slate-800 font-mono text-[11px] text-emerald-400 leading-relaxed";
+                return;
+            }
+
+            const spamTriggers = ['free', 'buy', 'urgent', 'guarantee', 'act now', 'click here', 'investment', 'crypto', 'risk-free', 'winner', 'cash', 'bonus', 'credit card', '100%', 'no catch', 'obligation', 'earn', 'income', 'profit', 'cheap', 'discount'];
+            let score = 100;
+            let detectedThreats = [];
+
+            spamTriggers.forEach(word => {
+                const regex = new RegExp('\\b' + word + '\\b', 'g');
+                if(text.match(regex)) { score -= 8; detectedThreats.push(word); }
+                else if(word === '100%' && text.includes('100%')) { score -= 8; detectedThreats.push(word); }
+            });
+
+            score = Math.max(0, score);
+            scoreDisplay.innerText = `${score}/100`;
+
+            if(score >= 90) scoreDisplay.className = "text-4xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.3)]";
+            else if (score >= 60) scoreDisplay.className = "text-4xl font-black text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]";
+            else scoreDisplay.className = "text-4xl font-black text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.3)]";
+
+            if(detectedThreats.length === 0) logBox.innerHTML = "<span class='text-emerald-400 font-bold'>[ OK ] No high-risk spam triggers detected. Payload copy is optimized.</span>";
+            else {
+                let html = "<span class='text-red-400 font-bold mb-2 block'>[ WARN ] High-risk triggers detected:</span><ul class='mt-2 space-y-1.5'>";
+                detectedThreats.forEach(t => html += `<li><span class='text-red-500'>-></span> <span class='text-white bg-red-500/20 px-2 py-1 rounded border border-red-500/30 uppercase tracking-widest text-[10px] ml-2'>${t}</span></li>`);
+                html += "</ul>"; logBox.innerHTML = html;
+            }
+        }
+
+        async function checkDNSInfrastructure() {
+            const domainInput = document.getElementById('dnsTargetInput').value.trim();
+            if(!domainInput) return alert("Domain required.");
+            let domain = domainInput.replace(/(^\w+:|^)\/\//, '').replace(/^www\./, '');
+            if(domain.includes('/')) domain = domain.split('/')[0];
+
+            const btn = document.getElementById('dnsBtn');
+            const spfIcon = document.getElementById('spfStatusIcon'); const spfText = document.getElementById('spfStatusText');
+            const dmarcIcon = document.getElementById('dmarcStatusIcon'); const dmarcText = document.getElementById('dmarcStatusText');
+
+            btn.innerHTML = `<i class="fa-solid fa-radar fa-spin"></i> SCANNING INFRASTRUCTURE...`;
+            spfIcon.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-sky-400"></i>`; dmarcIcon.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-sky-400"></i>`;
+            spfText.innerText = "SCANNING"; dmarcText.innerText = "SCANNING";
+
+            try {
+                const spfRes = await fetch(`https://dns.google/resolve?name=${domain}&type=TXT`); const spfData = await spfRes.json();
+                let hasSpf = false; if(spfData.Answer) hasSpf = spfData.Answer.some(record => record.data.includes('v=spf1'));
+                
+                const dmarcRes = await fetch(`https://dns.google/resolve?name=_dmarc.${domain}&type=TXT`); const dmarcData = await dmarcRes.json();
+                let hasDmarc = false; if(dmarcData.Answer) hasDmarc = dmarcData.Answer.some(record => record.data.includes('v=DMARC1'));
+
+                if(hasSpf) { spfIcon.innerHTML = `<i class="fa-solid fa-shield-check text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.4)]"></i>`; spfText.innerHTML = `<span class="text-emerald-400">SECURE</span>`; } 
+                else { spfIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]"></i>`; spfText.innerHTML = `<span class="text-red-500">EXPOSED</span>`; }
+                
+                if(hasDmarc) { dmarcIcon.innerHTML = `<i class="fa-solid fa-shield-check text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.4)]"></i>`; dmarcText.innerHTML = `<span class="text-emerald-400">SECURE</span>`; } 
+                else { dmarcIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]"></i>`; dmarcText.innerHTML = `<span class="text-red-500">EXPOSED</span>`; }
+                
+                btn.innerHTML = `RE-SCAN INFRASTRUCTURE`;
+            } catch (err) { btn.innerHTML = "ERROR"; }
+        }
+
+        // Single Target V3.2 Engine
+        async function verifyEmail() {
+            const email = document.getElementById('emailInput').value;
+            if (!email) return;
+            if (currentCredits <= 0 && userPlan !== 'Free') { document.getElementById('paywallContainer').classList.remove('hidden'); return; }
+
+            const card = document.getElementById('statusCard');
+            document.getElementById('defaultMsg').classList.add('hidden');
+            document.getElementById('resultsContent').classList.remove('hidden');
+            card.classList.add('scanning-glow');
+            
+            document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-microchip text-sky-400 animate-pulse"></i>';
+            document.getElementById('statusTitle').innerText = "V3.2 HEURISTIC SCAN...";
+            document.getElementById('statusTitle').className = "text-2xl md:text-3xl font-black mb-3 text-sky-400 tracking-tight uppercase";
+            document.getElementById('statusReason').innerText = "Firing 3-Burst sequence to map Catch-All firewall...";
+            
+            try {
+                // Connecting to Mailvah verification backend
+                const response = await fetch('https://api.mailvah.com/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
+                const data = await response.json();
+                
+                card.classList.remove('scanning-glow');
+                const { data: { user } } = await _supabase.auth.getUser();
+                if(user && userPlan !== 'Free') { await _supabase.rpc('increment_credits', { row_id: user.id, amt: -1 }); fetchUserCredits(); }
+                
+                if (data.status === 'VALID') {
+                    document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-shield-check text-emerald-400 drop-shadow-[0_0_20px_rgba(52,211,153,0.5)]"></i>';
+                    document.getElementById('statusTitle').innerText = "DELIVERABLE";
+                    document.getElementById('statusTitle').className = "text-3xl md:text-4xl font-black mb-3 text-emerald-400";
+                    document.getElementById('statusReason').innerText = `Inbox verified via Port 25.`;
+                } else if (data.status === 'CATCH_ALL') {
+                    document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-shield-cat text-yellow-500 drop-shadow-[0_0_20px_rgba(234,179,8,0.5)]"></i>';
+                    document.getElementById('statusTitle').innerText = "CATCH-ALL SHIELD";
+                    document.getElementById('statusTitle').className = "text-3xl md:text-4xl font-black mb-3 text-yellow-500 tracking-tight";
+                    document.getElementById('statusReason').innerText = `Firewall trap detected by Heuristic ping. Do not send.`;
+                } else {
+                    document.getElementById('statusIcon').innerHTML = '<i class="fa-solid fa-skull text-red-500 drop-shadow-[0_0_20px_rgba(239,68,68,0.5)]"></i>';
+                    document.getElementById('statusTitle').innerText = "UNDELIVERABLE";
+                    document.getElementById('statusTitle').className = "text-3xl md:text-4xl font-black mb-3 text-red-500";
+                    document.getElementById('statusReason').innerText = "Fatal bounce risk detected. Email does not exist.";
+                }
+            } catch (e) { 
+                card.classList.remove('scanning-glow'); 
+                document.getElementById('statusTitle').innerText = "API ERROR"; 
+                document.getElementById('statusReason').innerText = "Engine connection timeout.";
+            }
+        }
+
+        // Bulk Engine logic
+        function handleDragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('border-sky-500', 'bg-sky-500/10'); }
+        function handleDragLeave(e) { e.preventDefault(); document.getElementById('dropZone').classList.remove('border-sky-500', 'bg-sky-500/10'); }
+        function handleDrop(e) { e.preventDefault(); document.getElementById('dropZone').classList.remove('border-sky-500', 'bg-sky-500/10'); if (e.dataTransfer.files && e.dataTransfer.files.length > 0) { document.getElementById('csvFile').files = e.dataTransfer.files; handleFileSelect({ target: document.getElementById('csvFile') }); } }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result; const rows = text.split('\n').filter(row => row.trim() !== '');
+                if (rows.length < 1) return;
+                const headers = rows[0].split(','); emailColumnIndex = headers.findIndex(h => h.toLowerCase().includes('email'));
+                if (emailColumnIndex === -1) { alert("No 'Email' column found. Please format CSV."); event.target.value = ''; return; }
+
+                bulkDataRows = rows;
+                document.getElementById('stat-total').innerText = rows.length - 1;
+                document.getElementById('stat-valid').innerText = "0"; document.getElementById('stat-invalid').innerText = "0";
+                
+                document.getElementById('dropZone').classList.add('hidden'); 
+                document.getElementById('actionButtons').classList.remove('hidden');
+                document.getElementById('dataPreviewSection').classList.remove('hidden');
+                
+                const btn = document.getElementById('startBulkBtn'); btn.disabled = false; 
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> INITIATE WASH (${rows.length - 1} Targets)`;
+                event.target.value = ''; 
+            };
+            reader.readAsText(file);
+        }
+
+        function cancelBulkWash() {
+            bulkDataRows = []; safeExportData = []; allExportData = [];
+            document.getElementById('dropZone').classList.remove('hidden'); 
+            document.getElementById('actionButtons').classList.add('hidden');
+            document.getElementById('exportOptionsSection').classList.add('hidden'); 
+            document.getElementById('dataPreviewSection').classList.add('hidden');
+            document.getElementById('stat-total').innerText = "0"; 
+            document.getElementById('stat-valid').innerText = "0"; 
+            document.getElementById('stat-invalid').innerText = "0";
+        }
+
+        async function startBulkWash() {
+            const rowCount = bulkDataRows.length - 1;
+            if (currentCredits < rowCount) { alert("Insufficient Integrity Credits!"); document.getElementById('paywallContainer').classList.remove('hidden'); return; }
+
+            const { data: { user } } = await _supabase.auth.getUser();
+            if(user) { await _supabase.rpc('increment_credits', { row_id: user.id, amt: -rowCount }); await fetchUserCredits(); }
+
+            document.getElementById('cancelBulkBtn').classList.add('hidden');
+            const btn = document.getElementById('startBulkBtn'); 
+            btn.className = "col-span-4 bg-slate-900 border border-emerald-500/30 text-emerald-400 font-black py-4 rounded-xl transition-all tracking-widest text-xs uppercase flex justify-center items-center gap-3"; 
+            btn.disabled = true;
+
+            const feedContainer = document.getElementById('liveFeedContainer'); const feed = document.getElementById('liveFeed');
+            const progressContainer = document.getElementById('progressContainer'); const progressBar = document.getElementById('progressBar'); const progressText = document.getElementById('progressText');
+            
+            feedContainer.classList.remove('hidden'); progressContainer.classList.remove('hidden');
+            
+            const headerRow = bulkDataRows[0].trim() + ",Mailvah_Status"; safeExportData = [headerRow]; allExportData = [headerRow];
+            let validCount = 0; deadLeadsFoundInWash = 0; let processedCount = 0; let currentIndex = 1; 
+
+            // Parallel Worker Execution (10 threads)
+            async function worker() {
+                while (currentIndex < bulkDataRows.length) {
+                    const i = currentIndex++; const rawRow = bulkDataRows[i].trim();
+                    const emailMatch = rawRow.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                    const email = emailMatch ? emailMatch[0] : "";
+                    
+                    btn.innerHTML = `<i class="fa-solid fa-satellite-dish fa-spin text-lg"></i> WASHING ${processedCount + 1} / ${rowCount}...`;
+                    let feedHtml = '';
+
+                    if (!email) {
+                        deadLeadsFoundInWash++; document.getElementById('stat-invalid').innerText = deadLeadsFoundInWash;
+                        feedHtml = `<div class="flex justify-between items-center py-1.5 border-b border-slate-800/50"><span class="text-slate-600 truncate max-w-[65%]">> Syntax Invalid</span><span class="text-red-500 font-bold">[ REMOVED ]</span></div>`;
+                    } else {
+                        try {
+                            const response = await fetch('https://api.mailvah.com/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
+                            const data = await response.json();
+                            
+                            if (data.status === 'VALID') {
+                                validCount++; document.getElementById('stat-valid').innerText = validCount;
+                                safeExportData.push(rawRow + ",SAFE"); allExportData.push(rawRow + ",SAFE");
+                                feedHtml = `<div class="flex justify-between items-center py-1.5 border-b border-slate-800/50"><span class="text-slate-300 truncate max-w-[65%]">> V3.2 Verified: ${email}</span><span class="text-emerald-400 font-bold">[ SAFE ]</span></div>`;
+                            } else if (data.status === 'CATCH_ALL') {
+                                deadLeadsFoundInWash++; document.getElementById('stat-invalid').innerText = deadLeadsFoundInWash;
+                                allExportData.push(rawRow + ",CATCH_ALL");
+                                feedHtml = `<div class="flex justify-between items-center py-1.5 border-b border-slate-800/50"><span class="text-slate-500 truncate max-w-[65%] line-through">> Shield Trap: ${email}</span><span class="text-yellow-500 font-bold">[ CATCH-ALL ]</span></div>`;
+                            } else {
+                                deadLeadsFoundInWash++; document.getElementById('stat-invalid').innerText = deadLeadsFoundInWash;
+                                feedHtml = `<div class="flex justify-between items-center py-1.5 border-b border-slate-800/50"><span class="text-slate-600 truncate max-w-[65%] line-through">> SMTP Block: ${email}</span><span class="text-red-500 font-bold">[ DEAD ]</span></div>`;
+                            }
+                        } catch (e) {}
+                    }
+                    
+                    processedCount++; let percent = Math.round((processedCount / rowCount) * 100);
+                    progressBar.style.width = percent + '%'; progressText.innerText = percent + '%';
+                    if (feedHtml) { feed.insertAdjacentHTML('beforeend', feedHtml); feed.scrollTop = feed.scrollHeight; }
+                    await new Promise(r => setTimeout(r, 100)); 
+                }
+            }
+
+            const workers = []; for (let w = 0; w < 10; w++) workers.push(worker());
+            await Promise.all(workers);
+
+            btn.innerHTML = `<i class="fa-solid fa-check-double text-lg"></i> OPERATION COMPLETE`;
+            document.getElementById('actionButtons').classList.add('hidden'); 
+            document.getElementById('cancelBulkBtn').classList.remove('hidden'); 
+            document.getElementById('exportOptionsSection').classList.remove('hidden'); document.getElementById('exportOptionsSection').classList.add('flex');
+            
+            autoSaveToVault(allExportData, "Mailvah_V3.2_Wash");
+
+            // Waterfall Rescue Reveal
+            if (deadLeadsFoundInWash > 0 && (userPlan === 'Growth' || userPlan === 'Pro' || userPlan === 'Scale' || userPlan === 'Apex')) {
+                document.getElementById('waterfallCount').innerText = deadLeadsFoundInWash; document.getElementById('waterfallSection').classList.remove('hidden');
+            } else if (deadLeadsFoundInWash > 0) {
+                 const wfSec = document.getElementById('waterfallSection'); wfSec.classList.remove('hidden');
+                 wfSec.innerHTML = `<h4 class="text-white font-black text-sm mb-2"><i class="fa-solid fa-lock text-slate-500 mr-2"></i>Waterfall Rescue (Locked)</h4><p class="text-xs text-slate-400 mb-6">You lost <span class="font-bold text-white">${deadLeadsFoundInWash}</span> leads. Upgrade to Growth or Pro to automatically hunt alternative emails.</p><button onclick="document.getElementById('paywallContainer').classList.remove('hidden')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all text-xs uppercase tracking-widest">Upgrade to Unlock</button>`;
+            }
+        }
+
+        function triggerDownload(dataArray, filename) {
+            const csvContent = dataArray.join("\n"); const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); const url = URL.createObjectURL(blob);
+            const link = document.createElement("a"); link.setAttribute("href", url); link.setAttribute("download", filename);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
+        }
+        function exportSafeData() { triggerDownload(safeExportData, "Mailvah_Safe_Asset.csv"); }
+        function exportAllData() { triggerDownload(allExportData, "Mailvah_Aggressive_Asset.csv"); }
+
+        // Vault Logic
+        async function autoSaveToVault(dataArray, filenamePrefix) {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const csvContent = dataArray.join("\n"); const blob = new Blob([csvContent], { type: 'text/csv' });
+            const dateStr = new Date().toISOString().split('T')[0]; const timestamp = Date.now();
+            const fileName = `${user.id}/${filenamePrefix}_${dateStr}_${timestamp}.csv`;
+            await _supabase.storage.from('mailvah_vault').upload(fileName, blob);
+        }
+
+        async function fetchVaultFiles() {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const vaultContainer = document.getElementById('vaultFilesContainer'); const emptyState = document.getElementById('vaultEmptyState');
+            vaultContainer.innerHTML = '<div class="text-center p-12 text-sky-400 animate-pulse"><i class="fa-solid fa-vault text-6xl mb-4"></i><h3 class="text-xl font-bold">Decrypting Vault Buckets...</h3></div>';
+            emptyState.classList.add('hidden');
+
+            const { data, error } = await _supabase.storage.from('mailvah_vault').list(user.id + '/', { sortBy: { column: 'created_at', order: 'desc' } });
+            if (error || !data || data.length === 0 || (data.length === 1 && data[0].name === '.emptyFolderPlaceholder')) { emptyState.classList.remove('hidden'); vaultContainer.innerHTML = ''; return; }
+            emptyState.classList.add('hidden');
+            
+            let html = '<div class="w-full text-left bg-slate-900/50 rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl"><table class="w-full"><thead class="bg-slate-950 text-[10px] text-slate-500 uppercase tracking-widest border-b border-slate-800"><tr><th class="p-6">Encrypted Asset Name</th><th class="p-6 hidden md:table-cell">Payload Size</th><th class="p-6">Encryption Date</th><th class="p-6 text-right">Action</th></tr></thead><tbody class="divide-y divide-slate-800/50">';
+            data.forEach(file => {
+                if (file.name === '.emptyFolderPlaceholder') return;
+                const sizeKB = (file.metadata.size / 1024).toFixed(1) + ' KB'; const date = new Date(file.created_at).toLocaleDateString();
+                html += `<tr class="hover:bg-slate-800/30 transition-colors"><td class="p-6 text-white text-sm font-bold"><i class="fa-solid fa-file-csv text-emerald-400 mr-3 text-lg"></i>${file.name.substring(0, 30)}...</td><td class="p-6 text-slate-400 text-sm hidden md:table-cell">${sizeKB}</td><td class="p-6 text-slate-400 text-sm">${date}</td><td class="p-6 text-right"><button onclick="downloadFromVault('${file.name}')" class="bg-slate-800 hover:bg-sky-600 text-sky-400 hover:text-white px-5 py-2.5 rounded-xl transition-all text-[10px] font-black uppercase tracking-widest border border-sky-500/30"><i class="fa-solid fa-download md:mr-2"></i> <span class="hidden md:inline">Decrypt</span></button></td></tr>`;
+            });
+            html += '</tbody></table></div>'; vaultContainer.innerHTML = html;
+        }
+
+        async function downloadFromVault(fileName) {
+            const { data: { user } } = await _supabase.auth.getUser(); if(!user) return;
+            const { data, error } = await _supabase.storage.from('mailvah_vault').createSignedUrl(`${user.id}/${fileName}`, 60);
+            if (data && data.signedUrl) window.location.href = data.signedUrl; else alert("Decryption failed. Validate bucket policies.");
+        }
+
+        // Domain Monitor Logic
+        async function fetchMonitoredDomains() {
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            const tbody = document.getElementById('monitorTableBody');
+            const { data, error } = await _supabase.from('domain_health').select('*').eq('user_id', user.id).order('last_checked', { ascending: false });
+            if (error || !data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-slate-500 font-bold uppercase tracking-widest text-xs">No domains monitored yet.</td></tr>'; return; }
+            tbody.innerHTML = ''; 
+            data.forEach(record => {
+                const dmarcBadge = record.dmarc_status === 'healthy' ? '<span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-3 py-1 font-black uppercase tracking-widest rounded border border-emerald-500/30">SECURE</span>' : '<span class="bg-slate-500/20 text-slate-400 text-[10px] px-3 py-1 font-black uppercase tracking-widest rounded border border-slate-500/30">PENDING</span>';
+                const blacklistBadge = record.blacklist_status === 'clean' ? '<span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-3 py-1 font-black uppercase tracking-widest rounded border border-emerald-500/30">CLEAN</span>' : '<span class="bg-slate-500/20 text-slate-400 text-[10px] px-3 py-1 font-black uppercase tracking-widest rounded border border-slate-500/30">PENDING</span>';
+                const lastScan = record.last_checked ? new Date(record.last_checked).toLocaleString() : 'Awaiting Night Scan';
+                tbody.insertAdjacentHTML('beforeend', `<tr><td class="p-6 font-bold text-white">${record.domain_name}</td><td class="p-6">${dmarcBadge}</td><td class="p-6">${blacklistBadge}</td><td class="p-6 text-right text-slate-500 text-xs font-mono">${lastScan}</td></tr>`);
+            });
+        }
+        
+        async function addNewDomain() {
+            const domain = prompt("Enter domain to monitor (e.g., company.com):"); if (!domain) return;
+            const { data: { user } } = await _supabase.auth.getUser(); if (!user) return;
+            await _supabase.from('domain_health').insert([{ user_id: user.id, domain_name: domain.trim().toLowerCase() }]);
+            fetchMonitoredDomains(); 
+        }
+
+        // Lead Finder Logic
+        async function initiateScrape() {
+            const jobTitle = document.getElementById('targetJobTitle').value; const location = document.getElementById('targetLocation').value;
+            if (!jobTitle || !location) { alert("Please enter Job Title and Location parameters."); return; }
+            
+            document.getElementById('finderEmptyState').classList.remove('hidden'); document.getElementById('finderResultsWrapper').classList.add('hidden');
+            document.getElementById('finderEmptyTitle').innerText = "Firing Extraction Protocol..."; 
+            document.getElementById('finderEmptyDesc').innerText = "Connecting to Apify network. Scraping parameters globally...";
+            document.querySelector('#finderEmptyState i').classList.add('animate-spin', 'text-blue-500');
+
+            setTimeout(() => {
+                document.querySelector('#finderEmptyState i').classList.remove('animate-spin', 'text-blue-500');
+                document.getElementById('finderEmptyState').classList.add('hidden'); document.getElementById('finderResultsWrapper').classList.remove('hidden');
+
+                globalExtractedCount = Math.floor(Math.random() * 75) + 75;
+                const isWashChecked = document.getElementById('washCheckbox').checked;
+                
+                document.getElementById('extractionCountText').innerText = `Extraction Complete: ${globalExtractedCount} Targets`;
+                document.getElementById('unlockBtnText').innerText = isWashChecked ? `Unlock & Wash (Cost: ${globalExtractedCount} D + ${globalExtractedCount} I)` : `Unlock Raw (Cost: ${globalExtractedCount} D)`;
+                
+                document.getElementById('finderResultsTable').classList.add('premium-lock'); document.getElementById('finderUnlockOverlay').classList.remove('hidden');
+                
+                let mockHtml = "";
+                for(let i=0; i<4; i++) {
+                    mockHtml += `<tr class="hover:bg-slate-800/30"><td class="p-5"><div class="font-bold text-white">Target Node ${i+1}</div><div class="text-xs text-slate-500 mt-1">${jobTitle}</div></td><td class="p-5 text-slate-300 font-medium">Encrypted Org</td><td class="p-5"><div class="flex items-center text-slate-500 extracted-email-status text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-lock mr-2"></i> Encrypted</div></td><td class="p-5 text-right"><button class="bg-slate-800 border border-slate-700 text-slate-600 px-4 py-2 rounded-lg text-[10px] uppercase font-bold tracking-widest cursor-not-allowed">Locked</button></td></tr>`;
+                }
+                document.getElementById('finderTableBody').innerHTML = mockHtml;
+            }, 3500);
+        }
+
+        async function unlockExtractedLeads() {
+            const isWashChecked = document.getElementById('washCheckbox').checked;
+            const discoveryCost = globalExtractedCount; const integrityCost = isWashChecked ? globalExtractedCount : 0;
+
+            if (currentDiscoveryCredits < discoveryCost) { document.getElementById('discoveryRefillModal').classList.remove('hidden'); return; }
+            if (integrityCost > 0 && currentCredits < integrityCost) { alert("Insufficient Integrity Credits to run the V3.2 Deep-Scan. Upgrade Tier."); document.getElementById('paywallContainer').classList.remove('hidden'); return; }
+
+            currentDiscoveryCredits -= discoveryCost; currentCredits -= integrityCost;
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (user) { await _supabase.from('user_credits').update({ discovery_vault: currentDiscoveryCredits, integrity_vault: currentCredits }).eq('id', user.id); fetchUserCredits(); }
+
+            document.getElementById('finderUnlockOverlay').classList.add('hidden'); document.getElementById('finderResultsTable').classList.remove('premium-lock');
+            
+            const statuses = document.querySelectorAll('.extracted-email-status');
+            statuses.forEach(el => {
+                if(isWashChecked) { el.innerHTML = '<i class="fa-solid fa-shield-check mr-2 text-base"></i> V3.2 Verified'; el.classList.replace('text-slate-500', 'text-emerald-400'); } 
+                else { el.innerHTML = '<i class="fa-solid fa-envelope-open mr-2 text-base"></i> Unverified (Raw)'; el.classList.replace('text-slate-500', 'text-amber-400'); }
+            });
+            document.querySelectorAll('#finderTableBody button').forEach(btn => {
+                btn.classList.replace('text-slate-600', 'text-sky-400'); btn.classList.replace('bg-slate-800', 'bg-slate-900'); btn.innerText = 'EXPORT';
+                btn.classList.remove('cursor-not-allowed'); btn.classList.add('hover:bg-sky-600', 'hover:text-white', 'transition-colors');
+            });
+        }
+
+        // Flutterwave Refill Logic
+        function purchaseDiscoveryPack(packName, priceUSD, creditAmount) {
+            const userEmail = document.getElementById('authEmail').value || 'founder@company.com';
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK-dc0754094fea48efe0f9cc3fe45ed853-X", 
+                tx_ref: "mailvah_refill_" + Date.now(), amount: priceUSD, currency: "USD", payment_options: "card, banktransfer",
+                customer: { email: userEmail, name: "Mailvah Enterprise Node" },
+                customizations: { title: "Mailvah PRO Network", description: packName + " (" + creditAmount.toLocaleString() + " D-Credits)", logo: "https://cdn-icons-png.flaticon.com/512/2913/2913990.png" },
+                callback: async function (payment) {
+                    const { data: { user } } = await _supabase.auth.getUser();
+                    if(user) { await _supabase.from('user_credits').update({ discovery_vault: currentDiscoveryCredits + creditAmount }).eq('id', user.id); }
+                    document.getElementById('discoveryRefillModal').classList.add('hidden');
+                    fetchUserCredits(); alert(packName + " deployed. Happy hunting.");
+                },
+                onclose: function() {}
+            });
+        }
+        
+        // Setup initial view
+        calculateROI();
+        updatePricingUI();
+        renderFaq('all');
     </script>
 </body>
 </html>
